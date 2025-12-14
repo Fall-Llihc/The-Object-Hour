@@ -1,0 +1,9 @@
+# db.properties.example 
+# Silahkan di ubah ke db.properties lalu isi password
+
+db.host=aws-1-ap-south-1.pooler.supabase.com
+# Jika terjadi error "Prepared Statement", ubah ke 5432 (Direct)
+db.port=6543
+db.name=postgres
+db.user=postgres.ykdfyoirtmkscsygyedr
+db.password=[ISI PASSWORD]

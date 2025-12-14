@@ -1,0 +1,22 @@
+# --- NetBeans Specific ---
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# --- Compiled Java Class Files ---
+*.class
+
+# --- Local Config & Secrets (PENTING!) ---
+# Mengabaikan semua file .properties di dalam source code
+src/java/**/db.properties
+src/java/**/*.properties
+
+# TAPI jangan abaikan file example (pengecualian)
+!src/java/**/db.properties.example
+
+# --- System Files ---
+.DS_Store
+Thumbs.db
