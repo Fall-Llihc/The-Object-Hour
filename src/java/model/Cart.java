@@ -8,7 +8,6 @@ public class Cart {
     private boolean isActive;
     private ArrayList<CartItem> items;
 
-    // Constructor
     public Cart() {
         items = new ArrayList<>();
         isActive = true;
@@ -21,7 +20,6 @@ public class Cart {
         this.items = new ArrayList<>();
     }
 
-    // Getter & Setter
     public int getId() {
         return id;
     }
@@ -66,3 +64,4 @@ public class Cart {
         return total;
     }
 }
+
