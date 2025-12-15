@@ -46,7 +46,6 @@
                     
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">
-                            <i class="bi bi-person-circle text-gray-700 text-xl"></i>
                             <span class="font-medium text-gray-700">${sessionScope.user.name}</span>
                             <a href="${pageContext.request.contextPath}/auth/logout" 
                                class="text-red-600 hover:text-red-700 font-medium">

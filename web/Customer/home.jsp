@@ -35,10 +35,6 @@
                 
                 <!-- Right Menu -->
                 <div class="flex items-center space-x-4">
-                    <a href="${pageContext.request.contextPath}/cart" class="relative">
-                        <i class="bi bi-cart3 text-gray-700 text-xl"></i>
-                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
-                    </a>
                     <a href="${pageContext.request.contextPath}/auth/login" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
                     <a href="${pageContext.request.contextPath}/auth/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">Register</a>
                 </div>
