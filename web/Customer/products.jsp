@@ -1,374 +1,291 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop Premium Watches - The Object Hour</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Featured Watches - The Object Hour</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-        
-        body {
-            background-color: #F9FAFB;
-        }
-        
-        /* Product Card Styles */
-        .product-card {
-            border: 1px solid #E5E7EB;
-            border-radius: 16px;
-            transition: all 0.3s ease;
-            background: white;
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border-color: #667eea;
-        }
-        
-        .product-image-container {
-            position: relative;
-            height: 240px;
-            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-        
-        .product-image-container i {
-            font-size: 5rem;
-            color: #667eea;
-            opacity: 0.8;
-            transition: all 0.3s;
-        }
-        
-        .product-card:hover .product-image-container i {
-            transform: scale(1.1);
-            opacity: 1;
-        }
-        
-        .badge-stock {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            padding: 0.5rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        
-        .badge-type {
-            position: absolute;
-            top: 12px;
-            left: 12px;
-            padding: 0.4rem 0.75rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            background: white;
-            color: #667eea;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .product-brand {
-            color: #6B7280;
-            font-size: 0.875rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .product-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #1F2937;
-            margin: 0.5rem 0;
-            line-height: 1.4;
-            min-height: 2.8rem;
-        }
-        
-        .product-spec {
-            color: #9CA3AF;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .product-price {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #667eea;
-            margin: 1rem 0 0.5rem 0;
-        }
-        
-        .btn-add-cart {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 10px;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            color: white;
-            width: 100%;
-            transition: all 0.3s;
-        }
-        
-        .btn-add-cart:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.4);
-        }
-        
-        /* Filter Sidebar */
-        .filter-card {
-            border: 1px solid #E5E7EB;
-            border-radius: 16px;
-            background: white;
-            position: sticky;
-            top: 100px;
-        }
-        
-        .filter-title {
-            font-weight: 700;
-            color: #1F2937;
-            padding: 1.5rem;
-            border-bottom: 1px solid #E5E7EB;
-            margin: 0;
-        }
-        
-        .filter-item {
-            padding: 0.75rem 1.5rem;
-            color: #4B5563;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            transition: all 0.2s;
-            border-left: 3px solid transparent;
-        }
-        
-        .filter-item:hover {
-            background: #F9FAFB;
-            color: #667eea;
-        }
-        
-        .filter-item.active {
-            background: #EEF2FF;
-            color: #667eea;
-            font-weight: 600;
-            border-left-color: #667eea;
-        }
-        
-        /* Page Header */
-        .page-header {
-            background: white;
-            border-bottom: 1px solid #E5E7EB;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-        }
-        
-        .page-title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #1F2937;
-            margin: 0;
-        }
-        
-        .product-count {
-            color: #6B7280;
-            font-size: 0.95rem;
-        }
-        
-        /* Quantity Input */
-        .quantity-input {
-            width: 70px;
-            border-radius: 8px;
-            border: 2px solid #E5E7EB;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        .quantity-input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-        }
-        
-        .empty-state i {
-            font-size: 4rem;
-            color: #D1D5DB;
-            margin-bottom: 1rem;
-        }
-        
-        .empty-state h3 {
-            color: #4B5563;
-            font-weight: 600;
-        }
-        
-        .empty-state p {
-            color: #9CA3AF;
-        }
+        * { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
-    <!-- Include Navbar -->
-    <%@ include file="/components/navbar.jsp" %>
-    
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="page-title">Premium Watch Collection</h1>
-                    <p class="product-count mb-0">
-                        <c:choose>
-                            <c:when test="${not empty products}">
-                                Showing ${products.size()} premium watches
-                            </c:when>
-                            <c:otherwise>
-                                No products found
-                            </c:otherwise>
-                        </c:choose>
-                    </p>
+<body class="bg-gray-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-3 sm:px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="bi bi-watch text-blue-600 text-2xl"></i>
+                    <a href="${pageContext.request.contextPath}/" class="text-xl font-bold">
+                        The <span class="text-blue-600">Object Hour</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                    <div class="relative w-full">
+                        <i class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" placeholder="Search watches, brands..." 
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="${pageContext.request.contextPath}/cart" class="relative">
+                        <i class="bi bi-cart3 text-gray-700 text-xl"></i>
+                        <c:if test="${not empty cartCount and cartCount > 0}">
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                                ${cartCount}
+                            </span>
+                        </c:if>
+                    </a>
+                    
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <span class="text-gray-700 font-medium">${sessionScope.user.name}</span>
+                            <a href="${pageContext.request.contextPath}/auth/logout" class="text-gray-700 hover:text-red-600">
+                                <i class="bi bi-box-arrow-right text-xl"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/auth/login" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
+                            <a href="${pageContext.request.contextPath}/auth/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">Register</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <!-- Main Content -->
-    <div class="container pb-5">
-        <!-- Success Message -->
-        <c:if test="${not empty sessionScope.success}">
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>${sessionScope.success}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                <c:remove var="success" scope="session"/>
-            </div>
-        </c:if>
-        
-        <div class="row g-4">
+    <div class="container mx-auto px-3 sm:px-4 py-8">
+        <div class="flex gap-6">
             <!-- Sidebar Filter -->
-            <div class="col-lg-3">
-                <div class="filter-card">
-                    <h5 class="filter-title">
-                        <i class="bi bi-funnel me-2"></i>Filter Products
-                    </h5>
-                    <div>
-                        <a href="${pageContext.request.contextPath}/products" 
-                           class="filter-item ${empty param.type ? 'active' : ''}">
-                            <span><i class="bi bi-grid-3x3-gap me-2"></i>All Watches</span>
-                            <span class="badge bg-light text-dark">All</span>
-                        </a>
-                        <a href="${pageContext.request.contextPath}/products?type=ANALOG" 
-                           class="filter-item ${param.type eq 'ANALOG' ? 'active' : ''}">
-                            <span><i class="bi bi-circle me-2"></i>Analog</span>
-                        </a>
-                        <a href="${pageContext.request.contextPath}/products?type=DIGITAL" 
-                           class="filter-item ${param.type eq 'DIGITAL' ? 'active' : ''}">
-                            <span><i class="bi bi-square me-2"></i>Digital</span>
-                        </a>
-                        <a href="${pageContext.request.contextPath}/products?type=SMARTWATCH" 
-                           class="filter-item ${param.type eq 'SMARTWATCH' ? 'active' : ''}">
-                            <span><i class="bi bi-smartwatch me-2"></i>Smartwatch</span>
-                        </a>
+            <aside class="w-72 flex-shrink-0 hidden lg:block">
+                <form action="${pageContext.request.contextPath}/products" method="get" id="filterForm">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
+                        <h3 class="font-bold text-xl mb-6 text-gray-900">Filters</h3>
+                        
+                        <!-- Category Filter -->
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Category</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="type" value="" ${empty selectedType ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Watches</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="type" value="ANALOG" ${selectedType == 'ANALOG' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Analog</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="type" value="DIGITAL" ${selectedType == 'DIGITAL' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Digital</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="type" value="SMARTWATCH" ${selectedType == 'SMARTWATCH' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Smartwatch</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Brand Filter -->
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Brand</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="brand" value="" ${empty selectedBrand ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Brands</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="brand" value="Casio" ${selectedBrand == 'Casio' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Casio</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="brand" value="Samsung" ${selectedBrand == 'Samsung' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Samsung</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="brand" value="Xiaomi" ${selectedBrand == 'Xiaomi' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Xiaomi</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="brand" value="DanielW" ${selectedBrand == 'DanielW' ? 'checked' : ''} 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">DanielW</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Price Range -->
+                        <div class="mb-6 pb-6 border-b border-gray-200">
+                            <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Price Range</h4>
+                            <div class="space-y-3">
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="priceRange" value="all" checked 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Prices</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="priceRange" value="0-500000" 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Under Rp500K</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="priceRange" value="500000-1000000" 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Rp500K - Rp1M</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="priceRange" value="1000000-2000000" 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Rp1M - Rp2M</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="radio" name="priceRange" value="2000000-999999999" 
+                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Above Rp2M</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Stock Status -->
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Availability</h4>
+                            <label class="flex items-center cursor-pointer group">
+                                <input type="checkbox" name="inStock" value="true" 
+                                       class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">In Stock Only</span>
+                            </label>
+                        </div>
+                        
+                        <div class="space-y-2">
+                            <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 font-semibold transition">
+                                Apply Filters
+                            </button>
+                            <a href="${pageContext.request.contextPath}/products" class="block w-full bg-gray-100 text-gray-700 py-2.5 rounded-lg hover:bg-gray-200 font-medium transition text-center">
+                                Reset All
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </form>
+            </aside>
 
             <!-- Products Grid -->
-            <div class="col-lg-9">
-                <c:choose>
-                    <c:when test="${not empty products}">
-                        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                            <c:forEach items="${products}" var="product">
-                                <div class="col">
-                                    <div class="product-card">
-                                        <div class="product-image-container">
-                                            <span class="badge-type">${product.type}</span>
-                                            <c:choose>
-                                                <c:when test="${product.stock > 10}">
-                                                    <span class="badge bg-success badge-stock">
-                                                        <i class="bi bi-check-circle me-1"></i>In Stock
-                                                    </span>
-                                                </c:when>
-                                                <c:when test="${product.stock > 0}">
-                                                    <span class="badge bg-warning text-dark badge-stock">
-                                                        <i class="bi bi-exclamation-circle me-1"></i>Low Stock
-                                                    </span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="badge bg-danger badge-stock">
-                                                        <i class="bi bi-x-circle me-1"></i>Out of Stock
-                                                    </span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <i class="bi bi-watch"></i>
+            <main class="flex-1">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-gray-900 mb-1">Featured Watches</h1>
+                    <p class="text-gray-600">Handpicked selection just for you</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                    <!-- Product Cards from Database -->
+                    <c:choose>
+                        <c:when test="${not empty products}">
+                            <c:forEach var="product" items="${products}">
+                                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                                    <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
+                                        <c:choose>
+                                            <c:when test="${product.type == 'ANALOG'}">
+                                                <i class="bi bi-watch text-6xl text-blue-400 group-hover:scale-110 transition-transform duration-300"></i>
+                                            </c:when>
+                                            <c:when test="${product.type == 'DIGITAL'}">
+                                                <i class="bi bi-stopwatch text-6xl text-purple-400 group-hover:scale-110 transition-transform duration-300"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-smartwatch text-6xl text-green-400 group-hover:scale-110 transition-transform duration-300"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        
+                                        <!-- Stock Badge -->
+                                        <c:if test="${product.stock <= 5 && product.stock > 0}">
+                                            <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                                Only ${product.stock} left
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${product.stock == 0}">
+                                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                                Out of Stock
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                    <div class="p-4">
+                                        <p class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">${product.brand}</p>
+                                        <h3 class="font-bold text-gray-900 mb-2 text-base">${product.name}</h3>
+                                        <div class="flex items-center mb-3">
+                                            <span class="inline-block px-2 py-1 text-xs font-medium rounded-full
+                                                <c:choose>
+                                                    <c:when test="${product.type == 'ANALOG'}">bg-blue-100 text-blue-700</c:when>
+                                                    <c:when test="${product.type == 'DIGITAL'}">bg-purple-100 text-purple-700</c:when>
+                                                    <c:otherwise>bg-green-100 text-green-700</c:otherwise>
+                                                </c:choose>">
+                                                ${product.type}
+                                            </span>
                                         </div>
-                                        <div class="p-3">
-                                            <div class="product-brand">${product.brand}</div>
-                                            <h5 class="product-name">${product.name}</h5>
-                                            <div class="product-spec">
-                                                <i class="bi bi-bookmark"></i>
-                                                <span>${product.strapMaterial}</span>
-                                            </div>
-                                            <div class="product-price">
-                                                <fmt:formatNumber value="${product.price}" type="currency" 
-                                                                  currencySymbol="Rp " maxFractionDigits="0"/>
-                                            </div>
-                                            <c:choose>
-                                                <c:when test="${product.stock > 0}">
-                                                    <form action="${pageContext.request.contextPath}/cart/add" 
-                                                          method="post" class="d-flex gap-2 align-items-center mt-3">
-                                                        <input type="hidden" name="productId" value="${product.id}">
-                                                        <input type="number" name="quantity" class="form-control quantity-input" 
-                                                               value="1" min="1" max="${product.stock}">
-                                                        <button type="submit" class="btn btn-add-cart">
-                                                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
-                                                        </button>
-                                                    </form>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <button class="btn btn-secondary w-100 mt-3" disabled>
-                                                        <i class="bi bi-x-circle me-2"></i>Out of Stock
+                                        <p class="text-blue-600 font-bold text-xl mb-3">
+                                            <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="Rp" groupingUsed="true" maxFractionDigits="0"/>
+                                        </p>
+                                        
+                                        <c:choose>
+                                            <c:when test="${product.stock > 0}">
+                                                <form action="${pageContext.request.contextPath}/cart/add" method="post">
+                                                    <input type="hidden" name="productId" value="${product.id}">
+                                                    <input type="hidden" name="quantity" value="1">
+                                                    <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition font-semibold text-sm">
+                                                        <i class="bi bi-cart-plus mr-1"></i> Add to Cart
                                                     </button>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
+                                                </form>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button disabled class="w-full bg-gray-300 text-gray-500 py-2.5 rounded-lg cursor-not-allowed font-semibold text-sm">
+                                                    Out of Stock
+                                                </button>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                             </c:forEach>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="empty-state">
-                            <i class="bi bi-inbox"></i>
-                            <h3>No Products Found</h3>
-                            <p>Try adjusting your filters or search query</p>
-                            <a href="${pageContext.request.contextPath}/products" class="btn btn-primary mt-3">
-                                <i class="bi bi-arrow-clockwise me-2"></i>View All Products
-                            </a>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="col-span-full text-center py-16">
+                                <i class="bi bi-inbox text-6xl text-gray-300 mb-4"></i>
+                                <p class="text-gray-500 text-lg">No products found</p>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center items-center mt-10 space-x-2">
+                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="bi bi-chevron-left"></i> Previous
+                    </button>
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold">1</button>
+                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">2</button>
+                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">3</button>
+                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                        Next <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </main>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <footer class="bg-gray-900 text-white py-8 mt-16">
+        <div class="container mx-auto px-3 sm:px-4 text-center">
+            <p class="text-gray-400">&copy; 2025 The Object Hour. Premium Watch E-Commerce.</p>
+        </div>
+    </footer>
 </body>
 </html>

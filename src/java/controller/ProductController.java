@@ -1,6 +1,7 @@
 package controller;
 
 import service.ProductService;
+import service.CartService;
 import model.Product;
 import model.User;
 import java.io.IOException;
@@ -23,10 +24,12 @@ import javax.servlet.http.HttpSession;
 public class ProductController extends HttpServlet {
     
     private ProductService productService;
+    private CartService cartService;
     
     @Override
     public void init() throws ServletException {
         productService = new ProductService();
+        cartService = new CartService();
     }
     
     @Override
@@ -51,7 +54,6 @@ public class ProductController extends HttpServlet {
                 break;
         }
     }
-    
     /**
      * Show product list (customer view)
      */
@@ -75,6 +77,13 @@ public class ProductController extends HttpServlet {
         request.setAttribute("products", products);
         request.setAttribute("selectedType", type);
         request.setAttribute("selectedBrand", brand);
+        
+        // Set cart count for navbar
+        Long userId = getUserId(request);
+        if (userId != null) {
+            int cartCount = cartService.getCartItemsCount(userId);
+            request.setAttribute("cartCount", cartCount);
+        }
         
         request.getRequestDispatcher("/Customer/products.jsp").forward(request, response);
     }
@@ -133,5 +142,16 @@ public class ProductController extends HttpServlet {
             return "";
         }
         return pathInfo.substring(1);
+    }
+    
+    /**
+     * Get user ID from session
+     */
+    private Long getUserId(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return null;
+        }
+        return (Long) session.getAttribute("userId");
     }
 }

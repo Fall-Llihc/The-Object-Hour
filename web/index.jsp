@@ -1,5 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    // Redirect to login page
-    response.sendRedirect(request.getContextPath() + "/auth/login");
+    // Check if user is logged in
+    if (session.getAttribute("user") != null) {
+        // Redirect to home page
+        response.sendRedirect(request.getContextPath() + "/Customer/home.jsp");
+    } else {
+        // Redirect to home page for guest
+        response.sendRedirect(request.getContextPath() + "/Customer/home.jsp");
+    }
 %>
