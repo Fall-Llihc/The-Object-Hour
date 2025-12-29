@@ -37,6 +37,9 @@ public class ProductController extends HttpServlet {
             throws ServletException, IOException {
         
         String action = getAction(request);
+        System.out.println("ProductController.doGet - action: " + action);
+        System.out.println("ProductController.doGet - requestURI: " + request.getRequestURI());
+        System.out.println("ProductController.doGet - queryString: " + request.getQueryString());
         
         switch (action) {
             case "list":
@@ -44,6 +47,7 @@ public class ProductController extends HttpServlet {
                 showProductList(request, response);
                 break;
             case "view":
+                System.out.println("ProductController.doGet - calling showProductDetail");
                 showProductDetail(request, response);
                 break;
             case "search":
@@ -190,16 +194,21 @@ public class ProductController extends HttpServlet {
     private void showProductDetail(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        System.out.println("showProductDetail called");
         String productIdStr = request.getParameter("id");
+        System.out.println("productIdStr: " + productIdStr);
         
         if (productIdStr == null || productIdStr.trim().isEmpty()) {
+            System.out.println("productIdStr is null or empty, redirecting to products");
             response.sendRedirect(request.getContextPath() + "/products");
             return;
         }
         
         try {
             Long productId = Long.parseLong(productIdStr);
+            System.out.println("Getting product with ID: " + productId);
             Product product = productService.getProductById(productId);
+            System.out.println("Product found: " + (product != null));
             
             if (product != null) {
                 request.setAttribute("product", product);
@@ -211,12 +220,19 @@ public class ProductController extends HttpServlet {
                     request.setAttribute("cartCount", cartCount);
                 }
                 
+                System.out.println("Forwarding to product-detail.jsp");
                 request.getRequestDispatcher("/Customer/product-detail.jsp").forward(request, response);
             } else {
+                System.out.println("Product not found, redirecting");
                 request.setAttribute("error", "Produk tidak ditemukan");
                 response.sendRedirect(request.getContextPath() + "/products");
             }
         } catch (NumberFormatException e) {
+            System.out.println("NumberFormatException: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/products");
+        } catch (Exception e) {
+            System.out.println("Exception in showProductDetail: " + e.getMessage());
+            e.printStackTrace();
             response.sendRedirect(request.getContextPath() + "/products");
         }
     }

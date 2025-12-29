@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,11 +148,14 @@
                     <div class="bg-gray-50 rounded-xl p-5 space-y-3">
                         <c:choose>
                             <c:when test="${not empty product.specifications}">
-                                <c:forEach items="${product.specifications.split('\\|')}" var="spec">
-                                    <div class="flex items-start space-x-3">
-                                        <i class="bi bi-check-circle-fill text-blue-600 text-lg mt-0.5"></i>
-                                        <span class="text-gray-700 leading-relaxed">${spec.trim()}</span>
-                                    </div>
+                                <c:set var="specs" value="${fn:split(product.specifications, '|')}" />
+                                <c:forEach items="${specs}" var="spec">
+                                    <c:if test="${not empty spec}">
+                                        <div class="flex items-start space-x-3">
+                                            <i class="bi bi-check-circle-fill text-blue-600 text-lg mt-0.5"></i>
+                                            <span class="text-gray-700 leading-relaxed">${fn:trim(spec)}</span>
+                                        </div>
+                                    </c:if>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
