@@ -67,14 +67,29 @@ public class ProductController extends HttpServlet {
         String maxPriceStr = request.getParameter("maxPrice");
         String inStockStr = request.getParameter("inStock");
         
+        // Get pagination parameter
+        String pageStr = request.getParameter("page");
+        int currentPage = 1;
+        if (pageStr != null && !pageStr.trim().isEmpty()) {
+            try {
+                currentPage = Integer.parseInt(pageStr);
+                if (currentPage < 1) currentPage = 1;
+            } catch (NumberFormatException e) {
+                currentPage = 1;
+            }
+        }
+        
+        // Items per page
+        final int ITEMS_PER_PAGE = 12;
+        
         // Start with all active products
-        List<Product> products = productService.getAllActiveProducts();
+        List<Product> allProducts = productService.getAllActiveProducts();
         
         // Apply filters
         if (types != null && types.length > 0) {
             // Filter by multiple types
             List<String> typeList = java.util.Arrays.asList(types);
-            products = products.stream()
+            allProducts = allProducts.stream()
                     .filter(p -> typeList.contains(p.getType()))
                     .collect(java.util.stream.Collectors.toList());
         }
@@ -82,7 +97,7 @@ public class ProductController extends HttpServlet {
         if (brands != null && brands.length > 0) {
             // Filter by multiple brands
             List<String> brandList = java.util.Arrays.asList(brands);
-            products = products.stream()
+            allProducts = allProducts.stream()
                     .filter(p -> brandList.contains(p.getBrand()))
                     .collect(java.util.stream.Collectors.toList());
         }
@@ -91,7 +106,7 @@ public class ProductController extends HttpServlet {
         if (minPriceStr != null && !minPriceStr.trim().isEmpty()) {
             try {
                 java.math.BigDecimal minPrice = new java.math.BigDecimal(minPriceStr);
-                products = products.stream()
+                allProducts = allProducts.stream()
                         .filter(p -> p.getPrice().compareTo(minPrice) >= 0)
                         .collect(java.util.stream.Collectors.toList());
             } catch (NumberFormatException e) {
@@ -102,7 +117,7 @@ public class ProductController extends HttpServlet {
         if (maxPriceStr != null && !maxPriceStr.trim().isEmpty()) {
             try {
                 java.math.BigDecimal maxPrice = new java.math.BigDecimal(maxPriceStr);
-                products = products.stream()
+                allProducts = allProducts.stream()
                         .filter(p -> p.getPrice().compareTo(maxPrice) <= 0)
                         .collect(java.util.stream.Collectors.toList());
             } catch (NumberFormatException e) {
@@ -112,13 +127,33 @@ public class ProductController extends HttpServlet {
         
         // Stock filter
         if ("true".equals(inStockStr)) {
-            products = products.stream()
+            allProducts = allProducts.stream()
                     .filter(p -> p.getStock() > 0)
                     .collect(java.util.stream.Collectors.toList());
         }
         
+        // Calculate pagination
+        int totalProducts = allProducts.size();
+        int totalPages = (int) Math.ceil((double) totalProducts / ITEMS_PER_PAGE);
+        
+        // Adjust current page if out of range
+        if (currentPage > totalPages && totalPages > 0) {
+            currentPage = totalPages;
+        }
+        
+        // Get products for current page
+        int startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        int endIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalProducts);
+        
+        List<Product> products = totalProducts > 0 ? 
+                allProducts.subList(startIndex, endIndex) : 
+                java.util.Collections.emptyList();
+        
         // Set attributes for JSP
         request.setAttribute("products", products);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalProducts", totalProducts);
         request.setAttribute("selectedTypes", types != null ? java.util.Arrays.asList(types) : java.util.Collections.emptyList());
         request.setAttribute("selectedBrands", brands != null ? java.util.Arrays.asList(brands) : java.util.Collections.emptyList());
         request.setAttribute("minPrice", minPriceStr != null ? minPriceStr : "");

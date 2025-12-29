@@ -271,17 +271,80 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex justify-center items-center mt-10 space-x-2">
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <i class="bi bi-chevron-left"></i> Previous
-                    </button>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold">1</button>
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">2</button>
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">3</button>
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
-                        Next <i class="bi bi-chevron-right"></i>
-                    </button>
-                </div>
+                <c:if test="${totalPages > 1}">
+                    <div class="flex justify-center items-center mt-10 space-x-2">
+                        <!-- Previous Button -->
+                        <c:choose>
+                            <c:when test="${currentPage > 1}">
+                                <a href="?page=${currentPage - 1}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                   class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                    <i class="bi bi-chevron-left"></i> Previous
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <button disabled class="px-4 py-2 border-2 border-gray-300 rounded-lg font-medium text-gray-400 opacity-50 cursor-not-allowed">
+                                    <i class="bi bi-chevron-left"></i> Previous
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <!-- Page Numbers -->
+                        <c:set var="startPage" value="${currentPage - 2 > 1 ? currentPage - 2 : 1}" />
+                        <c:set var="endPage" value="${currentPage + 2 < totalPages ? currentPage + 2 : totalPages}" />
+                        
+                        <!-- First page if not in range -->
+                        <c:if test="${startPage > 1}">
+                            <a href="?page=1<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                               class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                1
+                            </a>
+                            <c:if test="${startPage > 2}">
+                                <span class="px-2 text-gray-400">...</span>
+                            </c:if>
+                        </c:if>
+
+                        <!-- Page number buttons -->
+                        <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold">${i}</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="?page=${i}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                       class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                        ${i}
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+
+                        <!-- Last page if not in range -->
+                        <c:if test="${endPage < totalPages}">
+                            <c:if test="${endPage < totalPages - 1}">
+                                <span class="px-2 text-gray-400">...</span>
+                            </c:if>
+                            <a href="?page=${totalPages}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                               class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                ${totalPages}
+                            </a>
+                        </c:if>
+
+                        <!-- Next Button -->
+                        <c:choose>
+                            <c:when test="${currentPage < totalPages}">
+                                <a href="?page=${currentPage + 1}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                   class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                    Next <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <button disabled class="px-4 py-2 border-2 border-gray-300 rounded-lg font-medium text-gray-400 opacity-50 cursor-not-allowed">
+                                    Next <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:if>
             </main>
         </div>
     </div>
