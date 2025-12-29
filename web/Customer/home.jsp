@@ -22,7 +22,9 @@
                 <!-- Logo -->
                 <div class="flex items-center space-x-2">
                     <i class="bi bi-watch text-blue-600 text-2xl"></i>
-                    <span class="text-xl font-bold">The <span class="text-blue-600">Object Hour</span></span>
+                    <a href="${pageContext.request.contextPath}/" class="text-xl font-bold">
+                        The <span class="text-blue-600">Object Hour</span>
+                    </a>
                 </div>
                 
                 <!-- Search Bar -->
@@ -36,8 +38,27 @@
                 
                 <!-- Right Menu -->
                 <div class="flex items-center space-x-4">
-                    <a href="${pageContext.request.contextPath}/auth/login" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
-                    <a href="${pageContext.request.contextPath}/auth/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">Register</a>
+                    <a href="${pageContext.request.contextPath}/cart" class="relative">
+                        <i class="bi bi-cart3 text-gray-700 text-xl"></i>
+                        <c:if test="${not empty cartCount and cartCount > 0}">
+                            <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+                                ${cartCount}
+                            </span>
+                        </c:if>
+                    </a>
+                    
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.user}">
+                            <span class="text-gray-700 font-medium">${sessionScope.user.name}</span>
+                            <a href="${pageContext.request.contextPath}/auth/logout" class="text-gray-700 hover:text-red-600">
+                                <i class="bi bi-box-arrow-right text-xl"></i>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/auth/login" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
+                            <a href="${pageContext.request.contextPath}/auth/register" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">Register</a>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
         </div>
