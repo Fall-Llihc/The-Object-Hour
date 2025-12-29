@@ -191,7 +191,7 @@
                         <c:when test="${not empty products}">
                             <c:forEach var="product" items="${products}">
                                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                                    <a href="${pageContext.request.contextPath}/products/view?id=${product.id}" class="block">
+                                    <a href="${pageContext.request.contextPath}/products?action=view&id=${product.id}" class="block">
                                         <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
                                             <!-- Product Image from Supabase Storage -->
                                             <img src="${product.imageUrl}" 
@@ -230,7 +230,7 @@
                                     </a>
                                     <div class="p-4">
                                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">${product.brand}</p>
-                                        <a href="${pageContext.request.contextPath}/products/view?id=${product.id}">
+                                        <a href="${pageContext.request.contextPath}/products?action=view&id=${product.id}">
                                             <h3 class="font-bold text-gray-900 mb-2 text-base hover:text-blue-600 transition">${product.name}</h3>
                                         </a>
                                         <div class="flex items-center mb-3">

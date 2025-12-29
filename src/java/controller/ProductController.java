@@ -241,6 +241,13 @@ public class ProductController extends HttpServlet {
      * Get action from request path
      */
     private String getAction(HttpServletRequest request) {
+        // First check query parameter
+        String actionParam = request.getParameter("action");
+        if (actionParam != null && !actionParam.trim().isEmpty()) {
+            return actionParam.trim();
+        }
+        
+        // Then check path info
         String pathInfo = request.getPathInfo();
         if (pathInfo == null || pathInfo.equals("/")) {
             return "";
