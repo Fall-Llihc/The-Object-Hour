@@ -69,94 +69,88 @@
                     <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
                         <h3 class="font-bold text-xl mb-6 text-gray-900">Filters</h3>
                         
-                        <!-- Category Filter -->
+                        <!-- Category Filter (Multiple Choice) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Category</h4>
                             <div class="space-y-3">
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="" ${empty selectedType ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Watches</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="ANALOG" ${selectedType == 'ANALOG' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="type" value="ANALOG" 
+                                           ${selectedTypes.contains('ANALOG') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Analog</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="DIGITAL" ${selectedType == 'DIGITAL' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="type" value="DIGITAL" 
+                                           ${selectedTypes.contains('DIGITAL') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Digital</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="SMARTWATCH" ${selectedType == 'SMARTWATCH' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="type" value="SMARTWATCH" 
+                                           ${selectedTypes.contains('SMARTWATCH') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Smartwatch</span>
                                 </label>
                             </div>
                         </div>
                         
-                        <!-- Brand Filter -->
+                        <!-- Brand Filter (Multiple Choice) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Brand</h4>
                             <div class="space-y-3">
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="" ${empty selectedBrand ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Brands</span>
+                                    <input type="checkbox" name="brand" value="Apple" 
+                                           ${selectedBrands.contains('Apple') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Apple</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="Casio" ${selectedBrand == 'Casio' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="Casio" 
+                                           ${selectedBrands.contains('Casio') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Casio</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="Samsung" ${selectedBrand == 'Samsung' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="Samsung" 
+                                           ${selectedBrands.contains('Samsung') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Samsung</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="Xiaomi" ${selectedBrand == 'Xiaomi' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="Xiaomi" 
+                                           ${selectedBrands.contains('Xiaomi') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Xiaomi</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="DanielW" ${selectedBrand == 'DanielW' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="DanielW" 
+                                           ${selectedBrands.contains('DanielW') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">DanielW</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="checkbox" name="brand" value="Huawei" 
+                                           ${selectedBrands.contains('Huawei') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Huawei</span>
                                 </label>
                             </div>
                         </div>
                         
-                        <!-- Price Range -->
+                        <!-- Price Range (Manual Input) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Price Range</h4>
                             <div class="space-y-3">
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="all" checked 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Prices</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="0-500000" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Under Rp500K</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="500000-1000000" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Rp500K - Rp1M</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="1000000-2000000" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Rp1M - Rp2M</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="2000000-999999999" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Above Rp2M</span>
-                                </label>
+                                <div>
+                                    <label class="text-xs text-gray-600 mb-1 block">Min Price (Rp)</label>
+                                    <input type="number" name="minPrice" value="${minPrice}" placeholder="0"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-600 mb-1 block">Max Price (Rp)</label>
+                                    <input type="number" name="maxPrice" value="${maxPrice}" placeholder="10000000"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                </div>
                             </div>
                         </div>
                         
@@ -164,7 +158,7 @@
                         <div class="mb-6">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Availability</h4>
                             <label class="flex items-center cursor-pointer group">
-                                <input type="checkbox" name="inStock" value="true" 
+                                <input type="checkbox" name="inStock" value="true" ${inStock ? 'checked' : ''}
                                        class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                 <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">In Stock Only</span>
                             </label>

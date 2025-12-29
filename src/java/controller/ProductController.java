@@ -60,23 +60,70 @@ public class ProductController extends HttpServlet {
     private void showProductList(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // Get filter parameters
-        String type = request.getParameter("type");
-        String brand = request.getParameter("brand");
+        // Get filter parameters (multiple values)
+        String[] types = request.getParameterValues("type");
+        String[] brands = request.getParameterValues("brand");
+        String minPriceStr = request.getParameter("minPrice");
+        String maxPriceStr = request.getParameter("maxPrice");
+        String inStockStr = request.getParameter("inStock");
         
-        List<Product> products;
+        // Start with all active products
+        List<Product> products = productService.getAllActiveProducts();
         
-        if (type != null && !type.trim().isEmpty()) {
-            products = productService.getProductsByType(type);
-        } else if (brand != null && !brand.trim().isEmpty()) {
-            products = productService.getProductsByBrand(brand);
-        } else {
-            products = productService.getAllActiveProducts();
+        // Apply filters
+        if (types != null && types.length > 0) {
+            // Filter by multiple types
+            List<String> typeList = java.util.Arrays.asList(types);
+            products = products.stream()
+                    .filter(p -> typeList.contains(p.getType()))
+                    .collect(java.util.stream.Collectors.toList());
         }
         
+        if (brands != null && brands.length > 0) {
+            // Filter by multiple brands
+            List<String> brandList = java.util.Arrays.asList(brands);
+            products = products.stream()
+                    .filter(p -> brandList.contains(p.getBrand()))
+                    .collect(java.util.stream.Collectors.toList());
+        }
+        
+        // Price range filter
+        if (minPriceStr != null && !minPriceStr.trim().isEmpty()) {
+            try {
+                java.math.BigDecimal minPrice = new java.math.BigDecimal(minPriceStr);
+                products = products.stream()
+                        .filter(p -> p.getPrice().compareTo(minPrice) >= 0)
+                        .collect(java.util.stream.Collectors.toList());
+            } catch (NumberFormatException e) {
+                // Invalid price, skip filter
+            }
+        }
+        
+        if (maxPriceStr != null && !maxPriceStr.trim().isEmpty()) {
+            try {
+                java.math.BigDecimal maxPrice = new java.math.BigDecimal(maxPriceStr);
+                products = products.stream()
+                        .filter(p -> p.getPrice().compareTo(maxPrice) <= 0)
+                        .collect(java.util.stream.Collectors.toList());
+            } catch (NumberFormatException e) {
+                // Invalid price, skip filter
+            }
+        }
+        
+        // Stock filter
+        if ("true".equals(inStockStr)) {
+            products = products.stream()
+                    .filter(p -> p.getStock() > 0)
+                    .collect(java.util.stream.Collectors.toList());
+        }
+        
+        // Set attributes for JSP
         request.setAttribute("products", products);
-        request.setAttribute("selectedType", type);
-        request.setAttribute("selectedBrand", brand);
+        request.setAttribute("selectedTypes", types != null ? java.util.Arrays.asList(types) : java.util.Collections.emptyList());
+        request.setAttribute("selectedBrands", brands != null ? java.util.Arrays.asList(brands) : java.util.Collections.emptyList());
+        request.setAttribute("minPrice", minPriceStr != null ? minPriceStr : "");
+        request.setAttribute("maxPrice", maxPriceStr != null ? maxPriceStr : "");
+        request.setAttribute("inStock", "true".equals(inStockStr));
         
         // Set cart count for navbar
         Long userId = getUserId(request);
