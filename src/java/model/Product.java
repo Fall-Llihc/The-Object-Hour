@@ -129,11 +129,14 @@ public class Product {
     
     /**
      * Get Supabase Storage image URL for this product
+     * Image filename format: {brand} {name}.png
+     * Example: "Casio Classic Leather Brown.png"
      * @return Full URL to product image in Supabase Storage
      */
     public String getImageUrl() {
         String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
-        String encodedName = this.name.replace(" ", "%20");
+        String fullName = this.brand + " " + this.name;
+        String encodedName = fullName.replace(" ", "%20");
         return baseUrl + encodedName + ".png";
     }
 
