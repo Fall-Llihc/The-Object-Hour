@@ -126,6 +126,16 @@ public class Product {
             throw new IllegalArgumentException("Insufficient stock");
         }
     }
+    
+    /**
+     * Get Supabase Storage image URL for this product
+     * @return Full URL to product image in Supabase Storage
+     */
+    public String getImageUrl() {
+        String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+        String encodedName = this.name.replace(" ", "%20");
+        return baseUrl + encodedName + ".png";
+    }
 
     @Override
     public String toString() {

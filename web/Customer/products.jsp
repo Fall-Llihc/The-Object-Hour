@@ -196,17 +196,26 @@
                             <c:forEach var="product" items="${products}">
                                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
                                     <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
-                                        <c:choose>
-                                            <c:when test="${product.type == 'ANALOG'}">
-                                                <i class="bi bi-watch text-6xl text-blue-400 group-hover:scale-110 transition-transform duration-300"></i>
-                                            </c:when>
-                                            <c:when test="${product.type == 'DIGITAL'}">
-                                                <i class="bi bi-stopwatch text-6xl text-purple-400 group-hover:scale-110 transition-transform duration-300"></i>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <i class="bi bi-smartwatch text-6xl text-green-400 group-hover:scale-110 transition-transform duration-300"></i>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <!-- Product Image from Supabase Storage -->
+                                        <img src="${product.imageUrl}" 
+                                             alt="${product.name}"
+                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                             onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        
+                                        <!-- Fallback Icon (shown if image fails to load) -->
+                                        <div style="display:none;" class="w-full h-full flex items-center justify-center absolute top-0 left-0">
+                                            <c:choose>
+                                                <c:when test="${product.type == 'ANALOG'}">
+                                                    <i class="bi bi-watch text-6xl text-blue-400"></i>
+                                                </c:when>
+                                                <c:when test="${product.type == 'DIGITAL'}">
+                                                    <i class="bi bi-stopwatch text-6xl text-purple-400"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="bi bi-smartwatch text-6xl text-green-400"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
                                         
                                         <!-- Stock Badge -->
                                         <c:if test="${product.stock <= 5 && product.stock > 0}">

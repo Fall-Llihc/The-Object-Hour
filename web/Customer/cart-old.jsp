@@ -51,8 +51,12 @@
                         <div class="cart-item">
                             <div class="row align-items-center">
                                 <div class="col-md-2">
-                                    <div class="bg-light p-3 rounded text-center">
-                                        <i class="bi bi-watch" style="font-size: 2rem; color: #667eea;"></i>
+                                    <div class="bg-light p-3 rounded text-center" style="position: relative; height: 100px; overflow: hidden;">
+                                        <img src="${item.product.imageUrl}" 
+                                             alt="${item.product.name}"
+                                             style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
+                                             onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <i class="bi bi-watch" style="font-size: 2rem; color: #667eea; display: none;"></i>
                                     </div>
                                 </div>
                                 <div class="col-md-4">

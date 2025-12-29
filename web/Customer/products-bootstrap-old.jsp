@@ -317,7 +317,15 @@
                                                     </span>
                                                 </c:otherwise>
                                             </c:choose>
-                                            <i class="bi bi-watch"></i>
+                                            
+                                            <!-- Product Image from Supabase Storage -->
+                                            <img src="${product.imageUrl}" 
+                                                 alt="${product.name}"
+                                                 style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
+                                                 onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            
+                                            <!-- Fallback Icon -->
+                                            <i class="bi bi-watch" style="display:none;"></i>
                                         </div>
                                         <div class="p-3">
                                             <div class="product-brand">${product.brand}</div>
