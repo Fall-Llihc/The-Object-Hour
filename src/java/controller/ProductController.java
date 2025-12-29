@@ -66,6 +66,7 @@ public class ProductController extends HttpServlet {
         String minPriceStr = request.getParameter("minPrice");
         String maxPriceStr = request.getParameter("maxPrice");
         String inStockStr = request.getParameter("inStock");
+        String searchKeyword = request.getParameter("search");
         
         // Get pagination parameter
         String pageStr = request.getParameter("page");
@@ -84,6 +85,18 @@ public class ProductController extends HttpServlet {
         
         // Start with all active products
         List<Product> allProducts = productService.getAllActiveProducts();
+        
+        // Apply search filter first
+        if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
+            final String keyword = searchKeyword.trim().toLowerCase();
+            allProducts = allProducts.stream()
+                    .filter(p -> 
+                        p.getName().toLowerCase().contains(keyword) ||
+                        p.getBrand().toLowerCase().contains(keyword) ||
+                        p.getType().toLowerCase().contains(keyword)
+                    )
+                    .collect(java.util.stream.Collectors.toList());
+        }
         
         // Apply filters
         if (types != null && types.length > 0) {
@@ -154,6 +167,7 @@ public class ProductController extends HttpServlet {
         request.setAttribute("currentPage", currentPage);
         request.setAttribute("totalPages", totalPages);
         request.setAttribute("totalProducts", totalProducts);
+        request.setAttribute("search", searchKeyword != null ? searchKeyword : "");
         request.setAttribute("selectedTypes", types != null ? java.util.Arrays.asList(types) : java.util.Collections.emptyList());
         request.setAttribute("selectedBrands", brands != null ? java.util.Arrays.asList(brands) : java.util.Collections.emptyList());
         request.setAttribute("minPrice", minPriceStr != null ? minPriceStr : "");

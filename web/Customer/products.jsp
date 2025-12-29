@@ -26,13 +26,13 @@
                     </a>
                 </div>
                 
-                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                <form action="${pageContext.request.contextPath}/products" method="get" class="hidden md:flex flex-1 max-w-md mx-8">
                     <div class="relative w-full">
                         <i class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" placeholder="Search watches, brands..." 
+                        <input type="text" name="search" value="${search}" placeholder="Search watches, brands..." 
                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                </div>
+                </form>
                 
                 <div class="flex items-center space-x-4">
                     <a href="${pageContext.request.contextPath}/cart" class="relative">
@@ -66,6 +66,8 @@
             <!-- Sidebar Filter -->
             <aside class="w-72 flex-shrink-0 hidden lg:block">
                 <form action="${pageContext.request.contextPath}/products" method="get" id="filterForm">
+                    <!-- Hidden search field to preserve search when filtering -->
+                    <input type="hidden" name="search" value="${search}">
                     <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
                         <h3 class="font-bold text-xl mb-6 text-gray-900">Filters</h3>
                         
@@ -276,7 +278,7 @@
                         <!-- Previous Button -->
                         <c:choose>
                             <c:when test="${currentPage > 1}">
-                                <a href="?page=${currentPage - 1}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                <a href="?page=${currentPage - 1}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
                                    class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
                                     <i class="bi bi-chevron-left"></i> Previous
                                 </a>
@@ -294,7 +296,7 @@
                         
                         <!-- First page if not in range -->
                         <c:if test="${startPage > 1}">
-                            <a href="?page=1<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                            <a href="?page=1<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
                                class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
                                 1
                             </a>
@@ -310,7 +312,7 @@
                                     <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold">${i}</button>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="?page=${i}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                    <a href="?page=${i}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
                                        class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
                                         ${i}
                                     </a>
@@ -323,7 +325,7 @@
                             <c:if test="${endPage < totalPages - 1}">
                                 <span class="px-2 text-gray-400">...</span>
                             </c:if>
-                            <a href="?page=${totalPages}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                            <a href="?page=${totalPages}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
                                class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
                                 ${totalPages}
                             </a>
@@ -332,7 +334,7 @@
                         <!-- Next Button -->
                         <c:choose>
                             <c:when test="${currentPage < totalPages}">
-                                <a href="?page=${currentPage + 1}<c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                <a href="?page=${currentPage + 1}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
                                    class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
                                     Next <i class="bi bi-chevron-right"></i>
                                 </a>
