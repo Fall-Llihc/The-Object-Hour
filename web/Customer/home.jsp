@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -125,79 +126,97 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Product Card 1 -->
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-100 h-48 flex items-center justify-center">
-                        <i class="bi bi-watch text-6xl text-gray-300"></i>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-xs text-gray-500 uppercase mb-1">CASIO</p>
-                        <h3 class="font-semibold text-gray-900 mb-2">MTP-1730 SL</h3>
-                        <div class="flex items-center mb-2">
-                            <i class="bi bi-star-fill text-yellow-400 text-sm"></i>
-                            <span class="text-sm text-gray-600 ml-1">4.5 (128 reviews)</span>
+                <c:choose>
+                    <c:when test="${not empty featuredProducts}">
+                        <c:forEach var="product" items="${featuredProducts}">
+                            <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                                <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
+                                    <!-- Product Image from Supabase Storage -->
+                                    <img src="${product.imageUrl}" 
+                                         data-jpg-url="${product.imageUrlJpg}"
+                                         alt="${product.name}"
+                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                         onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
+                                    
+                                    <!-- Fallback Icon -->
+                                    <div style="display:none;" class="w-full h-full flex items-center justify-center absolute top-0 left-0">
+                                        <c:choose>
+                                            <c:when test="${product.type == 'ANALOG'}">
+                                                <i class="bi bi-watch text-6xl text-blue-400"></i>
+                                            </c:when>
+                                            <c:when test="${product.type == 'DIGITAL'}">
+                                                <i class="bi bi-stopwatch text-6xl text-purple-400"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-smartwatch text-6xl text-green-400"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    
+                                    <!-- Stock Badge -->
+                                    <c:if test="${product.stock <= 5 && product.stock > 0}">
+                                        <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                            Only ${product.stock} left
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${product.stock == 0}">
+                                        <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                            Out of Stock
+                                        </div>
+                                    </c:if>
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">${product.brand}</p>
+                                    <h3 class="font-bold text-gray-900 mb-2 text-base line-clamp-2">${product.name}</h3>
+                                    <div class="flex items-center mb-3">
+                                        <span class="inline-block px-2 py-1 text-xs font-medium rounded-full
+                                            <c:choose>
+                                                <c:when test="${product.type == 'ANALOG'}">bg-blue-100 text-blue-700</c:when>
+                                                <c:when test="${product.type == 'DIGITAL'}">bg-purple-100 text-purple-700</c:when>
+                                                <c:otherwise>bg-green-100 text-green-700</c:otherwise>
+                                            </c:choose>">
+                                            ${product.type}
+                                        </span>
+                                    </div>
+                                    <p class="text-blue-600 font-bold text-xl mb-3">
+                                        <fmt:formatNumber value="${product.price}" type="currency" currencySymbol="Rp" groupingUsed="true" maxFractionDigits="0"/>
+                                    </p>
+                                    
+                                    <c:choose>
+                                        <c:when test="${product.stock > 0}">
+                                            <form action="${pageContext.request.contextPath}/cart/add" method="post">
+                                                <input type="hidden" name="productId" value="${product.id}">
+                                                <input type="hidden" name="quantity" value="1">
+                                                <button type="submit" class="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition font-semibold text-sm">
+                                                    <i class="bi bi-cart-plus mr-1"></i> Add to Cart
+                                                </button>
+                                            </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button disabled class="w-full bg-gray-300 text-gray-500 py-2.5 rounded-lg cursor-not-allowed font-semibold text-sm">
+                                                Out of Stock
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="col-span-full text-center py-16">
+                            <i class="bi bi-inbox text-6xl text-gray-300 mb-4"></i>
+                            <p class="text-gray-500 text-lg">No products available</p>
                         </div>
-                        <p class="text-blue-600 font-bold text-lg mb-3">Rp750.000</p>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Repeat for more products -->
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-100 h-48 flex items-center justify-center">
-                        <i class="bi bi-watch text-6xl text-gray-300"></i>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-xs text-gray-500 uppercase mb-1">CASIO</p>
-                        <h3 class="font-semibold text-gray-900 mb-2">MTP-1730 SL</h3>
-                        <div class="flex items-center mb-2">
-                            <i class="bi bi-star-fill text-yellow-400 text-sm"></i>
-                            <span class="text-sm text-gray-600 ml-1">4.5 (128 reviews)</span>
-                        </div>
-                        <p class="text-blue-600 font-bold text-lg mb-3">Rp750.000</p>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-100 h-48 flex items-center justify-center">
-                        <i class="bi bi-watch text-6xl text-gray-300"></i>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-xs text-gray-500 uppercase mb-1">CASIO</p>
-                        <h3 class="font-semibold text-gray-900 mb-2">MTP-1730 SL</h3>
-                        <div class="flex items-center mb-2">
-                            <i class="bi bi-star-fill text-yellow-400 text-sm"></i>
-                            <span class="text-sm text-gray-600 ml-1">4.5 (128 reviews)</span>
-                        </div>
-                        <p class="text-blue-600 font-bold text-lg mb-3">Rp750.000</p>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-100 h-48 flex items-center justify-center">
-                        <i class="bi bi-watch text-6xl text-gray-300"></i>
-                    </div>
-                    <div class="p-4">
-                        <p class="text-xs text-gray-500 uppercase mb-1">CASIO</p>
-                        <h3 class="font-semibold text-gray-900 mb-2">MTP-1730 SL</h3>
-                        <div class="flex items-center mb-2">
-                            <i class="bi bi-star-fill text-yellow-400 text-sm"></i>
-                            <span class="text-sm text-gray-600 ml-1">4.5 (128 reviews)</span>
-                        </div>
-                        <p class="text-blue-600 font-bold text-lg mb-3">Rp750.000</p>
-                        <button class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
+                    </c:otherwise>
+                </c:choose>
+            </div>
+            
+            <!-- View All Button -->
+            <div class="text-center mt-10">
+                <a href="${pageContext.request.contextPath}/products" 
+                   class="inline-block bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
+                    View All Products <i class="bi bi-arrow-right ml-2"></i>
+                </a>
             </div>
         </div>
     </section>
