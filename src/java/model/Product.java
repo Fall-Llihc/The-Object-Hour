@@ -128,7 +128,7 @@ public class Product {
     }
     
     /**
-     * Get Supabase Storage image URL for this product
+     * Get Supabase Storage image URL for this product (PNG format)
      * Image filename format: {brand} {name}.png
      * Example: "Casio Classic Leather Brown.png"
      * @return Full URL to product image in Supabase Storage
@@ -138,6 +138,18 @@ public class Product {
         String fullName = this.brand + " " + this.name;
         String encodedName = fullName.replace(" ", "%20");
         return baseUrl + encodedName + ".png";
+    }
+    
+    /**
+     * Get Supabase Storage image URL for this product (JPG format)
+     * Used as fallback if PNG is not available
+     * @return Full URL to product image in Supabase Storage (JPG)
+     */
+    public String getImageUrlJpg() {
+        String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+        String fullName = this.brand + " " + this.name;
+        String encodedName = fullName.replace(" ", "%20");
+        return baseUrl + encodedName + ".jpg";
     }
 
     @Override

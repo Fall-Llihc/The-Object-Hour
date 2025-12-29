@@ -198,9 +198,10 @@
                                     <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
                                         <!-- Product Image from Supabase Storage -->
                                         <img src="${product.imageUrl}" 
+                                             data-jpg-url="${product.imageUrlJpg}"
                                              alt="${product.name}"
                                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                             onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                             onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
                                         
                                         <!-- Fallback Icon (shown if image fails to load) -->
                                         <div style="display:none;" class="w-full h-full flex items-center justify-center absolute top-0 left-0">

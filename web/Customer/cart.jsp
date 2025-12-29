@@ -90,9 +90,10 @@
                                 <!-- Product Image -->
                                 <div class="bg-gray-100 w-24 h-24 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
                                     <img src="${item.product.imageUrl}" 
+                                         data-jpg-url="${item.product.imageUrlJpg}"
                                          alt="${item.product.name}"
                                          class="w-full h-full object-cover"
-                                         onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                         onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
                                     
                                     <!-- Fallback Icon -->
                                     <div style="display:none;" class="w-full h-full flex items-center justify-center">

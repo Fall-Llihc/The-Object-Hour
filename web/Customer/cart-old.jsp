@@ -53,9 +53,10 @@
                                 <div class="col-md-2">
                                     <div class="bg-light p-3 rounded text-center" style="position: relative; height: 100px; overflow: hidden;">
                                         <img src="${item.product.imageUrl}" 
+                                             data-jpg-url="${item.product.imageUrlJpg}"
                                              alt="${item.product.name}"
                                              style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
-                                             onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                             onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
                                         <i class="bi bi-watch" style="font-size: 2rem; color: #667eea; display: none;"></i>
                                     </div>
                                 </div>
