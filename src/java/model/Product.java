@@ -18,6 +18,7 @@ public class Product {
     private BigDecimal price;
     private int stock;
     private boolean isActive;
+    private String specifications;
     private LocalDateTime createdAt;
 
     // Constructors
@@ -25,7 +26,7 @@ public class Product {
     }
 
     public Product(Long id, String name, String brand, String type, String strapMaterial, 
-                   BigDecimal price, int stock, boolean isActive, LocalDateTime createdAt) {
+                   BigDecimal price, int stock, boolean isActive, String specifications, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -34,6 +35,7 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.isActive = isActive;
+        this.specifications = specifications;
         this.createdAt = createdAt;
     }
 
@@ -108,6 +110,14 @@ public class Product {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
     }
 
     // Helper methods

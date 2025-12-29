@@ -203,6 +203,14 @@ public class ProductController extends HttpServlet {
             
             if (product != null) {
                 request.setAttribute("product", product);
+                
+                // Set cart count for navbar
+                Long userId = getUserId(request);
+                if (userId != null) {
+                    int cartCount = cartService.getCartItemsCount(userId);
+                    request.setAttribute("cartCount", cartCount);
+                }
+                
                 request.getRequestDispatcher("/Customer/product-detail.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Produk tidak ditemukan");

@@ -191,44 +191,48 @@
                         <c:when test="${not empty products}">
                             <c:forEach var="product" items="${products}">
                                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                                    <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
-                                        <!-- Product Image from Supabase Storage -->
-                                        <img src="${product.imageUrl}" 
-                                             data-jpg-url="${product.imageUrlJpg}"
-                                             alt="${product.name}"
-                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                                             onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
-                                        
-                                        <!-- Fallback Icon (shown if image fails to load) -->
-                                        <div style="display:none;" class="w-full h-full flex items-center justify-center absolute top-0 left-0">
-                                            <c:choose>
-                                                <c:when test="${product.type == 'ANALOG'}">
-                                                    <i class="bi bi-watch text-6xl text-blue-400"></i>
-                                                </c:when>
-                                                <c:when test="${product.type == 'DIGITAL'}">
-                                                    <i class="bi bi-stopwatch text-6xl text-purple-400"></i>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <i class="bi bi-smartwatch text-6xl text-green-400"></i>
-                                                </c:otherwise>
-                                            </c:choose>
+                                    <a href="${pageContext.request.contextPath}/products/view?id=${product.id}" class="block">
+                                        <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
+                                            <!-- Product Image from Supabase Storage -->
+                                            <img src="${product.imageUrl}" 
+                                                 data-jpg-url="${product.imageUrlJpg}"
+                                                 alt="${product.name}"
+                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                 onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
+                                            
+                                            <!-- Fallback Icon (shown if image fails to load) -->
+                                            <div style="display:none;" class="w-full h-full flex items-center justify-center absolute top-0 left-0">
+                                                <c:choose>
+                                                    <c:when test="${product.type == 'ANALOG'}">
+                                                        <i class="bi bi-watch text-6xl text-blue-400"></i>
+                                                    </c:when>
+                                                    <c:when test="${product.type == 'DIGITAL'}">
+                                                        <i class="bi bi-stopwatch text-6xl text-purple-400"></i>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <i class="bi bi-smartwatch text-6xl text-green-400"></i>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                            
+                                            <!-- Stock Badge -->
+                                            <c:if test="${product.stock <= 5 && product.stock > 0}">
+                                                <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                                    Only ${product.stock} left
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${product.stock == 0}">
+                                                <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                                    Out of Stock
+                                                </div>
+                                            </c:if>
                                         </div>
-                                        
-                                        <!-- Stock Badge -->
-                                        <c:if test="${product.stock <= 5 && product.stock > 0}">
-                                            <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                                                Only ${product.stock} left
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${product.stock == 0}">
-                                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                                                Out of Stock
-                                            </div>
-                                        </c:if>
-                                    </div>
+                                    </a>
                                     <div class="p-4">
                                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">${product.brand}</p>
-                                        <h3 class="font-bold text-gray-900 mb-2 text-base">${product.name}</h3>
+                                        <a href="${pageContext.request.contextPath}/products/view?id=${product.id}">
+                                            <h3 class="font-bold text-gray-900 mb-2 text-base hover:text-blue-600 transition">${product.name}</h3>
+                                        </a>
                                         <div class="flex items-center mb-3">
                                             <span class="inline-block px-2 py-1 text-xs font-medium rounded-full
                                                 <c:choose>
