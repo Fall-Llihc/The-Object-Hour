@@ -6,9 +6,16 @@
 ## 📋 Yang Dibutuhkan
 
 1. **Docker Desktop** - Download di https://www.docker.com/products/docker-desktop
-2. **Java 17** - Untuk build WAR file
-3. **Apache Ant** ATAU **NetBeans IDE** - Untuk build project
-4. **Kredensial Supabase** - Database connection details
+2. **Kredensial Supabase** - Database connection details
+3. **Git** - Untuk clone project
+
+**TIDAK PERLU:**
+- ❌ NetBeans
+- ❌ Apache Ant  
+- ❌ Tomcat lokal
+- ❌ Setup Java lokal
+
+**Docker akan build semuanya otomatis!** 🎉
 
 ---
 
@@ -82,40 +89,24 @@ DB_PASSWORD=ObjectHour123
 
 **Password harus SAMA dengan di db.properties!**
 
-### STEP 4: Build WAR File 📦
+### STEP 4: Build dan Jalankan dengan Docker 🐳
 
-**WAJIB dilakukan sebelum Docker build!**
+**Satu perintah untuk build dan run!**
 
 ```bash
-# Menggunakan Ant (jika terinstall)
-ant clean dist
-
-# ATAU menggunakan NetBeans:
-# 1. Buka project di NetBeans
-# 2. Klik kanan project → Clean and Build
+docker compose up -d --build
 ```
 
-Pastikan file `dist/PBO-Project.war` berhasil dibuat:
-```bash
-ls -lh dist/PBO-Project.war
-# Harus muncul file ~2-3 MB
-```
+Perintah ini akan:
+1. ✅ Download dependencies
+2. ✅ Install Apache Ant di dalam Docker
+3. ✅ Build WAR file dari source code
+4. ✅ Deploy ke Tomcat
+5. ✅ Start aplikasi
 
-### STEP 5: Build Docker Image 🐳
-```bash
-docker compose build
-```
+**Tunggu 2-3 menit** untuk pertama kali (download image + build)
 
-**Tunggu 1-2 menit** untuk download base image (hanya sekali)
-
-### STEP 6: Jalankan Container 🚀
-```bash
-docker compose up -d
-```
-
-Flag `-d` = detached mode (jalan di background)
-
-### STEP 7: Cek Status Container
+### STEP 5: Cek Status Container
 ```bash
 # Lihat status
 docker compose ps
@@ -125,19 +116,20 @@ docker compose ps
 # the-object-hour   Up X seconds
 ```
 
-### STEP 8: Tunggu Tomcat Start (10-15 detik)
+### STEP 6: Tunggu Build Selesai (2-3 menit pertama kali)
 ```bash
-# Lihat log
+# Lihat progress build
 docker compose logs -f
 
 # Tunggu sampai muncul:
+# "BUILD SUCCESSFUL"
 # "Server startup in XXX milliseconds"
 # "Database configuration loaded"
 
 # Tekan Ctrl+C untuk exit
 ```
 
-### STEP 9: Buka Aplikasi! 🎉
+### STEP 7: Buka Aplikasi! 🎉
 ```
 http://localhost:8080/PBO-Project
 ```
@@ -196,13 +188,13 @@ docker compose build
 
 ### Problem: Perubahan Code Tidak Muncul
 
-Setiap edit code, harus rebuild:
+Setiap edit code, rebuild Docker:
 ```bash
-ant clean dist
 docker compose down
-docker compose build
-docker compose up -d
+docker compose up -d --build
 ```
+
+**Tidak perlu build WAR manual!** Docker akan build otomatis.
 
 ---
 
@@ -242,16 +234,18 @@ docker exec -it the-object-hour bash
 ## ✅ Checklist Sebelum Mulai
 
 - [ ] Docker Desktop installed dan running
-- [ ] Java 17 installed
-- [ ] Ant atau NetBeans installed
 - [ ] File `src/java/config/db.properties` sudah diisi
 - [ ] File `.env` sudah dibuat dan diisi
 - [ ] Database Supabase tidak paused
-- [ ] WAR file sudah di-build (`dist/PBO-Project.war` exist)
 - [ ] Port 8080 tidak dipakai
 - [ ] Koneksi internet stabil
 
-**Jika semua ✅, silakan mulai dari STEP 5!**
+**Jika semua ✅, silakan mulai dari STEP 4!**
+
+**TIDAK PERLU:**
+- ❌ Build WAR manual
+- ❌ Install NetBeans/Ant
+- ❌ Setup Java lokal
 
 ---
 
