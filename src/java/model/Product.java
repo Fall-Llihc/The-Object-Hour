@@ -18,6 +18,7 @@ public class Product {
     private BigDecimal price;
     private int stock;
     private boolean isActive;
+    private String specifications;
     private LocalDateTime createdAt;
 
     // Constructors
@@ -25,7 +26,7 @@ public class Product {
     }
 
     public Product(Long id, String name, String brand, String type, String strapMaterial, 
-                   BigDecimal price, int stock, boolean isActive, LocalDateTime createdAt) {
+                   BigDecimal price, int stock, boolean isActive, String specifications, LocalDateTime createdAt) {
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -34,6 +35,7 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.isActive = isActive;
+        this.specifications = specifications;
         this.createdAt = createdAt;
     }
 
@@ -110,6 +112,14 @@ public class Product {
         this.createdAt = createdAt;
     }
 
+    public String getSpecifications() {
+        return specifications;
+    }
+
+    public void setSpecifications(String specifications) {
+        this.specifications = specifications;
+    }
+
     // Helper methods
     public boolean isInStock() {
         return this.stock > 0 && this.isActive;
@@ -125,6 +135,31 @@ public class Product {
         } else {
             throw new IllegalArgumentException("Insufficient stock");
         }
+    }
+    
+    /**
+     * Get Supabase Storage image URL for this product (PNG format)
+     * Image filename format: {brand} {name}.png
+     * Example: "Casio Classic Leather Brown.png"
+     * @return Full URL to product image in Supabase Storage
+     */
+    public String getImageUrl() {
+        String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+        String fullName = this.brand + " " + this.name;
+        String encodedName = fullName.replace(" ", "%20");
+        return baseUrl + encodedName + ".png";
+    }
+    
+    /**
+     * Get Supabase Storage image URL for this product (JPG format)
+     * Used as fallback if PNG is not available
+     * @return Full URL to product image in Supabase Storage (JPG)
+     */
+    public String getImageUrlJpg() {
+        String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+        String fullName = this.brand + " " + this.name;
+        String encodedName = fullName.replace(" ", "%20");
+        return baseUrl + encodedName + ".jpg";
     }
 
     @Override

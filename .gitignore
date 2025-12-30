@@ -17,6 +17,9 @@ src/java/**/*.properties
 # TAPI jangan abaikan file example (pengecualian)
 !src/java/**/db.properties.example
 
+# --- Docker ---
+.env
+
 # --- System Files ---
 .DS_Store
 Thumbs.db

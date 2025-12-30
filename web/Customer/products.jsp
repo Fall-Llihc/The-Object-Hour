@@ -26,13 +26,13 @@
                     </a>
                 </div>
                 
-                <div class="hidden md:flex flex-1 max-w-md mx-8">
+                <form action="${pageContext.request.contextPath}/products" method="get" class="hidden md:flex flex-1 max-w-md mx-8">
                     <div class="relative w-full">
                         <i class="bi bi-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <input type="text" placeholder="Search watches, brands..." 
+                        <input type="text" name="search" value="${search}" placeholder="Search watches, brands..." 
                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                </div>
+                </form>
                 
                 <div class="flex items-center space-x-4">
                     <a href="${pageContext.request.contextPath}/cart" class="relative">
@@ -66,97 +66,93 @@
             <!-- Sidebar Filter -->
             <aside class="w-72 flex-shrink-0 hidden lg:block">
                 <form action="${pageContext.request.contextPath}/products" method="get" id="filterForm">
+                    <!-- Hidden search field to preserve search when filtering -->
+                    <input type="hidden" name="search" value="${search}">
                     <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
                         <h3 class="font-bold text-xl mb-6 text-gray-900">Filters</h3>
                         
-                        <!-- Category Filter -->
+                        <!-- Category Filter (Multiple Choice) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Category</h4>
                             <div class="space-y-3">
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="" ${empty selectedType ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Watches</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="ANALOG" ${selectedType == 'ANALOG' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="type" value="ANALOG" 
+                                           ${selectedTypes.contains('ANALOG') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Analog</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="DIGITAL" ${selectedType == 'DIGITAL' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="type" value="DIGITAL" 
+                                           ${selectedTypes.contains('DIGITAL') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Digital</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="type" value="SMARTWATCH" ${selectedType == 'SMARTWATCH' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="type" value="SMARTWATCH" 
+                                           ${selectedTypes.contains('SMARTWATCH') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Smartwatch</span>
                                 </label>
                             </div>
                         </div>
                         
-                        <!-- Brand Filter -->
+                        <!-- Brand Filter (Multiple Choice) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Brand</h4>
                             <div class="space-y-3">
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="" ${empty selectedBrand ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Brands</span>
+                                    <input type="checkbox" name="brand" value="Apple" 
+                                           ${selectedBrands.contains('Apple') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Apple</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="Casio" ${selectedBrand == 'Casio' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="Casio" 
+                                           ${selectedBrands.contains('Casio') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Casio</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="Samsung" ${selectedBrand == 'Samsung' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="Samsung" 
+                                           ${selectedBrands.contains('Samsung') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Samsung</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="Xiaomi" ${selectedBrand == 'Xiaomi' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="Xiaomi" 
+                                           ${selectedBrands.contains('Xiaomi') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Xiaomi</span>
                                 </label>
                                 <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="brand" value="DanielW" ${selectedBrand == 'DanielW' ? 'checked' : ''} 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500" onchange="this.form.submit()">
+                                    <input type="checkbox" name="brand" value="DanielW" 
+                                           ${selectedBrands.contains('DanielW') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                     <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">DanielW</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer group">
+                                    <input type="checkbox" name="brand" value="Huawei" 
+                                           ${selectedBrands.contains('Huawei') ? 'checked' : ''}
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Huawei</span>
                                 </label>
                             </div>
                         </div>
                         
-                        <!-- Price Range -->
+                        <!-- Price Range (Manual Input) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Price Range</h4>
                             <div class="space-y-3">
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="all" checked 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">All Prices</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="0-500000" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Under Rp500K</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="500000-1000000" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Rp500K - Rp1M</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="1000000-2000000" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Rp1M - Rp2M</span>
-                                </label>
-                                <label class="flex items-center cursor-pointer group">
-                                    <input type="radio" name="priceRange" value="2000000-999999999" 
-                                           class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Above Rp2M</span>
-                                </label>
+                                <div>
+                                    <label class="text-xs text-gray-600 mb-1 block">Min Price (Rp)</label>
+                                    <input type="number" name="minPrice" value="${minPrice}" placeholder="0"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-600 mb-1 block">Max Price (Rp)</label>
+                                    <input type="number" name="maxPrice" value="${maxPrice}" placeholder="10000000"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                                </div>
                             </div>
                         </div>
                         
@@ -164,7 +160,7 @@
                         <div class="mb-6">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Availability</h4>
                             <label class="flex items-center cursor-pointer group">
-                                <input type="checkbox" name="inStock" value="true" 
+                                <input type="checkbox" name="inStock" value="true" ${inStock ? 'checked' : ''}
                                        class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
                                 <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">In Stock Only</span>
                             </label>
@@ -195,34 +191,48 @@
                         <c:when test="${not empty products}">
                             <c:forEach var="product" items="${products}">
                                 <div class="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
-                                    <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
-                                        <c:choose>
-                                            <c:when test="${product.type == 'ANALOG'}">
-                                                <i class="bi bi-watch text-6xl text-blue-400 group-hover:scale-110 transition-transform duration-300"></i>
-                                            </c:when>
-                                            <c:when test="${product.type == 'DIGITAL'}">
-                                                <i class="bi bi-stopwatch text-6xl text-purple-400 group-hover:scale-110 transition-transform duration-300"></i>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <i class="bi bi-smartwatch text-6xl text-green-400 group-hover:scale-110 transition-transform duration-300"></i>
-                                            </c:otherwise>
-                                        </c:choose>
-                                        
-                                        <!-- Stock Badge -->
-                                        <c:if test="${product.stock <= 5 && product.stock > 0}">
-                                            <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                                                Only ${product.stock} left
+                                    <a href="${pageContext.request.contextPath}/products?action=view&id=${product.id}" class="block">
+                                        <div class="bg-gray-100 h-48 flex items-center justify-center relative overflow-hidden">
+                                            <!-- Product Image from Supabase Storage -->
+                                            <img src="${product.imageUrl}" 
+                                                 data-jpg-url="${product.imageUrlJpg}"
+                                                 alt="${product.name}"
+                                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                                                 onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
+                                            
+                                            <!-- Fallback Icon (shown if image fails to load) -->
+                                            <div style="display:none;" class="w-full h-full flex items-center justify-center absolute top-0 left-0">
+                                                <c:choose>
+                                                    <c:when test="${product.type == 'ANALOG'}">
+                                                        <i class="bi bi-watch text-6xl text-blue-400"></i>
+                                                    </c:when>
+                                                    <c:when test="${product.type == 'DIGITAL'}">
+                                                        <i class="bi bi-stopwatch text-6xl text-purple-400"></i>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <i class="bi bi-smartwatch text-6xl text-green-400"></i>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
-                                        </c:if>
-                                        <c:if test="${product.stock == 0}">
-                                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
-                                                Out of Stock
-                                            </div>
-                                        </c:if>
-                                    </div>
+                                            
+                                            <!-- Stock Badge -->
+                                            <c:if test="${product.stock <= 5 && product.stock > 0}">
+                                                <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                                    Only ${product.stock} left
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${product.stock == 0}">
+                                                <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                                                    Out of Stock
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </a>
                                     <div class="p-4">
                                         <p class="text-xs text-gray-500 uppercase tracking-wide mb-1 font-medium">${product.brand}</p>
-                                        <h3 class="font-bold text-gray-900 mb-2 text-base">${product.name}</h3>
+                                        <a href="${pageContext.request.contextPath}/products?action=view&id=${product.id}">
+                                            <h3 class="font-bold text-gray-900 mb-2 text-base hover:text-blue-600 transition">${product.name}</h3>
+                                        </a>
                                         <div class="flex items-center mb-3">
                                             <span class="inline-block px-2 py-1 text-xs font-medium rounded-full
                                                 <c:choose>
@@ -267,17 +277,80 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex justify-center items-center mt-10 space-x-2">
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                        <i class="bi bi-chevron-left"></i> Previous
-                    </button>
-                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold">1</button>
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">2</button>
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">3</button>
-                    <button class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
-                        Next <i class="bi bi-chevron-right"></i>
-                    </button>
-                </div>
+                <c:if test="${totalPages > 1}">
+                    <div class="flex justify-center items-center mt-10 space-x-2">
+                        <!-- Previous Button -->
+                        <c:choose>
+                            <c:when test="${currentPage > 1}">
+                                <a href="?page=${currentPage - 1}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                   class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                    <i class="bi bi-chevron-left"></i> Previous
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <button disabled class="px-4 py-2 border-2 border-gray-300 rounded-lg font-medium text-gray-400 opacity-50 cursor-not-allowed">
+                                    <i class="bi bi-chevron-left"></i> Previous
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <!-- Page Numbers -->
+                        <c:set var="startPage" value="${currentPage - 2 > 1 ? currentPage - 2 : 1}" />
+                        <c:set var="endPage" value="${currentPage + 2 < totalPages ? currentPage + 2 : totalPages}" />
+                        
+                        <!-- First page if not in range -->
+                        <c:if test="${startPage > 1}">
+                            <a href="?page=1<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                               class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                1
+                            </a>
+                            <c:if test="${startPage > 2}">
+                                <span class="px-2 text-gray-400">...</span>
+                            </c:if>
+                        </c:if>
+
+                        <!-- Page number buttons -->
+                        <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <button class="px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold">${i}</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <a href="?page=${i}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                       class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                        ${i}
+                                    </a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+
+                        <!-- Last page if not in range -->
+                        <c:if test="${endPage < totalPages}">
+                            <c:if test="${endPage < totalPages - 1}">
+                                <span class="px-2 text-gray-400">...</span>
+                            </c:if>
+                            <a href="?page=${totalPages}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                               class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                ${totalPages}
+                            </a>
+                        </c:if>
+
+                        <!-- Next Button -->
+                        <c:choose>
+                            <c:when test="${currentPage < totalPages}">
+                                <a href="?page=${currentPage + 1}<c:if test='${not empty search}'>&search=${search}</c:if><c:forEach items='${selectedTypes}' var='t'>&type=${t}</c:forEach><c:forEach items='${selectedBrands}' var='b'>&brand=${b}</c:forEach><c:if test='${not empty minPrice}'>&minPrice=${minPrice}</c:if><c:if test='${not empty maxPrice}'>&maxPrice=${maxPrice}</c:if><c:if test='${inStock}'>&inStock=true</c:if>" 
+                                   class="px-4 py-2 border-2 border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-gray-700">
+                                    Next <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </c:when>
+                            <c:otherwise>
+                                <button disabled class="px-4 py-2 border-2 border-gray-300 rounded-lg font-medium text-gray-400 opacity-50 cursor-not-allowed">
+                                    Next <i class="bi bi-chevron-right"></i>
+                                </button>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:if>
             </main>
         </div>
     </div>

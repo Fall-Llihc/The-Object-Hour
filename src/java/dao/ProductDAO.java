@@ -22,8 +22,8 @@ public class ProductDAO {
      * @return Generated product ID, atau null jika gagal
      */
     public Long createProduct(Product product) {
-        String sql = "INSERT INTO products (name, brand, type, strap_material, price, stock, is_active, created_at) " +
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, NOW()) RETURNING id";
+        String sql = "INSERT INTO products (name, brand, type, strap_material, price, stock, is_active, specifications, created_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW()) RETURNING id";
         
         try (Connection conn = JDBC.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -35,6 +35,7 @@ public class ProductDAO {
             stmt.setBigDecimal(5, product.getPrice());
             stmt.setInt(6, product.getStock());
             stmt.setBoolean(7, product.isActive());
+            stmt.setString(8, product.getSpecifications());
             
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -347,6 +348,7 @@ public class ProductDAO {
         product.setPrice(rs.getBigDecimal("price"));
         product.setStock(rs.getInt("stock"));
         product.setActive(rs.getBoolean("is_active"));
+        product.setSpecifications(rs.getString("specifications"));
         
         Timestamp createdAt = rs.getTimestamp("created_at");
         if (createdAt != null) {

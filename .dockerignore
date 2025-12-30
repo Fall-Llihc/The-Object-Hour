@@ -1,0 +1,32 @@
+# Build directories
+build/
+# dist/ - Need this for WAR file!
+nbproject/private/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+*.md
+!README.md
+
+# Logs
+*.log
+logs/
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Temporary files
+*.tmp
+*.bak
+*~

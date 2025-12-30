@@ -56,20 +56,37 @@ public class JDBC {
      * Fallback: Load from environment variables
      */
     private static void loadFromEnvironment() {
-        DB_URL = System.getenv("DB_URL");
-        DB_USER = System.getenv("DB_USER");
-        DB_PASSWORD = System.getenv("DB_PASSWORD");
+        // Try Docker-style env vars first
+        String dbHost = System.getenv("DB_HOST");
+        String dbPort = System.getenv("DB_PORT");
+        String dbName = System.getenv("DB_NAME");
+        String dbUser = System.getenv("DB_USER");
+        String dbPassword = System.getenv("DB_PASSWORD");
+        
+        if (dbHost != null && dbPort != null && dbName != null && dbUser != null && dbPassword != null) {
+            // Build URL from components (Docker format)
+            DB_URL = String.format("jdbc:postgresql://%s:%s/%s", dbHost, dbPort, dbName);
+            DB_USER = dbUser;
+            DB_PASSWORD = dbPassword;
+        } else {
+            // Try legacy env var format
+            DB_URL = System.getenv("DB_URL");
+            DB_USER = System.getenv("DB_USER");
+            DB_PASSWORD = System.getenv("DB_PASSWORD");
+        }
+        
         DB_DRIVER = "org.postgresql.Driver";
         
         if (DB_URL == null || DB_USER == null || DB_PASSWORD == null) {
             // Development fallback (remove in production!)
-            DB_URL = "jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:5432/postgres";
+            DB_URL = "jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres";
             DB_USER = "postgres.ykdfyoirtmkscsygyedr";
             DB_PASSWORD = "ObjectHour123";
         }
         
         try {
             Class.forName(DB_DRIVER);
+            System.out.println("Database configuration loaded from environment variables");
         } catch (ClassNotFoundException e) {
             System.err.println("PostgreSQL Driver not found: " + e.getMessage());
         }

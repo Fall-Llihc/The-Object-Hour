@@ -88,18 +88,27 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-6">
                                 <!-- Product Image -->
-                                <div class="bg-gray-100 w-24 h-24 rounded-xl flex items-center justify-center flex-shrink-0">
-                                    <c:choose>
-                                        <c:when test="${item.product.type == 'ANALOG'}">
-                                            <i class="bi bi-watch text-4xl text-blue-400"></i>
-                                        </c:when>
-                                        <c:when test="${item.product.type == 'DIGITAL'}">
-                                            <i class="bi bi-stopwatch text-4xl text-purple-400"></i>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <i class="bi bi-smartwatch text-4xl text-green-400"></i>
-                                        </c:otherwise>
-                                    </c:choose>
+                                <div class="bg-gray-100 w-24 h-24 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+                                    <img src="${item.product.imageUrl}" 
+                                         data-jpg-url="${item.product.imageUrlJpg}"
+                                         alt="${item.product.name}"
+                                         class="w-full h-full object-cover"
+                                         onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
+                                    
+                                    <!-- Fallback Icon -->
+                                    <div style="display:none;" class="w-full h-full flex items-center justify-center">
+                                        <c:choose>
+                                            <c:when test="${item.product.type == 'ANALOG'}">
+                                                <i class="bi bi-watch text-4xl text-blue-400"></i>
+                                            </c:when>
+                                            <c:when test="${item.product.type == 'DIGITAL'}">
+                                                <i class="bi bi-stopwatch text-4xl text-purple-400"></i>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <i class="bi bi-smartwatch text-4xl text-green-400"></i>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
                                 
                                 <!-- Product Info -->
