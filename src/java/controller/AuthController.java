@@ -190,7 +190,7 @@ public class AuthController extends HttpServlet {
             session.invalidate();
         }
         
-        response.sendRedirect(request.getContextPath() + "/auth/login");
+        response.sendRedirect(request.getContextPath() + "/products");
     }
     
     /**

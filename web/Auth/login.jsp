@@ -226,14 +226,16 @@
 <body>
     <div class="container">
         <div class="login-container">
-            <div class="brand-header">
-                <div class="logo">
-                    <i class="bi bi-watch"></i>
+            <a href="${pageContext.request.contextPath}/products" class="text-decoration-none">
+                <div class="brand-header" style="cursor: pointer;">
+                    <div class="logo">
+                        <i class="bi bi-watch"></i>
+                    </div>
+                    <h1>The Object Hour</h1>
+                    <p>Premium Watch Collection</p>
                 </div>
-                <h1>The Object Hour</h1>
-                <p>Premium Watch Collection</p>
-            </div>
-            
+            </a>
+
             <div class="login-card">
                 <h2>Welcome Back</h2>
                 <p class="subtitle">Login to continue to your account</p>
