@@ -96,46 +96,69 @@
                             </div>
                         </div>
                         
-                        <!-- Brand Filter (Multiple Choice) -->
+                        <!-- Brand Filter (Multiple Choice + Search) -->
                         <div class="mb-6 pb-6 border-b border-gray-200">
                             <h4 class="font-semibold text-sm text-gray-700 mb-4 uppercase tracking-wide">Brand</h4>
-                            <div class="space-y-3">
-                                <label class="flex items-center cursor-pointer group">
+                            
+                            <!-- Brand Search Input -->
+                            <div class="mb-4">
+                                <input type="text" id="brandSearch" placeholder="Search brands..." 
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                            </div>
+                            
+                            <!-- Default Brand Checkboxes (always visible) -->
+                            <div id="defaultBrands" class="space-y-3">
+                                <label class="flex items-center cursor-pointer group default-brand">
                                     <input type="checkbox" name="brand" value="Apple" 
                                            ${selectedBrands.contains('Apple') ? 'checked' : ''}
-                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Apple</span>
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label">Apple</span>
                                 </label>
-                                <label class="flex items-center cursor-pointer group">
+                                <label class="flex items-center cursor-pointer group default-brand">
                                     <input type="checkbox" name="brand" value="Casio" 
                                            ${selectedBrands.contains('Casio') ? 'checked' : ''}
-                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Casio</span>
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label">Casio</span>
                                 </label>
-                                <label class="flex items-center cursor-pointer group">
+                                <label class="flex items-center cursor-pointer group default-brand">
                                     <input type="checkbox" name="brand" value="Samsung" 
                                            ${selectedBrands.contains('Samsung') ? 'checked' : ''}
-                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Samsung</span>
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label">Samsung</span>
                                 </label>
-                                <label class="flex items-center cursor-pointer group">
+                                <label class="flex items-center cursor-pointer group default-brand">
                                     <input type="checkbox" name="brand" value="Xiaomi" 
                                            ${selectedBrands.contains('Xiaomi') ? 'checked' : ''}
-                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Xiaomi</span>
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label">Xiaomi</span>
                                 </label>
-                                <label class="flex items-center cursor-pointer group">
+                                <label class="flex items-center cursor-pointer group default-brand">
                                     <input type="checkbox" name="brand" value="DanielW" 
                                            ${selectedBrands.contains('DanielW') ? 'checked' : ''}
-                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">DanielW</span>
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label">DanielW</span>
                                 </label>
-                                <label class="flex items-center cursor-pointer group">
+                                <label class="flex items-center cursor-pointer group default-brand">
                                     <input type="checkbox" name="brand" value="Huawei" 
                                            ${selectedBrands.contains('Huawei') ? 'checked' : ''}
-                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500">
-                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600">Huawei</span>
+                                           class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox">
+                                    <span class="ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label">Huawei</span>
                                 </label>
+                            </div>
+                            
+                            <!-- Dynamic Search Results -->
+                            <div id="searchResults" class="mt-3" style="display: none;">
+                                <div class="text-xs text-gray-500 mb-2 font-medium">Search Results:</div>
+                                <div id="dynamicBrands" class="space-y-2"></div>
+                                <div id="noMatchMessage" class="text-sm text-gray-400 italic" style="display: none;">
+                                    No brands match your search.
+                                </div>
+                            </div>
+                            
+                            <!-- Selected Non-Default Brands -->
+                            <div id="selectedNonDefaultBrands" class="mt-3" style="display: none;">
+                                <div class="text-xs text-gray-500 mb-2 font-medium">Selected Brands:</div>
+                                <div id="selectedBrandsList" class="space-y-2"></div>
                             </div>
                         </div>
                         
@@ -360,5 +383,456 @@
             <p class="text-gray-400">&copy; 2025 The Object Hour. Premium Watch E-Commerce.</p>
         </div>
     </footer>
+
+    <script>
+        let searchTimeout;
+        const defaultBrands = ['Apple', 'Casio', 'Samsung', 'Xiaomi', 'DanielW', 'Huawei'];
+        
+        // Get selected brands from JSP
+        const selectedBrandsFromJSP = [
+            <c:forEach var="brand" items="${selectedBrands}" varStatus="status">
+                "${brand}"<c:if test="${!status.last}">,</c:if>
+            </c:forEach>
+        ];
+        
+        // Get all available brands from JSP
+        const allAvailableBrands = [
+            <c:forEach var="brand" items="${allAvailableBrands}" varStatus="status">
+                "${brand}"<c:if test="${!status.last}">,</c:if>
+            </c:forEach>
+        ];
+        
+        // Initialize selected non-default brands on page load
+        function initializeSelectedNonDefaultBrands() {
+            const selectedNonDefaultContainer = document.getElementById('selectedNonDefaultBrands');
+            const selectedBrandsList = document.getElementById('selectedBrandsList');
+            
+            // Find selected brands that are not in default list
+            const selectedNonDefaultBrands = selectedBrandsFromJSP.filter(brand => 
+                !defaultBrands.some(defaultBrand => 
+                    defaultBrand.toLowerCase() === brand.toLowerCase()
+                )
+            );
+            
+            if (selectedNonDefaultBrands.length > 0) {
+                selectedNonDefaultContainer.style.display = 'block';
+                selectedBrandsList.innerHTML = '';
+                
+                selectedNonDefaultBrands.forEach(brand => {
+                    const labelElement = document.createElement('label');
+                    labelElement.className = 'flex items-center cursor-pointer group selected-non-default-brand';
+                    
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.name = 'brand';
+                    checkbox.value = brand;
+                    checkbox.checked = true;
+                    checkbox.className = 'w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox';
+                    
+                    const span = document.createElement('span');
+                    span.className = 'ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label';
+                    span.textContent = brand;
+                    
+                    labelElement.appendChild(checkbox);
+                    labelElement.appendChild(span);
+                    selectedBrandsList.appendChild(labelElement);
+                });
+            } else {
+                selectedNonDefaultContainer.style.display = 'none';
+            }
+        }
+        
+        // Enhanced brand filter search functionality
+        document.getElementById('brandSearch')?.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.trim();
+            
+            // Clear previous timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            
+            // If search is empty, show only default brands
+            if (!searchTerm) {
+                resetToDefaultBrands();
+                return;
+            }
+            
+            // Debounce the search to avoid too many API calls
+            searchTimeout = setTimeout(() => {
+                performBrandSearch(searchTerm);
+            }, 300);
+        });
+        
+        // Add event listener for checkbox changes using event delegation
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('brand-checkbox')) {
+                handleBrandCheckboxChange(e.target);
+            }
+        });
+        
+        function handleBrandCheckboxChange(checkbox) {
+            const brandLabel = checkbox.closest('label');
+            const brandName = checkbox.value;
+            const isDefaultBrand = defaultBrands.some(defaultBrand => 
+                defaultBrand.toLowerCase() === brandName.toLowerCase()
+            );
+            
+            if (checkbox.checked) {
+                // Move checked brand to appropriate section
+                if (isDefaultBrand) {
+                    moveToTop(brandLabel, false);
+                } else {
+                    // Move to selected non-default brands section
+                    moveToSelectedNonDefault(brandLabel);
+                }
+            } else {
+                // If it's unchecked
+                if (isDefaultBrand) {
+                    // If it's a default brand, move it back to its original position
+                    restoreDefaultPosition(brandLabel, brandName);
+                } else {
+                    // If it's a non-default brand, remove it
+                    brandLabel.remove();
+                    updateSelectedNonDefaultVisibility();
+                }
+            }
+        }
+        
+        function moveToSelectedNonDefault(brandLabel) {
+            const selectedNonDefaultContainer = document.getElementById('selectedNonDefaultBrands');
+            const selectedBrandsList = document.getElementById('selectedBrandsList');
+            
+            // Remove from current location
+            brandLabel.remove();
+            
+            // Add to selected non-default section
+            brandLabel.className = 'flex items-center cursor-pointer group selected-non-default-brand';
+            selectedBrandsList.appendChild(brandLabel);
+            selectedNonDefaultContainer.style.display = 'block';
+        }
+        
+        function updateSelectedNonDefaultVisibility() {
+            const selectedNonDefaultContainer = document.getElementById('selectedNonDefaultBrands');
+            const selectedBrandsList = document.getElementById('selectedBrandsList');
+            
+            if (selectedBrandsList.children.length === 0) {
+                selectedNonDefaultContainer.style.display = 'none';
+            }
+        }
+        
+        function moveToTop(brandLabel, isDynamic) {
+            const container = isDynamic ? 
+                document.getElementById('dynamicBrands') : 
+                document.getElementById('defaultBrands');
+            
+            // Insert at the beginning of the container
+            container.insertBefore(brandLabel, container.firstChild);
+        }
+        
+        function restoreDefaultPosition(brandLabel, brandName) {
+            const defaultContainer = document.getElementById('defaultBrands');
+            const defaultBrandsList = ['Apple', 'Casio', 'Samsung', 'Xiaomi', 'DanielW', 'Huawei'];
+            const targetIndex = defaultBrandsList.findIndex(brand => 
+                brand.toLowerCase() === brandName.toLowerCase()
+            );
+            
+            if (targetIndex === -1) return;
+            
+            const allDefaultLabels = Array.from(defaultContainer.children);
+            let insertPosition = null;
+            
+            // Find the correct position to insert
+            for (let i = targetIndex + 1; i < defaultBrandsList.length; i++) {
+                const nextBrand = defaultBrandsList[i];
+                const nextLabel = allDefaultLabels.find(label => 
+                    label.querySelector('.brand-label').textContent.toLowerCase() === nextBrand.toLowerCase()
+                );
+                if (nextLabel) {
+                    insertPosition = nextLabel;
+                    break;
+                }
+            }
+            
+            brandLabel.className = 'flex items-center cursor-pointer group default-brand';
+            
+            if (insertPosition) {
+                defaultContainer.insertBefore(brandLabel, insertPosition);
+            } else {
+                defaultContainer.appendChild(brandLabel);
+            }
+        }
+        
+        function resetToDefaultBrands() {
+            const searchResults = document.getElementById('searchResults');
+            const dynamicBrands = document.getElementById('dynamicBrands');
+            
+            // Clear all search results (they'll be preserved in selected section if checked)
+            dynamicBrands.innerHTML = '';
+            searchResults.style.display = 'none';
+            
+            // Show all default brands and reorganize them
+            reorganizeDefaultBrands();
+        }
+        
+        function reorganizeDefaultBrands() {
+            const defaultContainer = document.getElementById('defaultBrands');
+            const allDefaultLabels = Array.from(defaultContainer.children);
+            
+            // Separate checked and unchecked brands
+            const checkedBrands = [];
+            const uncheckedBrands = [];
+            
+            allDefaultLabels.forEach(label => {
+                const checkbox = label.querySelector('.brand-checkbox');
+                const brandName = checkbox.value;
+                
+                label.style.display = 'flex'; // Show all default brands
+                
+                if (checkbox.checked) {
+                    checkedBrands.push({label, brandName, index: defaultBrands.indexOf(brandName)});
+                } else {
+                    uncheckedBrands.push({label, brandName, index: defaultBrands.indexOf(brandName)});
+                }
+            });
+            
+            // Sort by original index
+            checkedBrands.sort((a, b) => a.index - b.index);
+            uncheckedBrands.sort((a, b) => a.index - b.index);
+            
+            // Clear container and reorganize: checked first, then unchecked
+            defaultContainer.innerHTML = '';
+            [...checkedBrands, ...uncheckedBrands].forEach(item => {
+                defaultContainer.appendChild(item.label);
+            });
+        }
+        
+        function performBrandSearch(searchTerm) {
+            // Filter default brands by search term (case-insensitive)
+            const defaultBrandElements = document.querySelectorAll('.default-brand');
+            let visibleDefaultsCount = 0;
+            
+            defaultBrandElements.forEach(brand => {
+                const brandName = brand.querySelector('.brand-label').textContent;
+                if (brandName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                    brand.style.display = 'flex';
+                    visibleDefaultsCount++;
+                } else {
+                    brand.style.display = 'none';
+                }
+            });
+            
+            // Reorganize visible default brands (checked on top)
+            reorganizeVisibleDefaults();
+            
+            // Search database for additional brands
+            fetch('${pageContext.request.contextPath}/products?action=searchBrands&q=' + encodeURIComponent(searchTerm))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const searchResults = document.getElementById('searchResults');
+                    const dynamicBrands = document.getElementById('dynamicBrands');
+                    const noMatchMessage = document.getElementById('noMatchMessage');
+                    
+                    // Preserve existing checked dynamic brands
+                    const existingCheckedBrands = [];
+                    const existingDynamicLabels = Array.from(dynamicBrands.children);
+                    existingDynamicLabels.forEach(label => {
+                        const checkbox = label.querySelector('.brand-checkbox');
+                        if (checkbox && checkbox.checked) {
+                            existingCheckedBrands.push({
+                                element: label,
+                                brandName: checkbox.value
+                            });
+                        }
+                    });
+                    
+                    // Clear only unchecked dynamic brands
+                    existingDynamicLabels.forEach(label => {
+                        const checkbox = label.querySelector('.brand-checkbox');
+                        if (!checkbox || !checkbox.checked) {
+                            label.remove();
+                        }
+                    });
+                    
+                    // Get brands already present (defaults + existing dynamic)
+                    const existingBrandNames = [
+                        ...defaultBrands.map(b => b.toLowerCase()),
+                        ...existingCheckedBrands.map(b => b.brandName.toLowerCase())
+                    ];
+                    
+                    // Filter out brands that are already present (case-insensitive comparison)
+                    const newBrands = data.brands.filter(brand => 
+                        !existingBrandNames.includes(brand.toLowerCase())
+                    );
+                    
+                    // Check if we have any results
+                    const totalMatches = visibleDefaultsCount + existingCheckedBrands.length + newBrands.length;
+                    
+                    if (newBrands.length > 0 || existingCheckedBrands.length > 0) {
+                        // Show search results section
+                        searchResults.style.display = 'block';
+                        noMatchMessage.style.display = 'none';
+                        
+                        // Separate new brands into checked and unchecked
+                        const checkedNewBrands = [];
+                        const uncheckedNewBrands = [];
+                        
+                        newBrands.forEach(brand => {
+                            const isSelected = selectedBrandsFromJSP.includes(brand);
+                            if (isSelected) {
+                                checkedNewBrands.push(brand);
+                            } else {
+                                uncheckedNewBrands.push(brand);
+                            }
+                        });
+                        
+                        // Create new brand elements
+                        const newBrandElements = [];
+                        [...checkedNewBrands, ...uncheckedNewBrands].forEach(brand => {
+                            const isSelected = selectedBrandsFromJSP.includes(brand);
+                            const labelElement = document.createElement('label');
+                            labelElement.className = 'flex items-center cursor-pointer group dynamic-brand';
+                            
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.name = 'brand';
+                            checkbox.value = brand;
+                            checkbox.checked = isSelected;
+                            checkbox.className = 'w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 brand-checkbox';
+                            
+                            const span = document.createElement('span');
+                            span.className = 'ml-3 text-sm text-gray-700 group-hover:text-blue-600 brand-label';
+                            span.textContent = brand;
+                            
+                            labelElement.appendChild(checkbox);
+                            labelElement.appendChild(span);
+                            
+                            newBrandElements.push({
+                                element: labelElement,
+                                brandName: brand,
+                                isChecked: isSelected
+                            });
+                        });
+                        
+                        // Reorganize all dynamic brands: existing checked + new checked + new unchecked
+                        const allDynamicBrands = [...existingCheckedBrands, ...newBrandElements];
+                        const checkedDynamic = allDynamicBrands.filter(b => 
+                            (b.element.querySelector && b.element.querySelector('.brand-checkbox').checked) || b.isChecked
+                        );
+                        const uncheckedDynamic = allDynamicBrands.filter(b => 
+                            !(b.element.querySelector && b.element.querySelector('.brand-checkbox').checked) && !b.isChecked
+                        );
+                        
+                        // Clear and reorganize
+                        dynamicBrands.innerHTML = '';
+                        [...checkedDynamic, ...uncheckedDynamic].forEach(item => {
+                            dynamicBrands.appendChild(item.element);
+                        });
+                    }
+                    
+                    // Show or hide search results section
+                    const hasAnyDynamicBrands = dynamicBrands.children.length > 0;
+                    if (hasAnyDynamicBrands) {
+                        searchResults.style.display = 'block';
+                        noMatchMessage.style.display = 'none';
+                    } else if (totalMatches === 0) {
+                        searchResults.style.display = 'block';
+                        noMatchMessage.style.display = 'block';
+                        noMatchMessage.textContent = 'No brands match your search.';
+                    } else {
+                        searchResults.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error searching brands:', error);
+                    const searchResults = document.getElementById('searchResults');
+                    const noMatchMessage = document.getElementById('noMatchMessage');
+                    
+                    searchResults.style.display = 'block';
+                    noMatchMessage.style.display = 'block';
+                    noMatchMessage.textContent = 'Error searching brands. Please try again.';
+                });
+        }
+        
+        function reorganizeVisibleDefaults() {
+            const defaultContainer = document.getElementById('defaultBrands');
+            const visibleLabels = Array.from(defaultContainer.children).filter(label => 
+                label.style.display !== 'none'
+            );
+            
+            const checkedVisible = [];
+            const uncheckedVisible = [];
+            
+            visibleLabels.forEach(label => {
+                const checkbox = label.querySelector('.brand-checkbox');
+                const brandName = checkbox.value;
+                
+                if (checkbox.checked) {
+                    checkedVisible.push({label, brandName, index: defaultBrands.findIndex(b => b.toLowerCase() === brandName.toLowerCase())});
+                } else {
+                    uncheckedVisible.push({label, brandName, index: defaultBrands.findIndex(b => b.toLowerCase() === brandName.toLowerCase())});
+                }
+            });
+            
+            // Sort by original index
+            checkedVisible.sort((a, b) => a.index - b.index);
+            uncheckedVisible.sort((a, b) => a.index - b.index);
+            
+            // Reorganize: move checked ones to top while maintaining their relative order
+            [...checkedVisible, ...uncheckedVisible].forEach((item, index) => {
+                const currentIndex = Array.from(defaultContainer.children).indexOf(item.label);
+                if (currentIndex !== index) {
+                    if (index === 0) {
+                        defaultContainer.insertBefore(item.label, defaultContainer.firstChild);
+                    } else {
+                        const previousItem = [...checkedVisible, ...uncheckedVisible][index - 1];
+                        defaultContainer.insertBefore(item.label, previousItem.label.nextSibling);
+                    }
+                }
+            });
+        }
+        
+        function reorganizeDefaultBrands() {
+            const defaultContainer = document.getElementById('defaultBrands');
+            const allDefaultLabels = Array.from(defaultContainer.children);
+            
+            // Separate checked and unchecked brands
+            const checkedBrands = [];
+            const uncheckedBrands = [];
+            
+            allDefaultLabels.forEach(label => {
+                const checkbox = label.querySelector('.brand-checkbox');
+                const brandName = checkbox.value;
+                
+                label.style.display = 'flex'; // Show all default brands
+                
+                if (checkbox.checked) {
+                    checkedBrands.push({label, brandName, index: defaultBrands.findIndex(b => b.toLowerCase() === brandName.toLowerCase())});
+                } else {
+                    uncheckedBrands.push({label, brandName, index: defaultBrands.findIndex(b => b.toLowerCase() === brandName.toLowerCase())});
+                }
+            });
+            
+            // Sort by original index
+            checkedBrands.sort((a, b) => a.index - b.index);
+            uncheckedBrands.sort((a, b) => a.index - b.index);
+            
+            // Clear container and reorganize: checked first, then unchecked
+            defaultContainer.innerHTML = '';
+            [...checkedBrands, ...uncheckedBrands].forEach(item => {
+                defaultContainer.appendChild(item.label);
+            });
+        }
+        
+        // Initialize the brand organization on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeSelectedNonDefaultBrands();
+            reorganizeDefaultBrands();
+        });
+    </script>
 </body>
 </html>

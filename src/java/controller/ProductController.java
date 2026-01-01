@@ -53,6 +53,9 @@ public class ProductController extends HttpServlet {
             case "search":
                 searchProducts(request, response);
                 break;
+            case "searchBrands":
+                searchBrands(request, response);
+                break;
             default:
                 showProductList(request, response);
                 break;
@@ -178,6 +181,10 @@ public class ProductController extends HttpServlet {
         request.setAttribute("maxPrice", maxPriceStr != null ? maxPriceStr : "");
         request.setAttribute("inStock", "true".equals(inStockStr));
         
+        // Get all available brands for dynamic checkbox creation
+        List<String> allAvailableBrands = productService.getDistinctBrands();
+        request.setAttribute("allAvailableBrands", allAvailableBrands);
+        
         // Set cart count for navbar
         Long userId = getUserId(request);
         if (userId != null) {
@@ -251,6 +258,37 @@ public class ProductController extends HttpServlet {
         request.setAttribute("keyword", keyword);
         
         request.getRequestDispatcher("/Customer/products.jsp").forward(request, response);
+    }
+    
+    /**
+     * Search brands for AJAX request
+     */
+    private void searchBrands(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        
+        String keyword = request.getParameter("q");
+        List<String> matchingBrands = productService.searchBrands(keyword);
+        
+        // Build JSON response
+        StringBuilder json = new StringBuilder();
+        json.append("{");
+        json.append("\"brands\": [");
+        
+        for (int i = 0; i < matchingBrands.size(); i++) {
+            if (i > 0) {
+                json.append(",");
+            }
+            json.append("\"").append(matchingBrands.get(i).replace("\"", "\\\"")).append("\"");
+        }
+        
+        json.append("],");
+        json.append("\"count\": ").append(matchingBrands.size());
+        json.append("}");
+        
+        response.getWriter().write(json.toString());
     }
     
     /**
