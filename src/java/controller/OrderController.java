@@ -31,27 +31,38 @@ public class OrderController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        System.out.println("OrderController.doGet - Path: " + request.getRequestURI());
+        System.out.println("OrderController.doGet - PathInfo: " + request.getPathInfo());
+        
         // Check if user is logged in
         Long userId = getUserId(request);
         if (userId == null) {
+            System.out.println("OrderController.doGet - User not logged in, redirecting to login");
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }
         
+        System.out.println("OrderController.doGet - User ID: " + userId);
+        
         String action = getAction(request);
+        System.out.println("OrderController.doGet - Action: " + action);
         
         switch (action) {
             case "list":
             case "":
+                System.out.println("OrderController.doGet - Showing order list");
                 showOrderList(request, response);
                 break;
             case "view":
+                System.out.println("OrderController.doGet - Showing order detail");
                 showOrderDetail(request, response);
                 break;
             case "cancel":
+                System.out.println("OrderController.doGet - Cancelling order");
                 cancelOrder(request, response);
                 break;
             default:
+                System.out.println("OrderController.doGet - Unknown action, showing order list");
                 showOrderList(request, response);
                 break;
         }
