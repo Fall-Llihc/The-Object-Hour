@@ -21,6 +21,15 @@ public class Order {
     private LocalDateTime createdAt;
     private LocalDateTime paidAt;
     
+    // Shipping Information
+    private String shippingName;
+    private String shippingPhone;
+    private String shippingAddress;
+    private String shippingCity;
+    private String shippingState;
+    private String shippingPostalCode;
+    private String notes;
+    
     // Transient fields - not in database
     private List<OrderItem> items;
     private User user;
@@ -122,6 +131,62 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getShippingName() {
+        return shippingName;
+    }
+
+    public void setShippingName(String shippingName) {
+        this.shippingName = shippingName;
+    }
+
+    public String getShippingPhone() {
+        return shippingPhone;
+    }
+
+    public void setShippingPhone(String shippingPhone) {
+        this.shippingPhone = shippingPhone;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getShippingCity() {
+        return shippingCity;
+    }
+
+    public void setShippingCity(String shippingCity) {
+        this.shippingCity = shippingCity;
+    }
+
+    public String getShippingState() {
+        return shippingState;
+    }
+
+    public void setShippingState(String shippingState) {
+        this.shippingState = shippingState;
+    }
+
+    public String getShippingPostalCode() {
+        return shippingPostalCode;
+    }
+
+    public void setShippingPostalCode(String shippingPostalCode) {
+        this.shippingPostalCode = shippingPostalCode;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     // Helper methods

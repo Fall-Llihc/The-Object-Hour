@@ -29,17 +29,34 @@ public class OrderService {
     }
     
     /**
-     * Checkout cart menjadi order
+     * Checkout cart menjadi order dengan informasi penerima
      * POLYMORPHISM: Menggunakan PaymentMethod interface untuk berbagai jenis pembayaran
      * 
      * @param userId User ID
      * @param paymentMethod Payment method implementation (EWallet, Bank, Cash)
+     * @param shippingName Nama Penerima
+     * @param shippingPhone No. Telepon Penerima
+     * @param shippingAddress Alamat Penerima
+     * @param shippingCity Kota/Kabupaten Penerima
+     * @param shippingState Provinsi Penerima
+     * @param shippingPostalCode Kode Pos Penerima
+     * @param notes Catatan tambahan untuk penerima
      * @return Order ID jika berhasil, null jika gagal
      */
-    public Long checkout(Long userId, PaymentMethod paymentMethod) {
+    public Long checkout(Long userId, PaymentMethod paymentMethod, 
+                        String shippingName, String shippingPhone, String shippingAddress,
+                        String shippingCity, String shippingState, String shippingPostalCode, String notes) {
         // Validasi input
         if (userId == null || paymentMethod == null) {
             System.out.println("User ID and Payment Method are required");
+            return null;
+        }
+        
+        // Validate shipping information
+        if (shippingName == null || shippingName.trim().isEmpty() ||
+            shippingPhone == null || shippingPhone.trim().isEmpty() ||
+            shippingAddress == null || shippingAddress.trim().isEmpty()) {
+            System.out.println("Shipping information is required");
             return null;
         }
         
@@ -76,13 +93,20 @@ public class OrderService {
             return null;
         }
         
-        // Create order
+        // Create order with shipping information
         Order order = new Order();
         order.setUserId(userId);
         order.setCartId(cart.getId());
         order.setPaymentMethod(paymentMethod.getPaymentMethodName());
         order.setStatus("PENDING");
         order.setTotalAmount(totalAmount);
+        order.setShippingName(shippingName);
+        order.setShippingPhone(shippingPhone);
+        order.setShippingAddress(shippingAddress);
+        order.setShippingCity(shippingCity);
+        order.setShippingState(shippingState);
+        order.setShippingPostalCode(shippingPostalCode);
+        order.setNotes(notes);
         
         Long orderId = orderDAO.createOrder(order);
         if (orderId == null) {
@@ -248,9 +272,11 @@ public class OrderService {
                 return new EWalletPayment("GoPay", "081234567890");
                 
             case "BANK":
+            case "BANK_TRANSFER":
                 return new BankTransferPayment("BCA", "1234567890", "The Object Hour");
                 
             case "CASH":
+            case "COD":
                 return new CashPayment("Default Address", "Customer", "081234567890");
                 
             default:

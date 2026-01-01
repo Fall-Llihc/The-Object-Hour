@@ -5,16 +5,17 @@ Gambar produk jam ditampilkan dari **Supabase Storage** bucket bernama **"Gambar
 
 ## URL Pattern
 ```
-https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/{product_name}.png
+https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/{brand}%20{name}.png
 ```
 
 ## Konvensi Penamaan File
-- **Nama file** = **Nama produk** (persis dari kolom `product.name` di database) + ekstensi **".png"**
-- Spasi dalam nama produk akan otomatis di-encode menjadi `%20` di URL
+- **Nama file** = **Brand + spasi + Name** (dari kolom `product.brand` dan `product.name` di database) + ekstensi **".png"**
+- Spasi dalam nama akan otomatis di-encode menjadi `%20` di URL
 - Contoh:
-  - Product name: `Casio Classic Leather Brown`
-  - File name: `Casio Classic Leather Brown.png`
-  - URL: `https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/Casio%20Classic%20Leather%20Brown.png`
+  - Product brand: `Casio`
+  - Product name: `G-Shock GA-2100`
+  - File name: `Casio G-Shock GA-2100.png`
+  - URL: `https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/Casio%20G-Shock%20GA-2100.png`
 
 ## Implementasi
 
@@ -25,10 +26,13 @@ Method `getImageUrl()` ditambahkan untuk generate URL gambar:
 ```java
 public String getImageUrl() {
     String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
-    String encodedName = this.name.replace(" ", "%20");
+    String fullName = this.brand + " " + this.name;
+    String encodedName = fullName.replace(" ", "%20");
     return baseUrl + encodedName + ".png";
 }
 ```
+
+**Note:** Format nama file adalah `{brand} {name}.png`, contoh: `Casio G-Shock GA-2100.png`
 
 ### 2. JSP Pages
 Gambar ditampilkan di:
@@ -67,40 +71,66 @@ Jika gambar **gagal dimuat** (error 404 atau network error):
 3. Klik **Storage** di sidebar kiri
 4. Pilih bucket: **Gambar Jam**
 5. Upload gambar dengan nama **persis sama** dengan nama produk + `.png`
-6. Pastikan file di-set sebagai **public**
-
-### Naming Rules:
-- ✅ **BENAR**: `Casio Classic Leather Brown.png`
-- ❌ **SALAH**: `casio-classic-leather-brown.png`
+6. Pastikan file di-seG-Shock GA-2100.png` (brand + spasi + name)
+- ✅ **BENAR**: `Rolex Submariner Date.png`
+- ❌ **SALAH**: `casio-g-shock-ga-2100.png` (lowercase + dash)
+- ❌ **SALAH**: `Casio_G-Shock_GA-2100.png` (underscore)
+- ❌ **SALAH**: `G-Shock GA-2100.png` (tanpa brand)
+- ✅ Gunakan **spasi** antara brand dan name, bukan underscore atau dash
+- ✅ **Case-sensitive** - huruf besar/kecil harus persis sama dengan database
+- ✅ Format: `{product.brand} {product.name}.png`
 - ❌ **SALAH**: `Casio_Classic_Leather_Brown.png`
 - ✅ Gunakan **spasi**, bukan underscore atau dash
-- ✅ **Case-sensitive** - huruf besar/kecil harus persis sama
+- ✅ **Case-sensitive** - huruf format: `{brand} {name}.png`):
 
-## Daftar Produk yang Butuh Gambar
-Berdasarkan database saat ini (17 produk):
+### Rolex Collection
+1. `Rolex Rolex Submariner Date.png`
+2. `Rolex Rolex Datejust 41.png`
+3. `Rolex GMT-Master II.png`
+4. `Rolex Daytona.png`
 
-1. Apple Watch 5.png
-2. Apple Watch Pro.png
-3. Casio Classic Leather Brown.png
-4. Casio G-Shock GA-2100.png
-5. DanielW Slim Mesh Silver.png
-6. Elegant Leather Tan.png
-7. Minimalist Black.png
-8. Rolex Submariner.png
-9. Samsung Galaxy Fit 2.png
-10. Samsung Galaxy Watch 6.png
-11. Smart Pro Titanium.png
-12. Sport Blue Strap.png
-13. Vintage Brown Leather.png
-14. Xiaomi Mi Band 8.png
-15. Xiaomi Smart Band 7 Pro.png
-16. Xiaomi Watch S1.png
-17. ... (dan seterusnya sesuai database)
+### Omega Collection
+5. `Omega Speedmaster Professional.png`
+6. `Omega Seamaster Aqua Terra.png`
+7. `Omega Constellation.png`
 
-## Testing
-Untuk test apakah gambar sudah ter-load:
-```bash
-# Test product page
+### Seiko Collection
+8. `Seiko Presage Cocktail Time.png`
+9. `Seiko Prospex Diver.png`
+10. `Seiko 5 Sports.png`
+
+### Casio G-Shock Collection
+11. `Casio G-Shock GA-2100.png`
+12. `Casio G-Shock MTG-B2000.png`
+13. `Casio G-Shock Mudmaster.png`
+
+### Apple Watch Collection
+14. `Apple Watch Series 9 GPS.png`
+15. `Apple Watch Ultra 2.png`
+16. `Apple Watch Hermes Series 9.png`
+Series%209%20GPS
+### Samsung Galaxy Watch
+17. `Samsung Galaxy Watch 6 Classic.png`
+18. `Samsung Galaxy Watch 6.png`
+
+### Tag Heuer Collection
+19. `Tag Heuer Carrera Chronograph.png`
+20. `Tag Heuer Monaco.png`
+
+### Citizen Collection
+21. `Citizen Eco-Drive Promaster.png`
+format `{product.brand} {product.name}.png` (dengan spasi)
+2. **Cek bucket** - Harus di bucket "Gambar Jam"
+3. **Cek visibility** - File harus public
+4. **Cek ekstensi** - Harus `.png` (lowercase)
+5. **Cek browser console** - Lihat URL yang di-request
+6. **Cek database** - Pastikan brand dan name di database match dengan nama file
+
+### Error 404 pada gambar?
+- Nama file tidak match dengan format `{brand} {name}.png`
+- File belum di-upload ke Supabase Storage
+- Bucket name salah atau bucket private
+- Brand atau name di database berbeda dengan nama file (case-sensitive)
 curl "http://localhost:8080/PBO-Project/products" | grep "supabase.co/storage"
 
 # Test specific image URL

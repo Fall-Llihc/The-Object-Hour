@@ -24,8 +24,9 @@ public class OrderDAO {
      * @return Generated order ID, atau null jika gagal
      */
     public Long createOrder(Order order) {
-        String sql = "INSERT INTO orders (user_id, cart_id, payment_method, status, total_amount, created_at) " +
-                     "VALUES (?, ?, ?, ?, ?, NOW()) RETURNING id";
+        String sql = "INSERT INTO orders (user_id, cart_id, payment_method, status, total_amount, " +
+                     "shipping_name, shipping_phone, shipping_address, shipping_city, shipping_postal_code, notes, created_at) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW()) RETURNING id";
         
         try (Connection conn = JDBC.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -41,6 +42,12 @@ public class OrderDAO {
             stmt.setString(3, order.getPaymentMethod());
             stmt.setString(4, order.getStatus());
             stmt.setBigDecimal(5, order.getTotalAmount());
+            stmt.setString(6, order.getShippingName());
+            stmt.setString(7, order.getShippingPhone());
+            stmt.setString(8, order.getShippingAddress());
+            stmt.setString(9, order.getShippingCity());
+            stmt.setString(10, order.getShippingPostalCode());
+            stmt.setString(11, order.getNotes());
             
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -346,6 +353,14 @@ public class OrderDAO {
         order.setPaymentMethod(rs.getString("payment_method"));
         order.setStatus(rs.getString("status"));
         order.setTotalAmount(rs.getBigDecimal("total_amount"));
+        
+        // Shipping information
+        order.setShippingName(rs.getString("shipping_name"));
+        order.setShippingPhone(rs.getString("shipping_phone"));
+        order.setShippingAddress(rs.getString("shipping_address"));
+        order.setShippingCity(rs.getString("shipping_city"));
+        order.setShippingPostalCode(rs.getString("shipping_postal_code"));
+        order.setNotes(rs.getString("notes"));
         
         Timestamp createdAt = rs.getTimestamp("created_at");
         if (createdAt != null) {
