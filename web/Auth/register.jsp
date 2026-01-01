@@ -43,9 +43,12 @@
         <div class="register-container">
             <div class="card">
                 <div class="card-header text-center">
-                    <h2 class="mb-0"><i class="bi bi-watch"></i> The Object Hour</h2>
-                    <p class="mb-0 mt-2">Create New Account</p>
+                    <a href="${pageContext.request.contextPath}/products" class="text-white text-decoration-none">
+                        <h2 class="mb-0"><i class="bi bi-watch"></i> The Object Hour</h2>
+                        <p class="mb-0 mt-2">Create New Account</p>
+                    </a>
                 </div>
+
                 <div class="card-body p-4">
                     <h4 class="text-center mb-4">Register</h4>
                     
