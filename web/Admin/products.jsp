@@ -13,6 +13,13 @@
         body { background-color: #f9fafb; }
         .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .table-actions { white-space: nowrap; }
+        .card { border-radius: 12px; box-shadow: 0 6px 18px rgba(22,33,62,0.06); }
+        .card .card-body { padding: 1.25rem; }
+        .card-header-gradient { background: linear-gradient(90deg, #6b46c1 0%, #b794f4 100%); color: #fff; border-radius: 12px 12px 0 0; padding: 1rem 1.25rem; }
+        .product-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(0,0,0,0.06); }
+        .table-hover tbody tr:hover { background: linear-gradient(90deg, rgba(102,126,234,0.03), rgba(118,75,162,0.03)); }
+        .btn-theme { background: linear-gradient(90deg,#667eea,#764ba2); color: #fff; border: none; }
+        .fallback-icon { display: inline-flex; align-items: center; justify-content: center; width:64px; height:64px; background:#eef2ff; color:#4c51bf; border-radius:8px; }
     </style>
 </head>
 <body>
@@ -33,8 +40,11 @@
 
     <div class="container-fluid mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2><i class="bi bi-box-seam"></i> Product Management</h2>
-            <a href="${pageContext.request.contextPath}/admin/products/create" class="btn btn-primary">
+            <div>
+                <h2 class="mb-0"><i class="bi bi-box-seam"></i> Product Management</h2>
+                <small class="text-muted">Manage your catalog and product images</small>
+            </div>
+            <a href="${pageContext.request.contextPath}/admin/products/create" class="btn btn-theme">
                 <i class="bi bi-plus-circle"></i> Add New Product
             </a>
         </div>
@@ -48,11 +58,15 @@
         </c:if>
 
         <div class="card">
+            <div class="card-header-gradient">
+                <strong>Products</strong>
+            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead class="table-light">
                             <tr>
+                                <th>Image</th>
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Brand</th>
@@ -67,6 +81,10 @@
                         <tbody>
                             <c:forEach items="${products}" var="product">
                                 <tr>
+                                    <td>
+                                        <img src="${product.imageUrl}" alt="${product.name}" class="product-thumb" onerror="if(this.src !== '${product.imageUrlJpg}') { this.src = '${product.imageUrlJpg}'; } else { this.style.display='none'; this.nextElementSibling.style.display='inline-flex'; }">
+                                        <span class="fallback-icon" style="display:none;"><i class="bi bi-watch" style="font-size:1.25rem"></i></span>
+                                    </td>
                                     <td>${product.id}</td>
                                     <td>${product.name}</td>
                                     <td>${product.brand}</td>
@@ -93,16 +111,32 @@
                                         </c:if>
                                     </td>
                                     <td class="table-actions">
-                                        <a href="${pageContext.request.contextPath}/admin/products/edit?id=${product.id}" 
-                                           class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-pencil"></i> Edit
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/admin/products/delete?id=${product.id}" 
-                                           class="btn btn-sm btn-outline-danger"
-                                           onclick="return confirm('Deactivate this product?')">
-                                            <i class="bi bi-trash"></i> Delete
-                                        </a>
-                                    </td>
+                                    <a href="${pageContext.request.contextPath}/admin/products/edit?id=${product.id}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+
+                                    <c:choose>
+                                        <c:when test="${product.active}">
+                                            <a href="${pageContext.request.contextPath}/admin/products/delete?id=${product.id}" 
+                                               class="btn btn-sm btn-outline-danger"
+                                               onclick="return confirm('Nonaktifkan produk ini?')">
+                                                <i class="bi bi-x-circle"></i> Deactivate
+                                            </a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="${pageContext.request.contextPath}/admin/products/activate?id=${product.id}" 
+                                               class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-check-circle"></i> Activate
+                                            </a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <a href="${pageContext.request.contextPath}/admin/products/hard-delete?id=${product.id}" 
+                                        class="btn btn-sm btn-danger" 
+                                        onclick="return confirm('PERINGATAN: Data akan dihapus selamanya dari database. Lanjutkan?')">
+                                        <i class="bi bi-trash-fill"></i> Delete
+                                     </a>
+                                </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
