@@ -211,6 +211,11 @@ public class ProductService {
         return success;
     }
     
+    public boolean hardDeleteProduct(Long productId) {
+        if (productId == null) return false;
+        return productDAO.hardDeleteProduct(productId);
+    }
+    
     /**
      * Check if product is available (in stock and active)
      * 
