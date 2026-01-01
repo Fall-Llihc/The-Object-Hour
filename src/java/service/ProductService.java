@@ -1,9 +1,10 @@
 package service;
 
-import dao.ProductDAO;
-import model.Product;
 import java.math.BigDecimal;
 import java.util.List;
+
+import dao.ProductDAO;
+import model.Product;
 
 /**
  * ProductService - Service layer untuk manajemen produk
@@ -78,6 +79,28 @@ public class ProductService {
             return getAllActiveProducts();
         }
         return productDAO.searchByName(keyword);
+    }
+    
+    /**
+     * Get distinct brands from database
+     * 
+     * @return List of unique brand names
+     */
+    public List<String> getDistinctBrands() {
+        return productDAO.findDistinctBrands();
+    }
+    
+    /**
+     * Search for brands containing keyword
+     * 
+     * @param keyword Search keyword
+     * @return List of matching brand names
+     */
+    public List<String> searchBrands(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return getDistinctBrands();
+        }
+        return productDAO.searchBrands(keyword);
     }
     
     /**

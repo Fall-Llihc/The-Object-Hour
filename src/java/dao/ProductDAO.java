@@ -1,11 +1,15 @@
 package dao;
 
-import config.JDBC;
-import model.Product;
-import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
+import config.JDBC;
+import model.Product;
 
 /**
  * ProductDAO - Data Access Object untuk tabel products
@@ -202,6 +206,57 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return products;
+    }
+    
+    /**
+     * Get distinct brands from database
+     * 
+     * @return List of unique brand names
+     */
+    public List<String> findDistinctBrands() {
+        List<String> brands = new ArrayList<>();
+        String sql = "SELECT DISTINCT brand FROM products WHERE is_active = true ORDER BY brand ASC";
+        
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            
+            while (rs.next()) {
+                brands.add(rs.getString("brand"));
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error getting distinct brands: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return brands;
+    }
+    
+    /**
+     * Search for brands containing keyword
+     * 
+     * @param keyword Search keyword
+     * @return List of matching brand names
+     */
+    public List<String> searchBrands(String keyword) {
+        List<String> brands = new ArrayList<>();
+        String sql = "SELECT DISTINCT brand FROM products WHERE is_active = true AND brand ILIKE ? ORDER BY brand ASC";
+        
+        try (Connection conn = JDBC.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, "%" + keyword + "%");
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()) {
+                brands.add(rs.getString("brand"));
+            }
+            
+        } catch (SQLException e) {
+            System.err.println("Error searching brands: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return brands;
     }
     
     /**
