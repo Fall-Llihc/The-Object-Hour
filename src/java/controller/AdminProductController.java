@@ -233,6 +233,34 @@ public class AdminProductController extends HttpServlet {
                 boolean success = productService.updateProduct(product);
                 
                 if (success) {
+                    // Handle optional image upload (PNG/JPG). Field name: image
+                    try {
+                        javax.servlet.http.Part imagePart = request.getPart("image");
+                        if (imagePart != null && imagePart.getSize() > 0) {
+                            String submitted = imagePart.getSubmittedFileName();
+                            String lower = (submitted != null) ? submitted.toLowerCase() : "";
+                            String ext = ".png";
+                            String contentType = imagePart.getContentType();
+                            if (lower.endsWith(".jpg") || lower.endsWith(".jpeg") || "image/jpeg".equalsIgnoreCase(contentType)) {
+                                ext = ".jpg";
+                                contentType = "image/jpeg";
+                            } else {
+                                ext = ".png";
+                                contentType = "image/png";
+                            }
+
+                            String filename = product.getBrand() + " " + product.getName() + ext;
+                            boolean uploaded = storageService.uploadFile(imagePart.getInputStream(), filename, contentType);
+                            if (!uploaded) {
+                                request.getSession().setAttribute("warning", "Gagal meng-upload gambar ke Supabase. Periksa konfigurasi service key.");
+                            }
+                        }
+                    } catch (Exception ex) {
+                        // Log and continue — product was updated but image upload failed
+                        System.err.println("Image upload error: " + ex.getMessage());
+                        request.getSession().setAttribute("warning", "Error saat upload gambar: " + ex.getMessage());
+                    }
+                    
                     request.getSession().setAttribute("success", "Produk berhasil diupdate");
                     response.sendRedirect(request.getContextPath() + "/admin/products");
                 } else {
