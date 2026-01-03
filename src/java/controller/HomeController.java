@@ -74,10 +74,19 @@ public class HomeController extends HttpServlet {
      * Get userId from session
      */
     private Long getUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null) {
             return null;
         }
-        return (Long) session.getAttribute("userId");
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return null;
+        }
+        if (userIdObj instanceof Long) {
+            return (Long) userIdObj;
+        } else if (userIdObj instanceof Integer) {
+            return ((Integer) userIdObj).longValue();
+        }
+        return null;
     }
 }

@@ -9,6 +9,34 @@
     <title>Order #${order.id} - The Object Hour</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Dark Mode -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/darkmode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        html.dark-mode body{background-color:#1a1d24!important;color:#d8dee9!important}
+        html.dark-mode nav,html.dark-mode .navbar,html.dark-mode .bg-white,html.dark-mode .bg-light{background-color:#242933!important;border-color:#3b4252!important}
+        html.dark-mode .bg-gray-50{background-color:#1a1d24!important}
+        html.dark-mode .bg-gray-100{background-color:#2a303c!important}
+        html.dark-mode .text-gray-900,html.dark-mode .text-gray-800,html.dark-mode .text-dark{color:#eceff4!important}
+        html.dark-mode .text-gray-700{color:#d8dee9!important}
+        html.dark-mode .text-gray-600,html.dark-mode .text-gray-500,html.dark-mode .text-muted{color:#9aa5b5!important}
+        html.dark-mode .border-gray-200,html.dark-mode .border-b,html.dark-mode .border{border-color:#3b4252!important}
+        html.dark-mode input,html.dark-mode select,html.dark-mode textarea,html.dark-mode .form-control{background-color:#2e3440!important;border-color:#3b4252!important;color:#eceff4!important}
+        html.dark-mode footer{background-color:#242933!important;border-color:#3b4252!important}
+        /* Order cards */
+        html.dark-mode .order-card,html.dark-mode .card{background-color:#2a303c!important;border-color:#3d4555!important}
+        html.dark-mode .card-body-custom{background-color:#2a303c!important}
+        /* Order items */
+        html.dark-mode .order-item{background-color:#343b4a!important}
+        html.dark-mode .info-row{border-color:#3b4252!important}
+        html.dark-mode .info-label{color:#9aa5b5!important}
+        html.dark-mode .info-value{color:#eceff4!important}
+        html.dark-mode .total-section{background-color:#343b4a!important}
+        html.dark-mode .total-row{border-color:#3b4252!important}
+        html.dark-mode .shipping-address{background-color:#343b4a!important}
+        html.dark-mode .text-blue-600{color:#81a1c1!important}
+        html.dark-mode .modal-content{background-color:#2a303c!important}
+    </style>
     <style>
         :root {
             --primary: #667eea;
@@ -222,6 +250,13 @@
     </style>
 </head>
 <body>
+    <!-- Dark Mode Toggle -->
+    <div style="position: fixed; top: 1rem; right: 1rem; z-index: 1000;">
+        <button type="button" class="dark-mode-toggle" title="Toggle Dark Mode">
+            <i class="bi bi-moon-fill"></i>
+        </button>
+    </div>
+    
     <div class="order-container">
         <!-- Header -->
         <div class="text-center mb-4">
@@ -247,7 +282,7 @@
                 <div>
                     <h5 class="mb-1">Order #${order.id}</h5>
                     <small class="opacity-75">
-                        <fmt:formatDate value="${order.createdAt}" pattern="dd MMMM yyyy, HH:mm" locale="id_ID"/>
+                        ${order.createdAtFormatted}
                     </small>
                 </div>
                 <div>
@@ -434,7 +469,7 @@
                         <c:if test="${order.status == 'PAID' && not empty order.paidAt}">
                             <div class="alert alert-success mt-3 mb-0">
                                 <small class="d-block mb-1"><i class="bi bi-calendar-check me-2"></i>Dibayar pada:</small>
-                                <strong><fmt:formatDate value="${order.paidAt}" pattern="dd MMMM yyyy, HH:mm" locale="id_ID"/></strong>
+                                <strong>${order.paidAtFormatted}</strong>
                             </div>
                         </c:if>
                     </div>
@@ -494,5 +529,6 @@
             }
         }
     </script>
+    <script>(function(){function u(){var d=document.documentElement.classList.contains('dark-mode'),b=document.getElementsByClassName('dark-mode-toggle');for(var i=0;i<b.length;i++){var c=b[i].getElementsByTagName('i')[0];if(c)c.className=d?'bi bi-sun-fill':'bi bi-moon-fill';}}function t(){var h=document.documentElement;if(h.classList.contains('dark-mode')){h.classList.remove('dark-mode');localStorage.setItem('darkMode','false');}else{h.classList.add('dark-mode');localStorage.setItem('darkMode','true');}u();}var b=document.getElementsByClassName('dark-mode-toggle');for(var i=0;i<b.length;i++){b[i].onclick=t;}u();window.toggleDarkMode=t;})();</script>
 </body>
 </html>

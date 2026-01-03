@@ -2,6 +2,7 @@ package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,6 +106,16 @@ public class Order implements IReportable{
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+    
+    /**
+     * Get formatted createdAt for JSP display
+     * @return formatted date string "dd MMMM yyyy, HH:mm"
+     */
+    public String getCreatedAtFormatted() {
+        if (createdAt == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy, HH:mm");
+        return createdAt.format(formatter);
+    }
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
@@ -112,6 +123,16 @@ public class Order implements IReportable{
 
     public LocalDateTime getPaidAt() {
         return paidAt;
+    }
+    
+    /**
+     * Get formatted paidAt for JSP display
+     * @return formatted date string "dd MMMM yyyy, HH:mm"
+     */
+    public String getPaidAtFormatted() {
+        if (paidAt == null) return "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy, HH:mm");
+        return paidAt.format(formatter);
     }
 
     public void setPaidAt(LocalDateTime paidAt) {
@@ -210,6 +231,26 @@ public class Order implements IReportable{
 
     public void cancel() {
         this.status = "CANCELLED";
+    }
+    
+    /**
+     * Get formatted created date for JSP display
+     * @return Formatted date string "dd MMM yyyy, HH:mm"
+     */
+    public String getFormattedCreatedAt() {
+        if (createdAt == null) return "-";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
+        return createdAt.format(formatter);
+    }
+    
+    /**
+     * Get formatted paid date for JSP display
+     * @return Formatted date string "dd MMM yyyy, HH:mm"
+     */
+    public String getFormattedPaidAt() {
+        if (paidAt == null) return "-";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm");
+        return paidAt.format(formatter);
     }
     
     @Override

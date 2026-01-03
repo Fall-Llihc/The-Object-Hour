@@ -38,6 +38,9 @@ public class OrderController extends HttpServlet {
         Long userId = getUserId(request);
         if (userId == null) {
             System.out.println("OrderController.doGet - User not logged in, redirecting to login");
+            HttpSession session = request.getSession(true);
+            session.setAttribute("error", "Please login to view your orders");
+            session.setAttribute("redirectAfterLogin", request.getRequestURI());
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }
@@ -60,6 +63,10 @@ public class OrderController extends HttpServlet {
             case "cancel":
                 System.out.println("OrderController.doGet - Cancelling order");
                 cancelOrder(request, response);
+                break;
+            case "history":
+                System.out.println("OrderController.doGet - Showing order history");
+                showOrderHistory(request, response);
                 break;
             default:
                 System.out.println("OrderController.doGet - Unknown action, showing order list");
@@ -148,15 +155,50 @@ public class OrderController extends HttpServlet {
     }
     
     /**
+     * Show order history with items
+     */
+    private void showOrderHistory(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        Long userId = getUserId(request);
+        List<Order> orders = orderService.getOrdersByUser(userId);
+        
+        // Load order items for each order
+        for (Order order : orders) {
+            Order fullOrder = orderService.getOrderById(order.getId());
+            if (fullOrder != null) {
+                order.setItems(fullOrder.getItems());
+            }
+        }
+        
+        request.setAttribute("orders", orders);
+        
+        request.getRequestDispatcher("/Customer/history.jsp").forward(request, response);
+    }
+    
+    /**
      * Get user ID from session
+     * Uses getSession(true) to ensure session exists and is not accidentally invalidated
      */
     private Long getUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null) {
             return null;
         }
         
-        return (Long) session.getAttribute("userId");
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return null;
+        }
+        
+        // Handle both Long and Integer types
+        if (userIdObj instanceof Long) {
+            return (Long) userIdObj;
+        } else if (userIdObj instanceof Integer) {
+            return ((Integer) userIdObj).longValue();
+        }
+        
+        return null;
     }
     
     /**

@@ -9,6 +9,24 @@
     <title>${empty product ? 'Add Product' : 'Edit Product'} - Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Dark Mode -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/darkmode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        html.dark-mode body{background-color:#1a1d24!important;color:#d8dee9!important}
+        html.dark-mode nav,html.dark-mode .navbar,html.dark-mode .bg-white,html.dark-mode .bg-light{background-color:#242933!important;border-color:#3b4252!important}
+        html.dark-mode .bg-gray-50{background-color:#1a1d24!important}
+        html.dark-mode .bg-gray-100{background-color:#242933!important}
+        html.dark-mode .text-gray-900,html.dark-mode .text-gray-800,html.dark-mode .text-dark{color:#eceff4!important}
+        html.dark-mode .text-gray-700{color:#d8dee9!important}
+        html.dark-mode .text-gray-600,html.dark-mode .text-gray-500,html.dark-mode .text-muted{color:#8892a2!important}
+        html.dark-mode .border-gray-200,html.dark-mode .border-b{border-color:#3b4252!important}
+        html.dark-mode input,html.dark-mode select,html.dark-mode textarea,html.dark-mode .form-control{background-color:#2e3440!important;border-color:#3b4252!important;color:#eceff4!important}
+        html.dark-mode footer,html.dark-mode .card{background-color:#242933!important;border-color:#3b4252!important}
+        html.dark-mode .table{color:#d8dee9!important}html.dark-mode .table thead th{background-color:#2e3440!important}
+        html.dark-mode .modal-content{background-color:#242933!important}
+        html.dark-mode .text-blue-600{color:#5e81ac!important}
+    </style>
     <style>
         body { background-color: #f9fafb; }
         .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
@@ -26,6 +44,12 @@
                     <li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/admin/products">Products</a></li>
                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/reports">Reports</a></li>
                     <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/auth/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                    <!-- Dark Mode Toggle -->
+                    <li class="nav-item ms-2">
+                        <button type="button" class="dark-mode-toggle" title="Toggle Dark Mode">
+                            <i class="bi bi-moon-fill"></i>
+                        </button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -162,5 +186,6 @@
             });
         })();
     </script>
+    <script>(function(){function u(){var d=document.documentElement.classList.contains('dark-mode'),b=document.getElementsByClassName('dark-mode-toggle');for(var i=0;i<b.length;i++){var c=b[i].getElementsByTagName('i')[0];if(c)c.className=d?'bi bi-sun-fill':'bi bi-moon-fill';}}function t(){var h=document.documentElement;if(h.classList.contains('dark-mode')){h.classList.remove('dark-mode');localStorage.setItem('darkMode','false');}else{h.classList.add('dark-mode');localStorage.setItem('darkMode','true');}u();}var b=document.getElementsByClassName('dark-mode-toggle');for(var i=0;i<b.length;i++){b[i].onclick=t;}u();window.toggleDarkMode=t;})();</script>
 </body>
 </html>

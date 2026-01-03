@@ -5,6 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Internal Server Error - The Object Hour</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Dark Mode CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/darkmode.css">
+    <script src="${pageContext.request.contextPath}/js/darkmode.js"></script>
 </head>
 <body class="bg-light">
     <div class="container mt-5">

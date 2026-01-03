@@ -9,6 +9,32 @@
     <title>Pesanan Saya - The Object Hour</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Dark Mode -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/darkmode.css">
+    <script>if(localStorage.getItem('darkMode')==='true'){document.documentElement.classList.add('dark-mode');}</script>
+    <style>
+        html.dark-mode body{background-color:#1a1d24!important;color:#d8dee9!important}
+        html.dark-mode nav,html.dark-mode .navbar,html.dark-mode .bg-white,html.dark-mode .bg-light{background-color:#242933!important;border-color:#3b4252!important}
+        html.dark-mode .bg-gray-50{background-color:#1a1d24!important}
+        html.dark-mode .bg-gray-100{background-color:#2a303c!important}
+        html.dark-mode .text-gray-900,html.dark-mode .text-gray-800,html.dark-mode .text-dark{color:#eceff4!important}
+        html.dark-mode .text-gray-700{color:#d8dee9!important}
+        html.dark-mode .text-gray-600,html.dark-mode .text-gray-500,html.dark-mode .text-muted{color:#9aa5b5!important}
+        html.dark-mode .border-gray-200,html.dark-mode .border-b,html.dark-mode .border{border-color:#3b4252!important}
+        html.dark-mode input,html.dark-mode select,html.dark-mode textarea,html.dark-mode .form-control{background-color:#2e3440!important;border-color:#3b4252!important;color:#eceff4!important}
+        html.dark-mode footer{background-color:#242933!important;border-color:#3b4252!important}
+        /* Order cards */
+        html.dark-mode .order-card,html.dark-mode .card{background-color:#2a303c!important;border-color:#3d4555!important}
+        html.dark-mode .order-card:hover{background-color:#2e3542!important}
+        html.dark-mode .order-header{background:linear-gradient(135deg,#343b4a 0%,#2e3440 100%)!important;border-color:#3b4252!important}
+        html.dark-mode .order-body{background-color:#2a303c!important}
+        /* Product items */
+        html.dark-mode .product-item,html.dark-mode .bg-gray-50{background-color:#343b4a!important}
+        html.dark-mode .text-blue-600{color:#81a1c1!important}
+        html.dark-mode .modal-content{background-color:#2a303c!important}
+        html.dark-mode .table{color:#d8dee9!important}
+        html.dark-mode .table thead th{background-color:#2e3440!important}
+    </style>
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -181,10 +207,40 @@
             color: white;
             opacity: 0.85;
         }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            color: #e0e7ff;
+        }
     </style>
 </head>
 <body>
     <div class="orders-container">
+        <!-- Top Bar with Back Link and Dark Mode Toggle -->
+        <div class="top-bar">
+            <a href="${pageContext.request.contextPath}/products" class="back-link">
+                <i class="bi bi-arrow-left"></i> Kembali ke Produk
+            </a>
+            <button type="button" class="dark-mode-toggle" title="Toggle Dark Mode">
+                <i class="bi bi-moon-fill"></i>
+            </button>
+        </div>
+        
         <div class="page-header">
             <h1><i class="bi bi-bag-check"></i> Pesanan Saya</h1>
             <p>Lacak dan kelola semua pesanan Anda</p>
@@ -594,5 +650,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>(function(){function u(){var d=document.documentElement.classList.contains('dark-mode'),b=document.getElementsByClassName('dark-mode-toggle');for(var i=0;i<b.length;i++){var c=b[i].getElementsByTagName('i')[0];if(c)c.className=d?'bi bi-sun-fill':'bi bi-moon-fill';}}function t(){var h=document.documentElement;if(h.classList.contains('dark-mode')){h.classList.remove('dark-mode');localStorage.setItem('darkMode','false');}else{h.classList.add('dark-mode');localStorage.setItem('darkMode','true');}u();}var b=document.getElementsByClassName('dark-mode-toggle');for(var i=0;i<b.length;i++){b[i].onclick=t;}u();window.toggleDarkMode=t;})();</script>
 </body>
 </html>

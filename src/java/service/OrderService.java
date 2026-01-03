@@ -1,12 +1,27 @@
 package service;
 
-import dao.*;
-import model.*;
-
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import dao.CartDAO;
+import dao.CartItemDAO;
+import dao.OrderDAO;
+import dao.OrderItemDAO;
+import dao.ProductDAO;
+import model.BankTransferPayment;
+import model.Cart;
+import model.CartItem;
+import model.CashPayment;
+import model.EWalletPayment;
+import model.Order;
+import model.OrderItem;
+import model.PaymentMethod;
+import model.Product;
 
 /**
  * OrderService - Service layer untuk manajemen order dan checkout
@@ -30,10 +45,27 @@ public class OrderService {
 
     /**
      * Checkout cart menjadi order dengan informasi penerima
+     * Supports partial checkout - hanya checkout item yang dipilih
      */
     public Long checkout(Long userId, PaymentMethod paymentMethod,
                          String shippingName, String shippingPhone, String shippingAddress,
-                         String shippingCity, String shippingState, String shippingPostalCode, String notes) {
+                         String shippingCity, String shippingState, String shippingPostalCode, 
+                         String notes) {
+        // Call overloaded method with null selectedItemIds (checkout all items)
+        return checkout(userId, paymentMethod, shippingName, shippingPhone, shippingAddress,
+                       shippingCity, shippingState, shippingPostalCode, notes, null);
+    }
+
+    /**
+     * Checkout cart menjadi order dengan informasi penerima
+     * Supports partial checkout - hanya checkout item yang dipilih
+     * 
+     * @param selectedItemIds Comma-separated cart item IDs to checkout (null = all items)
+     */
+    public Long checkout(Long userId, PaymentMethod paymentMethod,
+                         String shippingName, String shippingPhone, String shippingAddress,
+                         String shippingCity, String shippingState, String shippingPostalCode, 
+                         String notes, String selectedItemIds) {
 
         if (userId == null || paymentMethod == null) {
             System.out.println("User ID and Payment Method are required");
@@ -53,14 +85,45 @@ public class OrderService {
             return null;
         }
 
-        List<CartItem> cartItems = cartItemDAO.findAllByCartId(cart.getId());
-        if (cartItems == null || cartItems.isEmpty()) {
+        List<CartItem> allCartItems = cartItemDAO.findAllByCartId(cart.getId());
+        if (allCartItems == null || allCartItems.isEmpty()) {
             System.out.println("Cart is empty");
             return null;
         }
 
+        // Determine which items to checkout
+        List<CartItem> itemsToCheckout;
+        List<CartItem> itemsToKeep = new ArrayList<>();
+        
+        if (selectedItemIds != null && !selectedItemIds.trim().isEmpty()) {
+            // Parse selected item IDs
+            Set<Long> selectedIds = parseSelectedItemIds(selectedItemIds);
+            
+            itemsToCheckout = new ArrayList<>();
+            for (CartItem item : allCartItems) {
+                if (selectedIds.contains(item.getId())) {
+                    itemsToCheckout.add(item);
+                } else {
+                    itemsToKeep.add(item);
+                }
+            }
+            
+            if (itemsToCheckout.isEmpty()) {
+                System.out.println("No valid items selected for checkout");
+                return null;
+            }
+            
+            System.out.println("Partial checkout: " + itemsToCheckout.size() + " items selected, " + 
+                             itemsToKeep.size() + " items will remain in cart");
+        } else {
+            // Checkout all items
+            itemsToCheckout = allCartItems;
+            System.out.println("Full checkout: " + itemsToCheckout.size() + " items");
+        }
+
+        // Validate and calculate total for selected items
         BigDecimal totalAmount = BigDecimal.ZERO;
-        for (CartItem item : cartItems) {
+        for (CartItem item : itemsToCheckout) {
             Product product = productDAO.findById(item.getProductId());
             if (product == null || !product.isActive() || product.getStock() < item.getQuantity()) {
                 System.out.println("Product unavailable or insufficient stock: " +
@@ -96,7 +159,8 @@ public class OrderService {
             return null;
         }
 
-        for (CartItem cartItem : cartItems) {
+        // Create order items only for selected items
+        for (CartItem cartItem : itemsToCheckout) {
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderId(orderId);
             orderItem.setProductId(cartItem.getProductId());
@@ -129,8 +193,40 @@ public class OrderService {
             System.out.println("Order created but payment pending: #" + orderId);
         }
 
-        cartDAO.deactivateCart(cart.getId());
+        // Handle cart after checkout
+        if (itemsToKeep.isEmpty()) {
+            // All items checked out - deactivate the cart
+            cartDAO.deactivateCart(cart.getId());
+            System.out.println("All items checked out, cart deactivated");
+        } else {
+            // Partial checkout - remove only checked out items, keep the rest
+            for (CartItem checkedOutItem : itemsToCheckout) {
+                cartItemDAO.deleteItem(checkedOutItem.getId());
+            }
+            System.out.println("Partial checkout complete, " + itemsToKeep.size() + " items remain in cart");
+        }
+        
         return orderId;
+    }
+    
+    /**
+     * Parse comma-separated item IDs string to Set
+     */
+    private Set<Long> parseSelectedItemIds(String selectedItemIds) {
+        Set<Long> ids = new HashSet<>();
+        if (selectedItemIds == null || selectedItemIds.trim().isEmpty()) {
+            return ids;
+        }
+        
+        String[] parts = selectedItemIds.split(",");
+        for (String part : parts) {
+            try {
+                ids.add(Long.parseLong(part.trim()));
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid cart item ID: " + part);
+            }
+        }
+        return ids;
     }
 
     public Order getOrderById(Long orderId) {
