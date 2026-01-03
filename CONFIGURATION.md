@@ -45,6 +45,18 @@ Untuk menjaga keamanan dan menghindari konflik development:
 - `nbproject/project.properties` - Konfigurasi project NetBeans
 - `nbproject/genfiles.properties` - Generated files properties
 - File XML konfigurasi (`build.xml`, `web.xml`, dll)
+- **Library files** (`lib/*.jar`) - **PENTING**: Dependencies harus di-push
+
+### Library Dependencies
+
+#### 📚 **Required Libraries in `lib/` folder**:
+- `postgresql-42.7.3.jar` - PostgreSQL database driver
+- `openpdf-1.3.26.jar` - PDF generation library (untuk export reports)
+
+#### 🔧 **Library Management**:
+- Libraries ada di `lib/` folder dan **TIDAK di-ignore**
+- Semua developer harus memiliki libraries yang sama
+- Jika ada library baru, harus di-commit ke repository
 
 ### Configuration Files
 
