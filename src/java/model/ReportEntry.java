@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * 
  * @author The Object Hour Team
  */
-public class ReportEntry {
+public class ReportEntry implements IReportable{
     private Long productId;
     private String productName;
     private String productBrand;
@@ -46,6 +46,27 @@ public class ReportEntry {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+    
+    @Override
+    public String getReportLabel() {
+        String brand = (productBrand != null) ? productBrand : "";
+        String name  = (productName != null) ? productName : "";
+
+        if (!brand.isEmpty() && !name.isEmpty()) return brand + " - " + name;
+        if (!name.isEmpty()) return name;
+        if (productId != null) return "Product #" + productId;
+        return "Unknown Product";
+    }
+
+    @Override
+    public BigDecimal getReportRevenue() {
+        return (totalRevenue != null) ? totalRevenue : BigDecimal.ZERO;
+    }
+
+    @Override
+    public int getReportQuantity() {
+        return totalQuantitySold;
     }
 
     public String getProductBrand() {

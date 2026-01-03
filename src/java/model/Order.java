@@ -5,13 +5,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Order Entity Model
  * Represents orders table in database
  * 
  * @author The Object Hour Team
  */
-public class Order {
+public class Order implements IReportable{
     private Long id;
     private Long userId;
     private Long cartId;
@@ -209,6 +210,27 @@ public class Order {
 
     public void cancel() {
         this.status = "CANCELLED";
+    }
+    
+    @Override
+    public String getReportLabel() {
+        return "Order #" + id;
+    }
+
+    @Override
+    public BigDecimal getReportRevenue() {
+        return (totalAmount != null) ? totalAmount : BigDecimal.ZERO;
+    }
+
+    @Override
+    public LocalDateTime getReportDate() {
+        // Untuk laporan, biasanya pakai paidAt kalau ada
+        return (paidAt != null) ? paidAt : createdAt;
+    }
+
+    @Override
+    public String getReportStatus() {
+        return status;
     }
 
     @Override
