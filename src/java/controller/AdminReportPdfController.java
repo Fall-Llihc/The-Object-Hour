@@ -2,23 +2,16 @@ package controller;
 
 import model.SalesReport;
 import model.User;
-import service.DataStore;
 import service.ReportService;
 
 import java.io.IOException;
 import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
-/**
- * AdminReportController - Controller untuk laporan penjualan (Admin only)
- */
-@WebServlet(name = "AdminReportController", urlPatterns = {"/admin/reports"})
-public class AdminReportController extends HttpServlet {
+@WebServlet(name="AdminReportPdfController", urlPatterns={"/admin/reports/pdf"})
+public class AdminReportPdfController extends HttpServlet {
 
     private ReportService reportService;
 
@@ -36,10 +29,6 @@ public class AdminReportController extends HttpServlet {
             return;
         }
 
-        // refresh snapshot data aplikasi (tugas DataStore)
-        DataStore.getInstance().refreshAll();
-
-        // type dari query param, default "products"
         String type = request.getParameter("type");
         if (type == null || type.trim().isEmpty()) type = "products";
         type = type.toLowerCase();
@@ -47,31 +36,25 @@ public class AdminReportController extends HttpServlet {
         Timestamp startTs = parseStart(request);
         Timestamp endTs = parseEnd(request);
 
-        // generate SalesReport (1 objek report untuk JSP)
-        SalesReport report;
-        if ("orders".equals(type)) {
-            report = reportService.generateOrderSalesReport(startTs, endTs);
-        } else {
-            type = "products"; // normalize
-            report = reportService.generateProductSalesReport(startTs, endTs);
-        }
+        SalesReport report = "orders".equals(type)
+                ? reportService.generateOrderSalesReport(startTs, endTs)
+                : reportService.generateProductSalesReport(startTs, endTs);
 
-        request.setAttribute("type", type);
-        request.setAttribute("report", report);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition",
+                "inline; filename=\"sales-report-" + type + ".pdf\"");
 
-        request.setAttribute("startDate", request.getParameter("startDate"));
-        request.setAttribute("endDate", request.getParameter("endDate"));
-
-        // snapshot DataStore untuk ditampilkan di bagian bawah
-        request.setAttribute("store", DataStore.getInstance());
-
-        request.getRequestDispatcher("/Admin/report.jsp").forward(request, response);
+        reportService.exportReportToPdf(
+                report, type,
+                request.getParameter("startDate"),
+                request.getParameter("endDate"),
+                response.getOutputStream()
+        );
     }
 
     private boolean isAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) return false;
-
         User user = (User) session.getAttribute("user");
         return user != null && user.isAdmin();
     }
@@ -79,16 +62,12 @@ public class AdminReportController extends HttpServlet {
     private Timestamp parseStart(HttpServletRequest request) {
         String start = request.getParameter("startDate");
         if (start == null || start.isEmpty()) return null;
-
-        // start: YYYY-MM-DD 00:00:00
         return Timestamp.valueOf(java.time.LocalDate.parse(start).atStartOfDay());
     }
 
     private Timestamp parseEnd(HttpServletRequest request) {
         String end = request.getParameter("endDate");
         if (end == null || end.isEmpty()) return null;
-
-        // end inclusive: +1 hari, jadi BETWEEN start AND endPlus1
         return Timestamp.valueOf(java.time.LocalDate.parse(end).plusDays(1).atStartOfDay());
     }
 }
