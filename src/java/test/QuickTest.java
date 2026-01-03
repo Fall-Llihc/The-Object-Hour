@@ -1,18 +1,39 @@
 package test;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Properties;
 
 public class QuickTest {
     public static void main(String[] args) {
         System.out.println("=== Quick Database Test ===\n");
         
-        // GANTI DENGAN CREDENTIALS SUPABASE KAMU!
-        String url = "jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:5432/postgres";
-        String user = "postgres.ykdfyoirtmkscsygyedr";
-        String password = "ObjectHour123";
+        // Load configuration from db.properties
+        String url = null;
+        String user = null;
+        String password = null;
+        
+        try {
+            Properties props = new Properties();
+            InputStream input = QuickTest.class.getResourceAsStream("/config/db.properties");
+            if (input != null) {
+                props.load(input);
+                url = props.getProperty("db.url");
+                user = props.getProperty("db.user");
+                password = props.getProperty("db.password");
+                input.close();
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading db.properties: " + e.getMessage());
+        }
+        
+        // Fallback to environment variables if properties not found
+        if (url == null) url = System.getenv("DB_URL");
+        if (user == null) user = System.getenv("DB_USER");
+        if (password == null) password = System.getenv("DB_PASSWORD");
         
         System.out.println("Testing connection to:");
         System.out.println("URL: " + url);

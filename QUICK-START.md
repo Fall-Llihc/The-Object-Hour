@@ -16,12 +16,26 @@ git clone <repo-url>
 cd The-Object-Hour
 ```
 
-Edit file `src/java/config/db.properties` dengan kredensial Supabase kalian:
+**Setup Database Configuration:**
+
+1. Copy environment file:
+```bash
+cp .env.example .env
+```
+
+2. Edit `.env` file dengan kredensial Supabase Anda:
 ```properties
-db.url=jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres
-db.user=postgres.ykdfyoirtmkscsygyedr
-db.password=YOUR_PASSWORD_HERE
-db.driver=org.postgresql.Driver
+DB_URL=jdbc:postgresql://YOUR_HOST:5432/postgres?sslmode=require
+DB_USER=YOUR_DATABASE_USER  
+DB_PASSWORD=YOUR_DATABASE_PASSWORD
+SUPABASE_URL=https://YOUR_PROJECT_ID.supabase.co
+```
+
+3. **ATAU** edit file `src/java/config/db.properties` (alternatif):
+```properties
+db.url=jdbc:postgresql://aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require
+db.user=postgres.xgpzjbssvucrbzfglolt
+db.password=TheObjectHour123
 ```
 
 #### 2. Build & Run (Satu perintah!)

@@ -45,11 +45,11 @@ cd The-Object-Hour
 4. Di **Connection String**, pilih **Session pooler**
 5. Copy informasi ini:
    ```
-   Host: aws-1-ap-south-1.pooler.supabase.com
+   Host: aws-1-ap-southeast-1.pooler.supabase.com
    Port: 5432
    Database: postgres
-   User: postgres.ykdfyoirtmkscsygyedr
-   Password: ObjectHour123
+   User: postgres.xgpzjbssvucrbzfglolt
+   Password: TheObjectHour123
    ```
 
 **B. Edit File `src/java/config/db.properties`:**
@@ -64,9 +64,9 @@ nano src/java/config/db.properties
 Isi dengan kredensial Supabase:
 ```properties
 # PostgreSQL Supabase Database Configuration
-db.url=jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres
-db.user=postgres.ykdfyoirtmkscsygyedr
-db.password=ObjectHour123
+db.url=jdbc:postgresql://aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require
+db.user=postgres.xgpzjbssvucrbzfglolt
+db.password=TheObjectHour123
 db.driver=org.postgresql.Driver
 ```
 

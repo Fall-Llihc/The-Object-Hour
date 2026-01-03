@@ -15,11 +15,14 @@ COPY dist/PBO-Project.war /usr/local/tomcat/webapps/PBO-Project.war
 EXPOSE 8080
 
 # Set environment variables for database (can be overridden in docker-compose)
-ENV DB_HOST=aws-0-ap-south-1.pooler.supabase.com
-ENV DB_PORT=5432
-ENV DB_NAME=postgres
-ENV DB_USER=postgres.ykdfyoirtmkscsygyedr
-ENV DB_PASSWORD=your_password_here
+# These will be loaded from .env file via docker-compose.yml
+ENV DB_URL=${DB_URL}
+ENV DB_USER=${DB_USER}
+ENV DB_PASSWORD=${DB_PASSWORD}
+ENV DB_DRIVER=${DB_DRIVER}
+ENV SUPABASE_URL=${SUPABASE_URL}
+ENV SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+ENV SUPABASE_BUCKET=${SUPABASE_BUCKET}
 
 # Start Tomcat
 CMD ["catalina.sh", "run"]

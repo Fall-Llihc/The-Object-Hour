@@ -3,6 +3,8 @@ package model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import config.SupabaseConfig;
+
 /**
  * Product Entity Model
  * Represents products table in database
@@ -144,7 +146,11 @@ public class Product {
      * @return Full URL to product image in Supabase Storage
      */
     public String getImageUrl() {
-        String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+        String baseUrl = SupabaseConfig.getStorageBaseUrl();
+        if (baseUrl == null) {
+            // Fallback URL if config not loaded
+            return "#";
+        }
         String fullName = this.brand + " " + this.name;
         String encodedName = fullName.replace(" ", "%20");
         return baseUrl + encodedName + ".png";
@@ -156,7 +162,11 @@ public class Product {
      * @return Full URL to product image in Supabase Storage (JPG)
      */
     public String getImageUrlJpg() {
-        String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+        String baseUrl = SupabaseConfig.getStorageBaseUrl();
+        if (baseUrl == null) {
+            // Fallback URL if config not loaded
+            return "#";
+        }
         String fullName = this.brand + " " + this.name;
         String encodedName = fullName.replace(" ", "%20");
         return baseUrl + encodedName + ".jpg";

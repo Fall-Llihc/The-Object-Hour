@@ -5,7 +5,7 @@ Gambar produk jam ditampilkan dari **Supabase Storage** bucket bernama **"Gambar
 
 ## URL Pattern
 ```
-https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/{brand}%20{name}.png
+https://xgpzjbssvucrbzfglolt.supabase.co/storage/v1/object/public/Gambar%20Jam/{brand}%20{name}.png
 ```
 
 ## Konvensi Penamaan File
@@ -15,7 +15,7 @@ https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/{
   - Product brand: `Casio`
   - Product name: `G-Shock GA-2100`
   - File name: `Casio G-Shock GA-2100.png`
-  - URL: `https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/Casio%20G-Shock%20GA-2100.png`
+  - URL: `https://xgpzjbssvucrbzfglolt.supabase.co/storage/v1/object/public/Gambar%20Jam/Casio%20G-Shock%20GA-2100.png`
 
 ## Implementasi
 
@@ -25,7 +25,7 @@ File: `src/java/model/Product.java`
 Method `getImageUrl()` ditambahkan untuk generate URL gambar:
 ```java
 public String getImageUrl() {
-    String baseUrl = "https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/";
+    String baseUrl = "https://xgpzjbssvucrbzfglolt.supabase.co/storage/v1/object/public/Gambar%20Jam/";
     String fullName = this.brand + " " + this.name;
     String encodedName = fullName.replace(" ", "%20");
     return baseUrl + encodedName + ".png";

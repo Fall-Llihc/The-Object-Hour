@@ -51,9 +51,9 @@ nano src/java/config/db.properties
 Isi dengan kredensial yang baru didapat:
 ```properties
 # PostgreSQL Supabase Database Configuration
-db.url=jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres
-db.user=postgres.ykdfyoirtmkscsygyedr
-db.password=ObjectHour123
+db.url=jdbc:postgresql://aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require
+db.user=postgres.xgpzjbssvucrbzfglolt
+db.password=TheObjectHour123
 db.driver=org.postgresql.Driver
 ```
 

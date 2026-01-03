@@ -8,13 +8,18 @@ services:
     container_name: the-object-hour
     ports:
       - "8081:8080"  # External port 8081 → Internal Tomcat port 8080
+    env_file:
+      - .env  # Load all environment variables from .env file
     environment:
-      # Database Configuration (Supabase)
-      - DB_HOST=aws-1-ap-south-1.pooler.supabase.com
-      - DB_PORT=5432
-      - DB_NAME=postgres
-      - DB_USER=postgres.ykdfyoirtmkscsygyedr
+      # Database Configuration (loaded from .env)
+      - DB_URL=${DB_URL}
+      - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+      - DB_DRIVER=${DB_DRIVER}
+      # Supabase Configuration (loaded from .env)
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - SUPABASE_BUCKET=${SUPABASE_BUCKET}
     restart: unless-stopped
     networks:
       - app-network

@@ -79,9 +79,9 @@ public class JDBC {
         
         if (DB_URL == null || DB_USER == null || DB_PASSWORD == null) {
             // Development fallback (remove in production!)
-            DB_URL = "jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres";
-            DB_USER = "postgres.ykdfyoirtmkscsygyedr";
-            DB_PASSWORD = "ObjectHour123";
+            DB_URL = "jdbc:postgresql://aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require";
+            DB_USER = "postgres.xgpzjbssvucrbzfglolt";
+            DB_PASSWORD = "TheObjectHour123";
         }
         
         try {

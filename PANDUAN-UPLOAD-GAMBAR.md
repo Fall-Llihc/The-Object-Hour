@@ -7,7 +7,7 @@ Saat ini halaman products sudah siap menampilkan gambar, tapi karena gambar belu
 
 ## URL Format
 ```
-https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/{Nama_Produk}.png
+https://xgpzjbssvucrbzfglolt.supabase.co/storage/v1/object/public/Gambar%20Jam/{Nama_Produk}.png
 ```
 
 ## Daftar Gambar yang Harus Di-Upload
@@ -49,7 +49,7 @@ https://supabase.com/dashboard
 
 ### 2. Pilih Project
 - Klik project: **The Object Hour**
-- URL: `https://ykdfyoirtmkscsygyedr.supabase.co`
+- URL: `https://xgpzjbssvucrbzfglolt.supabase.co`
 
 ### 3. Buka Storage
 - Di sidebar kiri, klik **"Storage"**
@@ -71,7 +71,7 @@ Jika bucket "Gambar Jam" baru dibuat:
 ### 6. Verify Upload
 Test URL gambar di browser:
 ```
-https://ykdfyoirtmkscsygyedr.supabase.co/storage/v1/object/public/Gambar%20Jam/Apple%20Watch%205.png
+https://xgpzjbssvucrbzfglolt.supabase.co/storage/v1/object/public/Gambar%20Jam/Apple%20Watch%205.png
 ```
 
 Jika berhasil → Gambar muncul  
