@@ -1,0 +1,604 @@
+/* ============================================
+   🌙 DARK MODE - The Object Hour
+   Professional & Harmonious Color Palette
+   ============================================ */
+
+/* ============================================
+   TOGGLE BUTTON - Clean Style
+   ============================================ */
+.dark-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 10px;
+    background: #e5e7eb;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dark-mode-toggle:hover {
+    background: #d1d5db;
+    transform: scale(1.05);
+}
+
+.dark-mode-toggle:active {
+    transform: scale(0.95);
+}
+
+.dark-mode-toggle i {
+    font-size: 1.2rem;
+    color: #4b5563;
+    transition: all 0.3s ease;
+}
+
+/* Dark mode toggle button state */
+html.dark-mode .dark-mode-toggle {
+    background: #3b4252;
+}
+
+html.dark-mode .dark-mode-toggle:hover {
+    background: #434c5e;
+}
+
+html.dark-mode .dark-mode-toggle i {
+    color: #ebcb8b;
+}
+
+/* ============================================
+   🎨 DARK MODE COLOR PALETTE
+   Nord-inspired with warm accents
+   
+   Background Layers:
+   - Base: #1a1d24 (darkest)
+   - Surface: #242933 (cards, containers)
+   - Elevated: #2e3440 (hover states)
+   
+   Text:
+   - Primary: #eceff4 (headings)
+   - Secondary: #d8dee9 (body text)
+   - Muted: #8892a2 (hints, placeholders)
+   
+   Borders: #3b4252
+   Accent: #5e81ac (blue), #88c0d0 (cyan)
+   ============================================ */
+
+/* Base Background */
+html.dark-mode,
+html.dark-mode body {
+    background-color: #1a1d24 !important;
+    color: #d8dee9 !important;
+}
+
+/* Surface Elements - Cards, Containers */
+html.dark-mode .bg-white,
+html.dark-mode .bg-light {
+    background-color: #242933 !important;
+}
+
+html.dark-mode .bg-gray-50 {
+    background-color: #1a1d24 !important;
+}
+
+html.dark-mode .bg-gray-100 {
+    background-color: #242933 !important;
+}
+
+/* Navbar - Slightly elevated */
+html.dark-mode nav,
+html.dark-mode .navbar {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Text Hierarchy */
+html.dark-mode .text-gray-900,
+html.dark-mode .text-gray-800 {
+    color: #eceff4 !important;
+}
+
+html.dark-mode .text-gray-700 {
+    color: #d8dee9 !important;
+}
+
+html.dark-mode .text-gray-600 {
+    color: #b8c0cc !important;
+}
+
+html.dark-mode .text-gray-500,
+html.dark-mode .text-gray-400 {
+    color: #8892a2 !important;
+}
+
+html.dark-mode .text-dark {
+    color: #eceff4 !important;
+}
+
+html.dark-mode .text-muted {
+    color: #8892a2 !important;
+}
+
+html.dark-mode h1, 
+html.dark-mode h2, 
+html.dark-mode h3, 
+html.dark-mode h4, 
+html.dark-mode h5, 
+html.dark-mode h6 {
+    color: #eceff4 !important;
+}
+
+html.dark-mode p {
+    color: #d8dee9;
+}
+
+html.dark-mode label {
+    color: #d8dee9 !important;
+}
+
+html.dark-mode a:not(.btn):not([class*="bg-"]) {
+    color: #88c0d0;
+}
+
+/* Cards & Containers */
+html.dark-mode .card,
+html.dark-mode .rounded-xl,
+html.dark-mode .rounded-2xl,
+html.dark-mode .rounded-lg {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode .card-header {
+    background-color: #2e3440 !important;
+    border-color: #3b4252 !important;
+    color: #eceff4 !important;
+}
+
+html.dark-mode .card-body {
+    background-color: #242933 !important;
+    color: #d8dee9 !important;
+}
+
+/* Product Cards hover */
+html.dark-mode .group:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Forms & Inputs */
+html.dark-mode input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+html.dark-mode textarea,
+html.dark-mode select,
+html.dark-mode .form-control,
+html.dark-mode .form-select {
+    background-color: #2e3440 !important;
+    border-color: #3b4252 !important;
+    color: #eceff4 !important;
+}
+
+html.dark-mode input:focus,
+html.dark-mode textarea:focus,
+html.dark-mode select:focus {
+    border-color: #5e81ac !important;
+    box-shadow: 0 0 0 3px rgba(94, 129, 172, 0.2) !important;
+}
+
+html.dark-mode input::placeholder,
+html.dark-mode textarea::placeholder {
+    color: #6b7280 !important;
+}
+
+html.dark-mode .input-group-text {
+    background-color: #3b4252 !important;
+    border-color: #3b4252 !important;
+    color: #d8dee9 !important;
+}
+
+/* Sidebar / Filters */
+html.dark-mode aside,
+html.dark-mode .sidebar {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+}
+
+/* Borders */
+html.dark-mode .border,
+html.dark-mode .border-gray-200,
+html.dark-mode .border-gray-300,
+html.dark-mode .border-b {
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode hr {
+    border-color: #3b4252 !important;
+}
+
+/* Tables */
+html.dark-mode .table {
+    color: #d8dee9 !important;
+}
+
+html.dark-mode .table thead th {
+    background-color: #2e3440 !important;
+    border-color: #3b4252 !important;
+    color: #eceff4 !important;
+}
+
+html.dark-mode .table td,
+html.dark-mode .table th {
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode .table tbody tr {
+    background-color: #242933 !important;
+}
+
+html.dark-mode .table-hover tbody tr:hover {
+    background-color: #2e3440 !important;
+}
+
+/* Dropdown */
+html.dark-mode .dropdown-menu {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+html.dark-mode .dropdown-item {
+    color: #d8dee9 !important;
+}
+
+html.dark-mode .dropdown-item:hover {
+    background-color: #2e3440 !important;
+    color: #eceff4 !important;
+}
+
+/* Footer */
+html.dark-mode footer {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+    color: #8892a2 !important;
+}
+
+/* Modal */
+html.dark-mode .modal-content {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode .modal-header,
+html.dark-mode .modal-footer {
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* Buttons - Keep brand colors but adjust */
+html.dark-mode .btn-outline-secondary {
+    color: #d8dee9 !important;
+    border-color: #4b5563 !important;
+}
+
+html.dark-mode .btn-outline-secondary:hover {
+    background-color: #3b4252 !important;
+    color: #eceff4 !important;
+}
+
+html.dark-mode .btn-light {
+    background-color: #3b4252 !important;
+    border-color: #4b5563 !important;
+    color: #eceff4 !important;
+}
+
+/* Disabled buttons */
+html.dark-mode button:disabled,
+html.dark-mode .btn:disabled {
+    background-color: #3b4252 !important;
+    color: #6b7280 !important;
+    border-color: #3b4252 !important;
+}
+
+/* Shadows - Darker for dark mode */
+html.dark-mode .shadow,
+html.dark-mode .shadow-sm,
+html.dark-mode .shadow-lg {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* List items */
+html.dark-mode .list-group-item {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+    color: #d8dee9 !important;
+}
+
+/* Pagination */
+html.dark-mode .page-link {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+    color: #d8dee9 !important;
+}
+
+html.dark-mode .page-item.active .page-link {
+    background-color: #5e81ac !important;
+    border-color: #5e81ac !important;
+}
+
+/* Scrollbar */
+html.dark-mode ::-webkit-scrollbar {
+    width: 8px;
+}
+
+html.dark-mode ::-webkit-scrollbar-track {
+    background: #1a1d24;
+}
+
+html.dark-mode ::-webkit-scrollbar-thumb {
+    background: #3b4252;
+    border-radius: 4px;
+}
+
+html.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+}
+
+/* Alerts - Softer colors */
+html.dark-mode .alert-info {
+    background-color: rgba(94, 129, 172, 0.15) !important;
+    color: #88c0d0 !important;
+    border-color: rgba(94, 129, 172, 0.3) !important;
+}
+
+html.dark-mode .alert-success {
+    background-color: rgba(163, 190, 140, 0.15) !important;
+    color: #a3be8c !important;
+    border-color: rgba(163, 190, 140, 0.3) !important;
+}
+
+html.dark-mode .alert-warning {
+    background-color: rgba(235, 203, 139, 0.15) !important;
+    color: #ebcb8b !important;
+    border-color: rgba(235, 203, 139, 0.3) !important;
+}
+
+html.dark-mode .alert-danger {
+    background-color: rgba(191, 97, 106, 0.15) !important;
+    color: #bf616a !important;
+    border-color: rgba(191, 97, 106, 0.3) !important;
+}
+
+/* Checkboxes and Radio - Custom styling */
+html.dark-mode input[type="checkbox"],
+html.dark-mode input[type="radio"] {
+    accent-color: #5e81ac;
+}
+
+/* Selection highlight */
+html.dark-mode ::selection {
+    background-color: #5e81ac;
+    color: #eceff4;
+}
+
+/* Breadcrumb */
+html.dark-mode .breadcrumb {
+    background-color: transparent !important;
+}
+
+html.dark-mode .breadcrumb-item a {
+    color: #88c0d0 !important;
+}
+
+html.dark-mode .breadcrumb-item.active {
+    color: #d8dee9 !important;
+}
+
+/* Badge adjustments */
+html.dark-mode .badge {
+    font-weight: 500;
+}
+
+/* Specific component fixes */
+html.dark-mode .order-summary,
+html.dark-mode [class*="summary"] {
+    background-color: #242933 !important;
+}
+
+/* Product grid background fix */
+html.dark-mode .bg-gray-100.h-48,
+html.dark-mode [class*="bg-gray-100"][class*="h-48"] {
+    background-color: #2e3440 !important;
+}
+
+/* Keep gradient sections as-is (Hero, etc.) */
+html.dark-mode .bg-gradient-to-r {
+    /* Don't override gradients */
+}
+
+/* Blue accent text should stay blue */
+html.dark-mode .text-blue-600 {
+    color: #5e81ac !important;
+}
+
+html.dark-mode .text-blue-500 {
+    color: #81a1c1 !important;
+}
+
+/* ============================================
+   🛒 PRODUCT CARDS - Enhanced Dark Mode
+   ============================================ */
+
+/* Product card container */
+html.dark-mode .product-card {
+    background-color: #2a303c !important;
+    border-color: #3d4555 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .product-card:hover {
+    background-color: #2e3542 !important;
+    border-color: #4a5568 !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Product image placeholder background */
+html.dark-mode .product-image {
+    background-color: #363d4d !important;
+    background: linear-gradient(145deg, #3a4252 0%, #2d3441 100%) !important;
+}
+
+/* Placeholder icon styling */
+html.dark-mode .product-image .bi-smartwatch,
+html.dark-mode .product-image .bi-watch,
+html.dark-mode .product-image [class*="bi-"] {
+    color: #6b7a94 !important;
+    opacity: 0.7;
+}
+
+/* Product info section */
+html.dark-mode .product-card .p-4,
+html.dark-mode .product-card .px-4,
+html.dark-mode .product-card .py-4 {
+    background-color: transparent !important;
+}
+
+/* Brand name (small text above product name) */
+html.dark-mode .product-card .text-xs,
+html.dark-mode .product-card .text-sm.text-gray-500 {
+    color: #8899aa !important;
+}
+
+/* Product name */
+html.dark-mode .product-card h3,
+html.dark-mode .product-card .font-semibold,
+html.dark-mode .product-card .font-medium {
+    color: #e8eef5 !important;
+}
+
+/* Price styling */
+html.dark-mode .product-card .text-blue-600,
+html.dark-mode .product-card .font-bold {
+    color: #81a1c1 !important;
+}
+
+/* Stock badge colors */
+html.dark-mode .stock-badge {
+    font-weight: 600;
+}
+
+/* Out of stock button */
+html.dark-mode .product-card button:disabled,
+html.dark-mode .product-card .btn:disabled {
+    background-color: #3d4555 !important;
+    color: #6b7a8a !important;
+    border-color: #3d4555 !important;
+}
+
+/* Add to cart button */
+html.dark-mode .add-to-cart-btn {
+    background-color: #5e81ac !important;
+}
+
+html.dark-mode .add-to-cart-btn:hover {
+    background-color: #81a1c1 !important;
+}
+
+/* ============================================
+   📋 FILTER SIDEBAR - Enhanced
+   ============================================ */
+
+html.dark-mode .filter-sidebar {
+    background-color: #242933 !important;
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode .filter-sidebar label {
+    color: #c8d1db !important;
+}
+
+html.dark-mode .filter-sidebar .text-sm {
+    color: #a8b4c2 !important;
+}
+
+html.dark-mode .filter-sidebar h3,
+html.dark-mode .filter-sidebar .font-bold {
+    color: #e8eef5 !important;
+}
+
+html.dark-mode .filter-sidebar input[type="text"],
+html.dark-mode .filter-sidebar input[type="number"] {
+    background-color: #2e3440 !important;
+    border-color: #3b4252 !important;
+    color: #e8eef5 !important;
+}
+
+html.dark-mode .filter-sidebar input::placeholder {
+    color: #6b7a8a !important;
+}
+
+/* ============================================
+   📦 PRODUCTS AREA - Background
+   ============================================ */
+
+html.dark-mode .products-area {
+    background-color: #1a1d24 !important;
+}
+
+html.dark-mode .products-area .text-gray-600 {
+    color: #9aa5b5 !important;
+}
+
+/* Sort dropdown */
+html.dark-mode .products-area select {
+    background-color: #2e3440 !important;
+    border-color: #3b4252 !important;
+    color: #e8eef5 !important;
+}
+
+/* Pagination in products page */
+html.dark-mode .pagination-btn {
+    background-color: #2a303c !important;
+    color: #d0d8e2 !important;
+    border-color: #3b4252 !important;
+}
+
+html.dark-mode .pagination-btn:hover {
+    background-color: #3b4252 !important;
+}
+
+html.dark-mode .pagination-btn.active {
+    background-color: #5e81ac !important;
+    color: #ffffff !important;
+}
+
+/* ============================================
+   🏠 HOME PAGE - Category Cards
+   ============================================ */
+
+html.dark-mode .rounded-2xl.p-8 {
+    background-color: #2a303c !important;
+    border-color: #3d4555 !important;
+}
+
+html.dark-mode .rounded-2xl.p-8:hover {
+    background-color: #2e3542 !important;
+    border-color: #5e81ac !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Category icon circles */
+html.dark-mode .bg-blue-100 {
+    background-color: rgba(94, 129, 172, 0.2) !important;
+}
+
+html.dark-mode .bg-purple-100 {
+    background-color: rgba(180, 142, 173, 0.2) !important;
+}
+
+html.dark-mode .bg-green-100 {
+    background-color: rgba(163, 190, 140, 0.2) !important;
+}

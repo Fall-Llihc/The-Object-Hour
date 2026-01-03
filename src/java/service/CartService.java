@@ -1,13 +1,17 @@
 package service;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import dao.CartDAO;
 import dao.CartItemDAO;
 import dao.ProductDAO;
 import model.Cart;
 import model.CartItem;
 import model.Product;
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * CartService - Service layer untuk manajemen keranjang belanja
@@ -57,6 +61,67 @@ public class CartService {
         }
         
         return cart;
+    }
+    
+    /**
+     * Get cart with specific selected items only
+     * 
+     * @param userId User ID
+     * @param selectedItemIds Comma-separated string of cart item IDs
+     * @return Cart object with only selected items
+     */
+    public Cart getCartWithSelectedItems(Long userId, String selectedItemIds) {
+        Cart cart = getOrCreateCart(userId);
+        
+        if (cart != null && selectedItemIds != null && !selectedItemIds.trim().isEmpty()) {
+            List<CartItem> allItems = cartItemDAO.findAllByCartId(cart.getId());
+            List<CartItem> selectedItems = new ArrayList<>();
+            
+            // Parse selected item IDs
+            String[] itemIds = selectedItemIds.split(",");
+            Set<Long> selectedIdSet = new HashSet<>();
+            
+            for (String idStr : itemIds) {
+                try {
+                    selectedIdSet.add(Long.parseLong(idStr.trim()));
+                } catch (NumberFormatException e) {
+                    System.err.println("Invalid cart item ID: " + idStr);
+                }
+            }
+            
+            // Filter items based on selected IDs
+            for (CartItem item : allItems) {
+                if (selectedIdSet.contains(item.getId())) {
+                    selectedItems.add(item);
+                }
+            }
+            
+            cart.setItems(selectedItems);
+        }
+        
+        return cart;
+    }
+    
+    /**
+     * Calculate total for specific cart items
+     * 
+     * @param cart Cart with filtered items
+     * @return Total amount
+     */
+    public BigDecimal calculateCartTotal(Cart cart) {
+        BigDecimal total = BigDecimal.ZERO;
+        
+        if (cart != null && cart.getItems() != null) {
+            for (CartItem item : cart.getItems()) {
+                if (item.getSubtotal() != null) {
+                    total = total.add(item.getSubtotal());
+                } else {
+                    total = total.add(item.getUnitPrice().multiply(new BigDecimal(item.getQuantity())));
+                }
+            }
+        }
+        
+        return total;
     }
     
     /**

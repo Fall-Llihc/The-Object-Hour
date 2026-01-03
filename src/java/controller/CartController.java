@@ -34,6 +34,9 @@ public class CartController extends HttpServlet {
         // Check if user is logged in
         Long userId = getUserId(request);
         if (userId == null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("error", "Please login to access your shopping cart");
+            session.setAttribute("redirectAfterLogin", request.getContextPath() + "/cart");
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }
@@ -64,6 +67,8 @@ public class CartController extends HttpServlet {
         // Check if user is logged in
         Long userId = getUserId(request);
         if (userId == null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("error", "Please login to manage your cart");
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }
@@ -201,14 +206,27 @@ public class CartController extends HttpServlet {
     
     /**
      * Get user ID from session
+     * Uses getSession(true) to ensure session exists and is not accidentally invalidated
      */
     private Long getUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null) {
             return null;
         }
         
-        return (Long) session.getAttribute("userId");
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return null;
+        }
+        
+        // Handle both Long and Integer types
+        if (userIdObj instanceof Long) {
+            return (Long) userIdObj;
+        } else if (userIdObj instanceof Integer) {
+            return ((Integer) userIdObj).longValue();
+        }
+        
+        return null;
     }
     
     /**

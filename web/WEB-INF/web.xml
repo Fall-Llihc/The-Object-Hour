@@ -18,12 +18,15 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
     
-    <!-- Session Configuration (30 minutes timeout) -->
+    <!-- Session Configuration (60 minutes timeout for better user experience) -->
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>60</session-timeout>
         <cookie-config>
             <http-only>true</http-only>
+            <secure>false</secure>
+            <max-age>3600</max-age>
         </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
     </session-config>
     
     <!-- Error Pages -->

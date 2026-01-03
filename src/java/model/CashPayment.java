@@ -54,11 +54,9 @@ public class CashPayment implements PaymentMethod {
     @Override
     public boolean validatePayment(BigDecimal amount) {
         // Validasi amount harus lebih dari 0
-        // Bisa juga ada batas maksimal untuk COD
-        BigDecimal maxCashAmount = new BigDecimal("5000000"); // Max 5 juta untuk COD
+        // COD tidak ada batas maksimal untuk luxury items
         return amount != null && 
-               amount.compareTo(BigDecimal.ZERO) > 0 && 
-               amount.compareTo(maxCashAmount) <= 0;
+               amount.compareTo(BigDecimal.ZERO) > 0;
     }
 
     // Getters and Setters
