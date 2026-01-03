@@ -103,15 +103,39 @@ public class AuthController extends HttpServlet {
         User user = authService.login(username, password);
         
         if (user != null) {
-            // Login success - create session
-            HttpSession session = request.getSession();
+            // Login success - create session with proper configuration
+            HttpSession session = request.getSession(true);
+            
+            // Invalidate any existing session first to prevent session fixation
+            if (session != null && session.getAttribute("userId") == null) {
+                // Session is new or empty, just use it
+            } else if (session != null) {
+                // Get redirect URL before invalidating
+                String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+                session.invalidate();
+                session = request.getSession(true);
+                if (redirectUrl != null) {
+                    session.setAttribute("redirectAfterLogin", redirectUrl);
+                }
+            }
+            
+            // Set session attributes
             session.setAttribute("user", user);
             session.setAttribute("userId", user.getId());
             session.setAttribute("username", user.getUsername());
             session.setAttribute("role", user.getRole());
             
-            // Redirect based on role
-            if (user.isAdmin()) {
+            // Set session timeout to 60 minutes (in seconds)
+            session.setMaxInactiveInterval(60 * 60);
+            
+            // Check for redirect after login
+            String redirectUrl = (String) session.getAttribute("redirectAfterLogin");
+            session.removeAttribute("redirectAfterLogin");
+            
+            // Redirect based on role or saved URL
+            if (redirectUrl != null && !redirectUrl.contains("/auth/")) {
+                response.sendRedirect(redirectUrl);
+            } else if (user.isAdmin()) {
                 response.sendRedirect(request.getContextPath() + "/admin/products");
             } else {
                 response.sendRedirect(request.getContextPath() + "/products");

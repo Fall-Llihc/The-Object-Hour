@@ -152,6 +152,34 @@ public class ProductController extends HttpServlet {
                     .collect(java.util.stream.Collectors.toList());
         }
         
+        // Get sorting parameter
+        String sortBy = request.getParameter("sort");
+        if (sortBy != null && !sortBy.trim().isEmpty()) {
+            switch (sortBy) {
+                case "name-asc":
+                    allProducts.sort((p1, p2) -> p1.getName().compareToIgnoreCase(p2.getName()));
+                    break;
+                case "name-desc":
+                    allProducts.sort((p1, p2) -> p2.getName().compareToIgnoreCase(p1.getName()));
+                    break;
+                case "price-asc":
+                    allProducts.sort((p1, p2) -> p1.getPrice().compareTo(p2.getPrice()));
+                    break;
+                case "price-desc":
+                    allProducts.sort((p1, p2) -> p2.getPrice().compareTo(p1.getPrice()));
+                    break;
+                case "stock-asc":
+                    allProducts.sort((p1, p2) -> Integer.compare(p1.getStock(), p2.getStock()));
+                    break;
+                case "stock-desc":
+                    allProducts.sort((p1, p2) -> Integer.compare(p2.getStock(), p1.getStock()));
+                    break;
+                default:
+                    // Default: no sorting or sort by name
+                    break;
+            }
+        }
+        
         // Calculate pagination
         int totalProducts = allProducts.size();
         int totalPages = (int) Math.ceil((double) totalProducts / ITEMS_PER_PAGE);
@@ -180,6 +208,7 @@ public class ProductController extends HttpServlet {
         request.setAttribute("minPrice", minPriceStr != null ? minPriceStr : "");
         request.setAttribute("maxPrice", maxPriceStr != null ? maxPriceStr : "");
         request.setAttribute("inStock", "true".equals(inStockStr));
+        request.setAttribute("sortBy", sortBy != null ? sortBy : "");
         
         // Get all available brands for dynamic checkbox creation
         List<String> allAvailableBrands = productService.getDistinctBrands();
@@ -313,10 +342,19 @@ public class ProductController extends HttpServlet {
      * Get user ID from session
      */
     private Long getUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null) {
             return null;
         }
-        return (Long) session.getAttribute("userId");
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return null;
+        }
+        if (userIdObj instanceof Long) {
+            return (Long) userIdObj;
+        } else if (userIdObj instanceof Integer) {
+            return ((Integer) userIdObj).longValue();
+        }
+        return null;
     }
 }

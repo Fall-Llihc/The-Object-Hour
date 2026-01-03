@@ -25,9 +25,10 @@ public class PaymentSuccessController extends HttpServlet {
         System.out.println("PaymentSuccessController.doGet - Request received");
         
         // Check if user is logged in
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null || session.getAttribute("userId") == null) {
             System.out.println("PaymentSuccessController.doGet - User not logged in, redirecting to login");
+            session.setAttribute("error", "Please login to view your order confirmation");
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }

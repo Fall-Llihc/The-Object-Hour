@@ -38,6 +38,9 @@ public class CheckoutController extends HttpServlet {
         // Check if user is logged in
         Long userId = getUserId(request);
         if (userId == null) {
+            HttpSession session = request.getSession(true);
+            session.setAttribute("error", "Please login to proceed with checkout");
+            session.setAttribute("redirectAfterLogin", request.getContextPath() + "/checkout");
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }
@@ -67,6 +70,8 @@ public class CheckoutController extends HttpServlet {
         Long userId = getUserId(request);
         if (userId == null) {
             System.out.println("CheckoutController.doPost - User not logged in");
+            HttpSession session = request.getSession(true);
+            session.setAttribute("error", "Your session has expired. Please login again to complete checkout");
             response.sendRedirect(request.getContextPath() + "/auth/login");
             return;
         }
@@ -106,20 +111,62 @@ public class CheckoutController extends HttpServlet {
         // Debug logging
         System.out.println("CheckoutController.showCheckoutPage - User ID: " + userId);
         
+        // Get selected items from request parameter
+        String selectedItemsParam = request.getParameter("selectedItems");
+        System.out.println("CheckoutController.showCheckoutPage - Selected items: " + selectedItemsParam);
+        
+        Cart cart = cartService.getCartWithItems(userId);
+        
+        // If specific items are selected, filter the cart
+        if (selectedItemsParam != null && !selectedItemsParam.trim().isEmpty()) {
+            cart = cartService.getCartWithSelectedItems(userId, selectedItemsParam);
+        }
+        
         // Validate cart before checkout
-        boolean isValid = cartService.validateCartForCheckout(userId);
+        boolean isValid = (cart != null && cart.getItems() != null && !cart.getItems().isEmpty());
         
         System.out.println("CheckoutController.showCheckoutPage - Cart valid: " + isValid);
         
         if (!isValid) {
             System.out.println("CheckoutController.showCheckoutPage - Redirecting to cart (invalid)");
-            request.getSession().setAttribute("error", "Keranjang kosong atau ada produk yang tidak tersedia. Silakan tambahkan produk ke keranjang terlebih dahulu.");
+            request.getSession().setAttribute("error", "Tidak ada item yang dipilih untuk checkout. Silakan pilih item di keranjang.");
             response.sendRedirect(request.getContextPath() + "/cart");
             return;
         }
         
-        Cart cart = cartService.getCartWithItems(userId);
-        BigDecimal total = cartService.getCartTotal(userId);
+        // STOCK VALIDATION - Check if all items have sufficient stock
+        StringBuilder stockIssues = new StringBuilder();
+        boolean hasStockIssues = false;
+        
+        for (model.CartItem item : cart.getItems()) {
+            if (item.getProduct() == null) {
+                stockIssues.append("• Item tidak valid\n");
+                hasStockIssues = true;
+                continue;
+            }
+            
+            int availableStock = item.getProduct().getStock();
+            int requestedQty = item.getQuantity();
+            
+            if (availableStock <= 0) {
+                stockIssues.append("• ").append(item.getProduct().getName()).append(" - Stok habis\n");
+                hasStockIssues = true;
+            } else if (requestedQty > availableStock) {
+                stockIssues.append("• ").append(item.getProduct().getName())
+                          .append(" - Stok tidak cukup (tersedia: ").append(availableStock)
+                          .append(", diminta: ").append(requestedQty).append(")\n");
+                hasStockIssues = true;
+            }
+        }
+        
+        if (hasStockIssues) {
+            System.out.println("CheckoutController.showCheckoutPage - Stock issues detected: " + stockIssues.toString());
+            request.getSession().setAttribute("error", "Tidak dapat melanjutkan checkout karena masalah stok:\n" + stockIssues.toString());
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+        }
+        
+        BigDecimal total = cartService.calculateCartTotal(cart);
         
         System.out.println("CheckoutController.showCheckoutPage - Cart items: " + (cart != null && cart.getItems() != null ? cart.getItems().size() : 0));
         System.out.println("CheckoutController.showCheckoutPage - Total: " + total);
@@ -127,6 +174,7 @@ public class CheckoutController extends HttpServlet {
         
         request.setAttribute("cartItems", cart.getItems());
         request.setAttribute("totalPrice", total);
+        request.setAttribute("selectedItemIds", selectedItemsParam);
         
         request.getRequestDispatcher("/Customer/checkout.jsp").forward(request, response);
     }
@@ -152,6 +200,7 @@ public class CheckoutController extends HttpServlet {
         String shippingState = request.getParameter("shippingState");
         String shippingPostalCode = request.getParameter("shippingPostalCode");
         String notes = request.getParameter("notes");
+        String selectedItemIds = request.getParameter("selectedItemIds");
         
         System.out.println("Payment Type: " + paymentType);
         System.out.println("Shipping Name: " + shippingName);
@@ -160,6 +209,7 @@ public class CheckoutController extends HttpServlet {
         System.out.println("Shipping City: " + shippingCity);
         System.out.println("Shipping State: " + shippingState);
         System.out.println("Shipping Postal Code: " + shippingPostalCode);
+        System.out.println("Selected Item IDs: " + selectedItemIds);
         
         // Validate payment method
         if (paymentType == null || paymentType.trim().isEmpty()) {
@@ -183,9 +233,19 @@ public class CheckoutController extends HttpServlet {
         }
         System.out.println("Validation OK: Shipping information");
         
-        // Validate cart
+        // Get cart items (selected items if specified)
+        Cart cart;
+        if (selectedItemIds != null && !selectedItemIds.trim().isEmpty()) {
+            cart = cartService.getCartWithSelectedItems(userId, selectedItemIds);
+            System.out.println("Processing checkout for selected items: " + selectedItemIds);
+        } else {
+            cart = cartService.getCartWithItems(userId);
+            System.out.println("Processing checkout for all cart items");
+        }
+        
+        // Validate cart has items
         System.out.println("Validating cart...");
-        boolean isValid = cartService.validateCartForCheckout(userId);
+        boolean isValid = (cart != null && cart.getItems() != null && !cart.getItems().isEmpty());
         System.out.println("Cart validation result: " + isValid);
         
         if (!isValid) {
@@ -195,8 +255,39 @@ public class CheckoutController extends HttpServlet {
             return;
         }
         System.out.println("Validation OK: Cart is valid");
+                // STOCK VALIDATION - Check if all items have sufficient stock before processing order
+        StringBuilder stockIssues = new StringBuilder();
+        boolean hasStockIssues = false;
         
-        // Create payment method (POLYMORPHISM!)
+        for (model.CartItem item : cart.getItems()) {
+            if (item.getProduct() == null) {
+                stockIssues.append("• Item tidak valid\n");
+                hasStockIssues = true;
+                continue;
+            }
+            
+            int availableStock = item.getProduct().getStock();
+            int requestedQty = item.getQuantity();
+            
+            if (availableStock <= 0) {
+                stockIssues.append("• ").append(item.getProduct().getName()).append(" - Stok habis\n");
+                hasStockIssues = true;
+            } else if (requestedQty > availableStock) {
+                stockIssues.append("• ").append(item.getProduct().getName())
+                          .append(" - Stok tidak cukup (tersedia: ").append(availableStock)
+                          .append(", diminta: ").append(requestedQty).append(")\n");
+                hasStockIssues = true;
+            }
+        }
+        
+        if (hasStockIssues) {
+            System.out.println("VALIDATION FAILED: Stock issues - " + stockIssues.toString());
+            request.getSession().setAttribute("error", "Tidak dapat memproses pesanan karena masalah stok:\n" + stockIssues.toString());
+            response.sendRedirect(request.getContextPath() + "/cart");
+            return;
+        }
+        System.out.println("Validation OK: Stock is sufficient");
+                // Create payment method (POLYMORPHISM!)
         System.out.println("Creating payment method: " + paymentType);
         PaymentMethod paymentMethod = orderService.createPaymentMethod(paymentType);
         
@@ -212,7 +303,8 @@ public class CheckoutController extends HttpServlet {
         System.out.println("Calling orderService.checkout()...");
         Long orderId = orderService.checkout(userId, paymentMethod, 
                                             shippingName, shippingPhone, shippingAddress,
-                                            shippingCity, shippingState, shippingPostalCode, notes);
+                                            shippingCity, shippingState, shippingPostalCode, notes,
+                                            selectedItemIds);
         System.out.println("Order ID returned: " + orderId);
         
         if (orderId != null) {
@@ -236,14 +328,27 @@ public class CheckoutController extends HttpServlet {
     
     /**
      * Get user ID from session
+     * Uses getSession(true) to ensure session exists and is not accidentally invalidated
      */
     private Long getUserId(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(true);
         if (session == null) {
             return null;
         }
         
-        return (Long) session.getAttribute("userId");
+        Object userIdObj = session.getAttribute("userId");
+        if (userIdObj == null) {
+            return null;
+        }
+        
+        // Handle both Long and Integer types
+        if (userIdObj instanceof Long) {
+            return (Long) userIdObj;
+        } else if (userIdObj instanceof Integer) {
+            return ((Integer) userIdObj).longValue();
+        }
+        
+        return null;
     }
     
     /**
