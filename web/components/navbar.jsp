@@ -52,14 +52,19 @@
                     </a>
                 </li>
                 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
-                       data-bs-toggle="dropdown">
-                        <div class="user-avatar me-2">
-                            <i class="bi bi-person-circle"></i>
-                        </div>
-                        <span class="d-none d-lg-inline">${sessionScope.user.name}</span>
+                <li class="nav-item d-flex align-items-center dropdown">
+                    <a class="nav-link fw-semibold pe-1" href="${pageContext.request.contextPath}/history">
+                        ${sessionScope.user.name}
                     </a>
+
+                    <a class="nav-link dropdown-toggle ps-1" 
+                       href="#" 
+                       role="button" 
+                       data-bs-toggle="dropdown" 
+                       aria-expanded="false">
+                        <i class="bi bi-person-circle fs-4"></i>
+                    </a>
+
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><h6 class="dropdown-header">${sessionScope.user.name}</h6></li>
                         <li><hr class="dropdown-divider"></li>

@@ -49,10 +49,17 @@
                     
                     <c:choose>
                         <c:when test="${not empty sessionScope.user}">
-                            <span class="text-gray-700 font-medium">${sessionScope.user.name}</span>
-                            <a href="${pageContext.request.contextPath}/auth/logout" class="text-gray-700 hover:text-red-600">
-                                <i class="bi bi-box-arrow-right text-xl"></i>
-                            </a>
+                            <div class="flex items-center space-x-3 z-50">
+                                <a href="${pageContext.request.contextPath}/history"
+                                   class="relative z-50 text-gray-700 font-medium hover:text-blue-600 cursor-pointer">
+                                    ${sessionScope.user.name}
+                                </a>
+
+                                <a href="${pageContext.request.contextPath}/auth/logout"
+                                   class="relative z-50 text-gray-700 hover:text-red-600">
+                                    <i class="bi bi-box-arrow-right text-xl"></i>
+                                </a>
+                            </div>
                         </c:when>
                         <c:otherwise>
                             <a href="${pageContext.request.contextPath}/auth/login" class="text-gray-700 hover:text-blue-600 font-medium">Login</a>
