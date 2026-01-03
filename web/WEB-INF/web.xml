@@ -13,6 +13,16 @@
         Demonstrates OOP concepts: Inheritance, Polymorphism, and Encapsulation.
     </description>
     
+    <servlet>
+        <servlet-name>HistoryServlet</servlet-name>
+        <servlet-class>controller.HistoryServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HistoryServlet</servlet-name>
+        <url-pattern>/history</url-pattern>
+    </servlet-mapping>
+
     <!-- Welcome File List -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
