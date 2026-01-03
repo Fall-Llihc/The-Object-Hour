@@ -1,25 +1,49 @@
-# --- NetBeans Specific ---
-nbproject/private/
+# --- Build Output & Compiled Files ---
+# Build directories
 build/
 nbbuild/
 dist/
 nbdist/
+target/
 .nb-gradle/
 
-# --- Compiled Java Class Files ---
+# Compiled Java class files
 *.class
+*.jar
+*.war
+*.ear
 
-# --- Local Config & Secrets (PENTING!) ---
-# Mengabaikan semua file .properties di dalam source code
-src/java/**/db.properties
-src/java/**/*.properties
+# --- NetBeans Specific ---
+# Private configuration (user-specific)
+nbproject/private/
 
-# TAPI jangan abaikan file example (pengecualian)
-!src/java/**/db.properties.example
-
-# --- Docker ---
+# --- Sensitive Configuration Files ---
+# Environment variables file
 .env
+
+# Database configuration with credentials
+src/java/config/db.properties
+
+# Example files should be kept for reference
+!src/java/config/db.properties.example
+
+# --- IDE & Editor Files ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # --- System Files ---
 .DS_Store
 Thumbs.db
+*.tmp
+*.temp
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Other temporary files ---
+*.bak
+*.backup

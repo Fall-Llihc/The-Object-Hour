@@ -6,6 +6,7 @@ The Object Hour menggunakan sistem konfigurasi terpusat di mana semua pengaturan
 
 1. **File `.env`** - Untuk Docker dan environment variables
 2. **File `src/java/config/db.properties`** - Untuk konfigurasi aplikasi Java
+3. **File `src/java/config/db.properties.example`** - Template untuk konfigurasi database
 
 ### Quick Setup
 
@@ -18,11 +19,32 @@ cp .env.example .env
 nano .env
 ```
 
-#### 2. Edit Konfigurasi Database (db.properties)
+#### 2. Setup Database Configuration (db.properties)
 ```bash
-# Edit file properties
+# Copy template file
+cp src/java/config/db.properties.example src/java/config/db.properties
+
+# Edit dengan kredensial database Anda
 nano src/java/config/db.properties
 ```
+
+**PENTING**: File `db.properties` sudah ditambahkan ke `.gitignore` untuk keamanan.
+
+### Git Ignore Policy
+
+Untuk menjaga keamanan dan menghindari konflik development:
+
+#### ✅ **Files Yang Di-ignore (.gitignore)**:
+- `src/java/config/db.properties` - Berisi kredensial database sensitif
+- `.env` - Environment variables sensitif
+- `build/`, `target/`, `*.class` - File build yang tidak perlu di-deploy
+- `nbproject/private/` - Konfigurasi pribadi NetBeans
+
+#### ✅ **Files Yang TIDAK di-ignore**:
+- `src/java/config/db.properties.example` - Template konfigurasi
+- `nbproject/project.properties` - Konfigurasi project NetBeans
+- `nbproject/genfiles.properties` - Generated files properties
+- File XML konfigurasi (`build.xml`, `web.xml`, dll)
 
 ### Configuration Files
 
