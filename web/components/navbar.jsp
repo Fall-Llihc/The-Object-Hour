@@ -40,6 +40,13 @@
                     </li>
                 </c:if>
                 
+                <!-- Dark Mode Toggle -->
+                <li class="nav-item">
+                    <button type="button" class="dark-mode-toggle" title="Toggle Dark Mode">
+                        <i class="bi bi-moon-fill"></i>
+                    </button>
+                </li>
+                
                 <li class="nav-item">
                     <a class="nav-link position-relative" href="${pageContext.request.contextPath}/cart">
                         <i class="bi bi-cart3" style="font-size: 1.25rem;"></i>
@@ -52,20 +59,25 @@
                     </a>
                 </li>
                 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" 
-                       data-bs-toggle="dropdown">
-                        <div class="user-avatar me-2">
-                            <i class="bi bi-person-circle"></i>
-                        </div>
-                        <span class="d-none d-lg-inline">${sessionScope.user.name}</span>
+                <li class="nav-item d-flex align-items-center dropdown">
+                    <a class="nav-link fw-semibold pe-1" href="${pageContext.request.contextPath}/history">
+                        ${sessionScope.user.name}
                     </a>
+
+                    <a class="nav-link dropdown-toggle ps-1" 
+                       href="#" 
+                       role="button" 
+                       data-bs-toggle="dropdown" 
+                       aria-expanded="false">
+                        <i class="bi bi-person-circle fs-4"></i>
+                    </a>
+
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><h6 class="dropdown-header">${sessionScope.user.name}</h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
-                            <a class="dropdown-item" href="${pageContext.request.contextPath}/orders">
-                                <i class="bi bi-bag-check me-2"></i>My Orders
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/cart">
+                                <i class="bi bi-cart3 me-2"></i>My Cart
                             </a>
                         </li>
                         <li><hr class="dropdown-divider"></li>
