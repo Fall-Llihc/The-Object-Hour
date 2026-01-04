@@ -280,20 +280,14 @@
                                         <!-- Product Image -->
                                         <div class="flex-shrink-0">
                                             <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
-                                                <c:choose>
-                                                    <c:when test="${not empty item.product.imageUrl}">
-                                                        <img src="${item.product.imageUrl}" 
-                                                             alt="${item.product.name}"
-                                                             class="w-full h-full object-cover"
-                                                             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                                                        <div class="hidden w-full h-full items-center justify-center">
-                                                            <i class="bi bi-watch text-3xl text-gray-400"></i>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <i class="bi bi-watch text-3xl text-gray-400"></i>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                <img src="${item.product.imageUrl}" 
+                                                     data-jpg-url="${item.product.imageUrlJpg}"
+                                                     alt="${item.product.name}"
+                                                     class="w-full h-full object-cover"
+                                                     onerror="if(this.src.endsWith('.png')){this.src=this.getAttribute('data-jpg-url');}else{this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';}">
+                                                <div style="display:none;" class="w-full h-full flex items-center justify-center">
+                                                    <i class="bi bi-watch text-3xl text-gray-400"></i>
+                                                </div>
                                             </div>
                                         </div>
                                         
