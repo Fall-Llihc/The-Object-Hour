@@ -1,5 +1,6 @@
 package controller;
 
+import model.Order;
 import model.SalesReport;
 import model.User;
 import service.DataStore;
@@ -36,10 +37,8 @@ public class AdminReportController extends HttpServlet {
             return;
         }
 
-        // refresh snapshot data aplikasi (tugas DataStore)
         DataStore.getInstance().refreshAll();
 
-        // type dari query param, default "products"
         String type = request.getParameter("type");
         if (type == null || type.trim().isEmpty()) type = "products";
         type = type.toLowerCase();
@@ -47,10 +46,31 @@ public class AdminReportController extends HttpServlet {
         Timestamp startTs = parseStart(request);
         Timestamp endTs = parseEnd(request);
 
-        // generate SalesReport (1 objek report untuk JSP)
+        // generate SalesReport 
         SalesReport report;
         if ("orders".equals(type)) {
             report = reportService.generateOrderSalesReport(startTs, endTs);
+
+            // ====== DETAIL ORDER (optional via query param orderId) ======
+            String orderIdParam = request.getParameter("orderId");
+            if (orderIdParam != null && !orderIdParam.trim().isEmpty()) {
+                try {
+                    Long orderId = Long.valueOf(orderIdParam);
+                    Order selectedOrder = reportService.getPaidOrderWithItems(orderId);
+
+                    boolean existsInReport = report.getPaidOrders() != null &&
+                            report.getPaidOrders().stream().anyMatch(o -> o.getId().equals(orderId));
+
+                    if (selectedOrder != null && existsInReport) {
+                        request.setAttribute("selectedOrder", selectedOrder);
+                    } else {
+                        request.setAttribute("selectedOrder", null);
+                    }
+                } catch (NumberFormatException ignored) {
+                    request.setAttribute("selectedOrder", null);
+                }
+            }
+
         } else {
             type = "products"; // normalize
             report = reportService.generateProductSalesReport(startTs, endTs);
@@ -61,9 +81,6 @@ public class AdminReportController extends HttpServlet {
 
         request.setAttribute("startDate", request.getParameter("startDate"));
         request.setAttribute("endDate", request.getParameter("endDate"));
-
-        // snapshot DataStore untuk ditampilkan di bagian bawah
-        request.setAttribute("store", DataStore.getInstance());
 
         request.getRequestDispatcher("/Admin/report.jsp").forward(request, response);
     }

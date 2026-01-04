@@ -5,6 +5,8 @@ import dao.OrderDAO;
 import model.Order;
 import model.ReportEntry;
 import model.SalesReport;
+import dao.OrderItemDAO;
+import model.OrderItem;
 
 import com.lowagie.text.*;
 import com.lowagie.text.pdf.*;
@@ -461,5 +463,25 @@ public class ReportService {
         PdfPCell c = new PdfPCell(new Phrase(text == null ? "" : text, font));
         c.setPadding(6);
         return c;
+    }
+    
+    private final OrderItemDAO orderItemDAO = new OrderItemDAO();
+
+    /**
+     * Ambil order PAID + items + product detail untuk panel detail report.
+     */
+    public Order getPaidOrderWithItems(Long orderId) {
+        if (orderId == null) return null;
+
+        Order order = orderDAO.findById(orderId);
+        if (order == null) return null;
+
+        // hanya boleh tampilkan detail untuk order PAID
+        if (!order.isPaid()) return null;
+
+        List<OrderItem> items = orderItemDAO.findAllByOrderId(orderId);
+        order.setItems(items);
+
+        return order;
     }
 }

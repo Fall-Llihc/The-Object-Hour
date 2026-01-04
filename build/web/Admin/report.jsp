@@ -260,6 +260,7 @@
                     <div class="px-6 py-4 border-b border-gray-200">
                         <h3 class="font-semibold text-gray-900">Order Report</h3>
                     </div>
+
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead class="bg-gray-50 border-b border-gray-200">
@@ -269,12 +270,15 @@
                                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                                     <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
                                     <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">Detail</th>
                                 </tr>
                             </thead>
+
                             <tbody class="divide-y divide-gray-200">
                                 <c:forEach items="${report.paidOrders}" var="o">
                                     <tr class="hover:bg-gray-50 transition">
                                         <td class="px-6 py-4 font-medium text-gray-900">#${o.id}</td>
+
                                         <td class="px-6 py-4 text-gray-700">
                                             <c:choose>
                                                 <c:when test="${not empty o.user}">
@@ -285,19 +289,40 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
+
                                         <td class="px-6 py-4">
-                                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">${o.status}</span>
+                                            <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                                                ${o.status}
+                                            </span>
                                         </td>
-                                        <td class="px-6 py-4 text-gray-700">${o.paidAt}</td>
+
+                                        <td class="px-6 py-4 text-gray-700">
+                                            <c:choose>
+                                                <c:when test="${not empty o.paidAtFormatted}">
+                                                    ${o.paidAtFormatted}
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${o.paidAt}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+
                                         <td class="px-6 py-4 text-right font-medium text-gray-900">
                                             <fmt:formatNumber value="${o.totalAmount}" type="currency" currencySymbol="Rp " maxFractionDigits="0"/>
                                         </td>
+
+                                        <td class="px-6 py-4 text-center">
+                                            <a class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium transition"
+                                               href="${pageContext.request.contextPath}/admin/reports?type=orders&orderId=${o.id}<c:if test='${not empty startDate}'>&startDate=${startDate}</c:if><c:if test='${not empty endDate}'>&endDate=${endDate}</c:if>">
+                                                <i class="bi bi-eye text-blue-600"></i> Detail
+                                            </a>
+                                        </td>
                                     </tr>
                                 </c:forEach>
-                                
+
                                 <c:if test="${empty report.paidOrders}">
                                     <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center text-gray-500">
+                                        <td colspan="6" class="px-6 py-12 text-center text-gray-500">
                                             <i class="bi bi-inbox text-4xl text-gray-300 mb-2 block"></i>
                                             No paid orders.
                                         </td>
@@ -307,12 +332,101 @@
                         </table>
                     </div>
                 </div>
-            </c:if>
 
-            <c:if test="${not empty store}">
-                <p class="text-gray-500 text-sm">
-                    Snapshot DataStore: Orders = ${store.orders.size()} | Products = ${store.products.size()}
-                </p>
+                <!-- PANEL DETAIL ORDER -->
+                <c:if test="${not empty selectedOrder}">
+                    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden mb-6">
+                        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">
+                                Order Detail - #${selectedOrder.id}
+                            </h3>
+
+                            <a class="inline-flex items-center px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium transition"
+                               href="${pageContext.request.contextPath}/admin/reports?type=orders<c:if test='${not empty startDate}'>&startDate=${startDate}</c:if><c:if test='${not empty endDate}'>&endDate=${endDate}</c:if>">
+                                <i class="bi bi-x-lg mr-2"></i> Close
+                            </a>
+                        </div>
+
+                        <div class="p-6">
+                            <!-- Summary -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                                <div class="bg-gray-50 rounded-xl border border-gray-200 p-4">
+                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Customer</div>
+                                    <div class="font-semibold text-gray-900">
+                                        <c:choose>
+                                            <c:when test="${not empty selectedOrder.user}">
+                                                ${selectedOrder.user.name}
+                                            </c:when>
+                                            <c:otherwise>
+                                                UserID: ${selectedOrder.userId}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gray-50 rounded-xl border border-gray-200 p-4">
+                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Paid At</div>
+                                    <div class="font-semibold text-gray-900">
+                                        <c:choose>
+                                            <c:when test="${not empty selectedOrder.paidAtFormatted}">
+                                                ${selectedOrder.paidAtFormatted}
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${selectedOrder.paidAt}
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+
+                                <div class="bg-gray-50 rounded-xl border border-gray-200 p-4">
+                                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Total</div>
+                                    <div class="text-xl font-extrabold text-blue-600">
+                                        <fmt:formatNumber value="${selectedOrder.totalAmount}" type="currency" currencySymbol="Rp " maxFractionDigits="0"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Items Table -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full">
+                                    <thead class="bg-gray-50 border-b border-gray-200">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Product</th>
+                                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Brand</th>
+                                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Qty</th>
+                                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Unit Price</th>
+                                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">Subtotal</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="divide-y divide-gray-200">
+                                        <c:forEach items="${selectedOrder.items}" var="it">
+                                            <tr class="hover:bg-gray-50 transition">
+                                                <td class="px-6 py-4 font-medium text-gray-900">${it.productName}</td>
+                                                <td class="px-6 py-4 text-gray-700">${it.productBrand}</td>
+                                                <td class="px-6 py-4 text-right text-gray-900">${it.quantity}</td>
+                                                <td class="px-6 py-4 text-right text-gray-900">
+                                                    <fmt:formatNumber value="${it.unitPrice}" type="currency" currencySymbol="Rp " maxFractionDigits="0"/>
+                                                </td>
+                                                <td class="px-6 py-4 text-right font-semibold text-gray-900">
+                                                    <fmt:formatNumber value="${it.subtotal}" type="currency" currencySymbol="Rp " maxFractionDigits="0"/>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+
+                                        <c:if test="${empty selectedOrder.items}">
+                                            <tr>
+                                                <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                                                    <i class="bi bi-info-circle mr-2"></i> No items found for this order.
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
             </c:if>
         </div>
     </main>
