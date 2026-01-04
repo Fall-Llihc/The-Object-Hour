@@ -7,7 +7,7 @@
                 <i class="bi bi-watch"></i>
             </div>
             <div>
-                <span class="brand-name">The Object Hour</span>
+                <span class="brand-name">The  Hour</span>
                 <br><small class="brand-tagline">Premium Watches</small>
             </div>
         </a>
@@ -31,7 +31,7 @@
             
             <!-- Right Menu -->
             <ul class="navbar-nav ms-auto align-items-lg-center">
-                <c:if test="${sessionScope.user.role == 'ADMIN'}">
+                <c:if test="${sessionScope.role == 'ADMIN'}">
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/admin/products">
                             <i class="bi bi-speedometer2"></i>
@@ -75,9 +75,22 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><h6 class="dropdown-header">${sessionScope.user.name}</h6></li>
                         <li><hr class="dropdown-divider"></li>
+                        <c:if test="${sessionScope.role == 'ADMIN'}">
+                            <li>
+                                <a class="dropdown-item text-primary" href="${pageContext.request.contextPath}/admin/products">
+                                    <i class="bi bi-speedometer2 me-2"></i>Admin Dashboard
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                        </c:if>
                         <li>
                             <a class="dropdown-item" href="${pageContext.request.contextPath}/cart">
                                 <i class="bi bi-cart3 me-2"></i>My Cart
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="${pageContext.request.contextPath}/orders/history">
+                                <i class="bi bi-clock-history me-2"></i>Order History
                             </a>
                         </li>
                         <li><hr class="dropdown-divider"></li>

@@ -137,6 +137,14 @@
                                 
                                 <!-- Dropdown Menu -->
                                 <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-50">
+                                    <c:if test="${sessionScope.role == 'ADMIN'}">
+                                        <a href="${pageContext.request.contextPath}/admin/products" 
+                                           class="block px-4 py-3 text-blue-600 hover:bg-blue-50 transition flex items-center font-semibold">
+                                            <i class="bi bi-speedometer2 mr-3"></i>
+                                            Admin Dashboard
+                                        </a>
+                                        <div class="border-t border-gray-200"></div>
+                                    </c:if>
                                     <a href="${pageContext.request.contextPath}/cart" 
                                        class="block px-4 py-3 text-gray-700 hover:bg-gray-50 transition flex items-center">
                                         <i class="bi bi-cart3 mr-3 text-blue-600"></i>

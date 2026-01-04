@@ -90,6 +90,38 @@ public class OrderItem {
         this.product = product;
     }
 
+    /**
+     * Get product name from associated product
+     * Helper method for JSP access
+     */
+    public String getProductName() {
+        return product != null ? product.getName() : "Unknown Product";
+    }
+    
+    /**
+     * Get product brand from associated product
+     * Helper method for JSP access
+     */
+    public String getProductBrand() {
+        return product != null ? product.getBrand() : "";
+    }
+    
+    /**
+     * Get product category/type from associated product
+     * Helper method for JSP access
+     */
+    public String getProductCategory() {
+        return product != null ? product.getType() : "";
+    }
+    
+    /**
+     * Get product image URL from associated product
+     * Helper method for JSP access
+     */
+    public String getProductImageUrl() {
+        return product != null ? product.getImageUrl() : "";
+    }
+
     // Helper methods
     public void calculateSubtotal() {
         if (this.unitPrice != null && this.quantity > 0) {
