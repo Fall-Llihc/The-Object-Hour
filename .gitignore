@@ -1,49 +1,49 @@
-# --- Build Output & Compiled Files ---
-# Build directories
-build/
-nbbuild/
-dist/
-nbdist/
-target/
-.nb-gradle/
+# # --- Build Output & Compiled Files ---
+# # Build directories
+# build/
+# nbbuild/
+# dist/
+# nbdist/
+# target/
+# .nb-gradle/
 
-# Compiled Java class files
-*.class
-*.jar
-*.war
-*.ear
+# # Compiled Java class files
+# *.class
+# *.jar
+# *.war
+# *.ear
 
-# --- NetBeans Specific ---
-# Private configuration (user-specific)
-nbproject/private/
+# # --- NetBeans Specific ---
+# # Private configuration (user-specific)
+# nbproject/private/
 
-# --- Sensitive Configuration Files ---
-# Environment variables file
+# # --- Sensitive Configuration Files ---
+# # Environment variables file
 .env
 
-# Database configuration with credentials
+# # Database configuration with credentials
 src/java/config/db.properties
 
-# Example files should be kept for reference
+# # Example files should be kept for reference
 !src/java/config/db.properties.example
 
-# --- IDE & Editor Files ---
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# # --- IDE & Editor Files ---
+# .vscode/
+# .idea/
+# *.swp
+# *.swo
+# *~
 
-# --- System Files ---
-.DS_Store
-Thumbs.db
-*.tmp
-*.temp
+# # --- System Files ---
+# .DS_Store
+# Thumbs.db
+# *.tmp
+# *.temp
 
-# --- Logs ---
-*.log
-logs/
+# # --- Logs ---
+# *.log
+# logs/
 
-# --- Other temporary files ---
-*.bak
-*.backup
+# # --- Other temporary files ---
+# *.bak
+# *.backup
