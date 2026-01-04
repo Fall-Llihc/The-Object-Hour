@@ -134,13 +134,20 @@ public class CheckoutController extends HttpServlet {
             return;
         }
         
-        // STOCK VALIDATION - Check if all items have sufficient stock
+        // STOCK & AVAILABILITY VALIDATION - Check if all items are active and have sufficient stock
         StringBuilder stockIssues = new StringBuilder();
         boolean hasStockIssues = false;
         
         for (model.CartItem item : cart.getItems()) {
             if (item.getProduct() == null) {
                 stockIssues.append("• Item tidak valid\n");
+                hasStockIssues = true;
+                continue;
+            }
+            
+            // Check if product is active
+            if (!item.getProduct().isActive()) {
+                stockIssues.append("• ").append(item.getProduct().getName()).append(" - Produk tidak tersedia\n");
                 hasStockIssues = true;
                 continue;
             }
@@ -160,8 +167,8 @@ public class CheckoutController extends HttpServlet {
         }
         
         if (hasStockIssues) {
-            System.out.println("CheckoutController.showCheckoutPage - Stock issues detected: " + stockIssues.toString());
-            request.getSession().setAttribute("error", "Tidak dapat melanjutkan checkout karena masalah stok:\n" + stockIssues.toString());
+            System.out.println("CheckoutController.showCheckoutPage - Stock/availability issues detected: " + stockIssues.toString());
+            request.getSession().setAttribute("error", "Tidak dapat melanjutkan checkout karena masalah ketersediaan produk:\n" + stockIssues.toString());
             response.sendRedirect(request.getContextPath() + "/cart");
             return;
         }
@@ -255,13 +262,20 @@ public class CheckoutController extends HttpServlet {
             return;
         }
         System.out.println("Validation OK: Cart is valid");
-                // STOCK VALIDATION - Check if all items have sufficient stock before processing order
+                // STOCK & AVAILABILITY VALIDATION - Check if all items are active and have sufficient stock before processing order
         StringBuilder stockIssues = new StringBuilder();
         boolean hasStockIssues = false;
         
         for (model.CartItem item : cart.getItems()) {
             if (item.getProduct() == null) {
                 stockIssues.append("• Item tidak valid\n");
+                hasStockIssues = true;
+                continue;
+            }
+            
+            // Check if product is still active
+            if (!item.getProduct().isActive()) {
+                stockIssues.append("• ").append(item.getProduct().getName()).append(" - Produk tidak tersedia\n");
                 hasStockIssues = true;
                 continue;
             }
@@ -281,12 +295,12 @@ public class CheckoutController extends HttpServlet {
         }
         
         if (hasStockIssues) {
-            System.out.println("VALIDATION FAILED: Stock issues - " + stockIssues.toString());
-            request.getSession().setAttribute("error", "Tidak dapat memproses pesanan karena masalah stok:\n" + stockIssues.toString());
+            System.out.println("VALIDATION FAILED: Stock/availability issues - " + stockIssues.toString());
+            request.getSession().setAttribute("error", "Tidak dapat memproses pesanan karena masalah ketersediaan produk:\n" + stockIssues.toString());
             response.sendRedirect(request.getContextPath() + "/cart");
             return;
         }
-        System.out.println("Validation OK: Stock is sufficient");
+        System.out.println("Validation OK: Stock is sufficient and products are available");
                 // Create payment method (POLYMORPHISM!)
         System.out.println("Creating payment method: " + paymentType);
         PaymentMethod paymentMethod = orderService.createPaymentMethod(paymentType);
