@@ -1,6 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<%-- Security check: redirect to login if not logged in --%>
+<c:if test="${empty sessionScope.userId}">
+    <c:redirect url="/auth/login">
+        <c:param name="error" value="Silakan login terlebih dahulu untuk mengakses keranjang"/>
+    </c:redirect>
+</c:if>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,7 +271,8 @@
                                  data-price="${item.unitPrice * item.quantity}"
                                  data-stock="${item.product.stock}"
                                  data-qty="${item.quantity}"
-                                 data-available="${item.product.stock > 0 and item.quantity <= item.product.stock}">
+                                 data-active="${item.product.active}"
+                                 data-available="${item.product.active and item.product.stock > 0 and item.quantity <= item.product.stock}">
                                 
                                 <!-- Item Content -->
                                 <div class="p-4">
@@ -274,7 +283,7 @@
                                                    class="item-checkbox checkbox-custom rounded border-gray-300"
                                                    data-index="${loop.index}"
                                                    id="checkbox-${loop.index}"
-                                                   ${item.product.stock > 0 and item.quantity <= item.product.stock ? 'checked' : ''}>
+                                                   ${item.product.active and item.product.stock > 0 and item.quantity <= item.product.stock ? 'checked' : ''}>
                                         </div>
                                         
                                         <!-- Product Image -->
@@ -312,6 +321,11 @@
                                                         </span>
                                                         
                                                         <c:choose>
+                                                            <c:when test="${not item.product.active}">
+                                                                <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-gray-200 text-gray-700">
+                                                                    <i class="bi bi-slash-circle mr-1"></i>Unavailable
+                                                                </span>
+                                                            </c:when>
                                                             <c:when test="${item.product.stock <= 0}">
                                                                 <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">
                                                                     <i class="bi bi-x-circle mr-1"></i>Out of Stock
